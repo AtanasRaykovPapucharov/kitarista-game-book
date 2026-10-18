@@ -1,0 +1,125 @@
+// app global css
+
+.page-narrow {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.app-title {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+body.body--light {
+  --app-page: #f1f7ff;
+  --app-page-end: #e7f7f3;
+  --app-surface: #ffffff;
+  --app-surface-soft: #e7f5f6;
+  --app-surface-raised: #d3ebf0;
+  --app-score-surface: #f2fcff;
+  --app-text: #17344d;
+  --app-muted: #426b83;
+  --app-border: #bbdce5;
+  --app-header-start: #126d79;
+  --app-header-end: #3453a5;
+  --app-strong-surface: #146c78;
+  --app-strong-text: #f4ffff;
+  --app-separator: #bbdce5;
+}
+
+body.body--dark {
+  --app-page: #0c1a31;
+  --app-page-end: #102a3a;
+  --app-surface: #152945;
+  --app-surface-soft: #1b3856;
+  --app-surface-raised: #254968;
+  --app-score-surface: #d8f4f3;
+  --app-text: #e5f5ff;
+  --app-muted: #a6c8df;
+  --app-border: #345975;
+  --app-header-start: #173b68;
+  --app-header-end: #126b73;
+  --app-strong-surface: #1c526c;
+  --app-strong-text: #efffff;
+  --app-separator: #345975;
+}
+
+body {
+  background-color: var(--app-surface);
+  color: var(--app-text);
+}
+
+.q-header.app-header {
+  background: linear-gradient(105deg, var(--app-header-start), var(--app-header-end));
+  color: #ffffff;
+}
+
+.q-drawer {
+  background-color: var(--app-surface);
+  color: var(--app-text);
+}
+
+.q-drawer .q-item {
+  border-radius: 8px;
+  margin: 2px 6px;
+}
+
+.q-drawer .q-item--active {
+  background-color: var(--app-surface-soft);
+  color: var(--q-primary);
+  font-weight: 700;
+}
+
+.q-page-container,
+.q-page {
+  background-color: var(--app-surface);
+  color: var(--app-text);
+}
+
+.q-separator {
+  background-color: var(--app-separator);
+}
+
+.q-field--outlined .q-field__control:before {
+  border-color: var(--app-border);
+}
+
+.q-field--outlined.q-field--focused .q-field__control:after {
+  border-color: var(--q-primary);
+}
+
+.bg-grey-1,
+.bg-grey-2,
+.bg-grey-3 {
+  background-color: var(--app-surface) !important;
+}
+
+.bg-grey-4,
+.bg-grey-5,
+.bg-grey-6 {
+  background-color: var(--app-surface-soft) !important;
+}
+
+.bg-grey-7 {
+  background-color: var(--app-surface-raised) !important;
+}
+
+.bg-grey-8,
+.bg-grey-9,
+.bg-grey-10 {
+  background-color: var(--app-strong-surface) !important;
+  color: var(--app-strong-text) !important;
+}
+
+.text-grey-1,
+.text-grey-2,
+.text-grey-3,
+.text-grey-4,
+.text-grey-5,
+.text-grey-6,
+.text-grey-7,
+.text-grey-8,
+.text-grey-9,
+.text-grey-10 {
+  color: var(--app-muted) !important;
+}
