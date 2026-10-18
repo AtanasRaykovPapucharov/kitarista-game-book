@@ -45,26 +45,26 @@ const ALL_METHODS = [
     value: clean(import.meta.env.QCLI_SUPPORT_LIGHTNING),
     uri: (v) => `lightning:${v}`,
   },
-  {
-    id: 'btc',
-    kind: 'address',
-    icon: 'currency_bitcoin',
-    value: clean(import.meta.env.QCLI_SUPPORT_BTC),
-    uri: (v) => `bitcoin:${v}`,
-  },
-  {
-    id: 'eth',
-    kind: 'address',
-    icon: 'diamond',
-    value: clean(import.meta.env.QCLI_SUPPORT_ETH),
-    uri: (v) => `ethereum:${v}`,
-  },
-  {
-    id: 'usdt',
-    kind: 'address',
-    icon: 'paid',
-    value: clean(import.meta.env.QCLI_SUPPORT_USDT_TRC20),
-  },
+  // {
+  //   id: 'btc',
+  //   kind: 'address',
+  //   icon: 'currency_bitcoin',
+  //   value: clean(import.meta.env.QCLI_SUPPORT_BTC),
+  //   uri: (v) => `bitcoin:${v}`,
+  // },
+  // {
+  //   id: 'eth',
+  //   kind: 'address',
+  //   icon: 'diamond',
+  //   value: clean(import.meta.env.QCLI_SUPPORT_ETH),
+  //   uri: (v) => `ethereum:${v}`,
+  // },
+  // {
+  //   id: 'usdt',
+  //   kind: 'address',
+  //   icon: 'paid',
+  //   value: clean(import.meta.env.QCLI_SUPPORT_USDT_TRC20),
+  // },
 ]
 
 export const supportMethods = ALL_METHODS.filter((m) => m.value)
