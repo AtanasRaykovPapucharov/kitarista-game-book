@@ -32,7 +32,7 @@ async function copy(value) {
             <p class="gb-method__hint">{{ t(`support.methods.${m.id}.hint`) }}</p>
             <p v-if="m.kind === 'address'" class="gb-method__address">{{ m.value }}</p>
           </div>
-          <div class="gb-method__actions">
+          <div v-if="m.id != 'buymeacoffee'" class="gb-method__actions">
             <a
               v-if="m.kind === 'link'"
               :href="m.value"
