@@ -46,6 +46,13 @@ if (typeof window !== 'undefined') {
 /* ---------- the shared chain ---------- */
 let ctx = null
 let bus = null
+let duck = 1 // < 1 while the narrator speaks, so cues sit under the voice
+
+/** Lowers (or restores) the cues while the narrator is talking. */
+export function setDuck(on) {
+  duck = on ? 0.35 : 1
+  if (bus && ctx) bus.master.gain.setTargetAtTime(MAX_GAIN * volume.value * duck, ctx.currentTime, 0.15)
+}
 
 function impulse(seconds = 2.2) {
   const sr = ctx.sampleRate
@@ -97,7 +104,7 @@ function out() {
   ctx ??= createAudioContext()
   if (ctx.state === 'suspended') ctx.resume()
   bus ??= buildBus()
-  bus.master.gain.setTargetAtTime(MAX_GAIN * volume.value, ctx.currentTime, 0.02)
+  bus.master.gain.setTargetAtTime(MAX_GAIN * volume.value * duck, ctx.currentTime, 0.02)
   return bus.input
 }
 

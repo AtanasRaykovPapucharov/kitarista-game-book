@@ -1,9 +1,10 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from 'src/stores/game-store'
 import { useStory } from 'src/game/useStory'
-import { soundOn, toggleSound, cues } from 'src/game/sound'
+import { cues } from 'src/game/sound'
+import { soundNotice } from 'src/game/notices'
 import TurnToButton from './TurnToButton.vue'
 import StatChanges from './StatChanges.vue'
 import ChordsLesson from './lessons/ChordsLesson.vue'
@@ -30,6 +31,11 @@ const LESSONS = {
 const def = computed(() => LESSONS[props.lesson.id])
 const resolved = computed(() => game.save.resolved)
 
+// ear lessons need sound – say so at the top, not inside the lesson
+onMounted(() => {
+  if (def.value.ear && !resolved.value) soundNotice(t)
+})
+
 function done(result) {
   game.finishLesson(result)
   game.save.resolved?.success ? cues.success() : cues.failure()
@@ -42,13 +48,6 @@ function done(result) {
       <h2 class="challenge__title">{{ t(`lessons.${lesson.id}.title`) }}</h2>
       <p class="challenge__rule">{{ t(`lessons.${lesson.id}.intro`) }}</p>
     </header>
-
-    <div v-if="def.ear && !soundOn && !resolved" class="lesson__sound">
-      <span>{{ t('lessons.soundNeeded') }}</span>
-      <button type="button" class="gb-btn gb-btn--small" @click="toggleSound">
-        {{ t('lessons.turnOnSound') }}
-      </button>
-    </div>
 
     <component :is="def.component" v-if="!resolved" @done="done" />
 
@@ -74,17 +73,6 @@ function done(result) {
 </template>
 
 <style scoped>
-.lesson__sound {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin: 12px 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: var(--gb-hover);
-}
-
 .lesson__tool {
   margin: 10px 0 0;
 }

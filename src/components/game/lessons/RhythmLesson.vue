@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { metronome } from 'src/game/sound'
+import { soundNotice } from 'src/game/notices'
 
 /* Hands: four count-in clicks, then tap along with the next four.
    A tap within ±170 ms of a beat counts. */
@@ -16,7 +17,6 @@ const TAPS = 4
 const phase = ref('idle') // idle | count | tap | done
 const lit = ref(-1)
 const hits = ref([]) // per tap beat: true / false
-const noSound = ref(false)
 let beats = []
 let taps = []
 let timers = []
@@ -25,10 +25,9 @@ function start() {
   timers.forEach(clearTimeout)
   taps = []
   hits.value = []
-  noSound.value = false
   const times = metronome(COUNT_IN + TAPS, BPM)
   if (!times) {
-    noSound.value = true
+    soundNotice(t)
     return
   }
   beats = times
@@ -110,8 +109,6 @@ onBeforeUnmount(() => {
     >
       {{ t('lessons.rhythm.tap') }}
     </button>
-
-    <p v-if="noSound" class="lesson-quiz__feedback">{{ t('lessons.soundNeeded') }}</p>
     <p v-if="phase !== 'done'" class="lesson-quiz__hint">{{ t('lessons.rhythm.keyHint') }}</p>
 
     <div class="lesson-quiz__actions">

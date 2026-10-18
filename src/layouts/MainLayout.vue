@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings-store'
 import { useAuthStore } from '@/stores/auth-store'
 import { soundOn, toggleSound, volume, setVolume, cues } from '@/game/sound'
+import NarratorControls from '@/components/NarratorControls.vue'
 import logo from '@/assets/logo.png'
 
 const { t } = useI18n()
@@ -98,6 +99,8 @@ function closeLeftDrawer() {
           <span v-if="$q.screen.gt.xs" class="app-name">{{ t('appName') }}</span>
         </q-toolbar-title>
 
+        <NarratorControls />
+
         <q-btn
           flat
           dense
@@ -130,6 +133,7 @@ function closeLeftDrawer() {
               />
               <span class="volume-value">{{ soundOn ? volumePercent : 0 }}%</span>
             </div>
+
           </q-menu>
         </q-btn>
 

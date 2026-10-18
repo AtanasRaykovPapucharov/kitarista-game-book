@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
@@ -16,13 +16,29 @@ import EndingPanel from 'src/components/game/EndingPanel.vue'
 import LessonPanel from 'src/components/game/LessonPanel.vue'
 import SongComposer from 'src/components/game/SongComposer.vue'
 import SongCard from 'src/components/game/SongCard.vue'
+import { narrator, readingIndex, speak, setReader, stop as stopNarrator } from 'src/game/narrator'
+import { useSettingsStore } from 'src/stores/settings-store'
 import { cues } from 'src/game/sound'
 
 const { t } = useI18n()
 const $q = useQuasar()
 const router = useRouter()
 const game = useGameStore()
-const { title, paragraphs } = useStory()
+const { title, paragraphs, choiceText } = useStory()
+const settings = useSettingsStore()
+
+/* What the narrator reads: the title, the text, then (optionally) the choices. */
+function narration() {
+  const s = save.value
+  if (!s) return []
+  const out = [title(key.value, s), ...paragraphs(key.value, s)]
+  if (narrator.choices && game.choices.length) {
+    out.push(t('narrator.choicesIntro'), ...game.choices.map((c) => choiceText(key.value, c.id)))
+  }
+  return out
+}
+// readingIndex 0 is the title; paragraphs start at 1
+const readingParagraph = computed(() => readingIndex.value - 1)
 
 const save = computed(() => game.save)
 const key = computed(() => save.value?.section)
@@ -48,13 +64,27 @@ watch(
   () => save.value?.visit,
   async (visit, old) => {
     if (old === undefined) return
+    stopNarrator()
     cues.page()
     sheetOpen.value = false
     window.scrollTo({ top: 0 })
     await nextTick()
     titleEl.value?.focus({ preventScroll: true })
+    // the click that turned the page counts as permission to speak
+    if (narrator.auto) setTimeout(() => speak(narration(), settings.locale), 450)
   },
 )
+
+watch(
+  () => settings.locale,
+  () => stopNarrator(),
+)
+// the header's narrator controls read this section
+onMounted(() => setReader(narration))
+onBeforeUnmount(() => {
+  setReader(null)
+  stopNarrator()
+})
 </script>
 
 <template>
@@ -72,7 +102,13 @@ watch(
         </header>
 
         <div class="gb-story" :class="{ 'gb-story--prologue': key === 'prologue' }">
-          <p v-for="(p, i) in paragraphs(key, save)" :key="i">{{ p }}</p>
+          <p
+            v-for="(p, i) in paragraphs(key, save)"
+            :key="i"
+            :class="{ 'is-reading': readingParagraph === i }"
+          >
+            {{ p }}
+          </p>
         </div>
 
         <StatChanges
