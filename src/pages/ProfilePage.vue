@@ -11,6 +11,7 @@ import GenderFields from 'src/components/game/GenderFields.vue'
 import SongCard from 'src/components/game/SongCard.vue'
 import UserAvatar from 'src/components/avatar/UserAvatar.vue'
 import AvatarBuilder from 'src/components/avatar/AvatarBuilder.vue'
+import AchievementList from 'src/components/game/AchievementList.vue'
 
 const { t, locale } = useI18n()
 const $q = useQuasar()
@@ -195,6 +196,9 @@ function remove() {
           {{ t('common.cancel') }}
         </button>
       </div>
+
+      <h2 class="gb-subtitle">{{ t('achievements.title') }}</h2>
+      <AchievementList />
 
       <h2 class="gb-subtitle">{{ t('profile.endings') }}</h2>
       <ul class="gb-endings">

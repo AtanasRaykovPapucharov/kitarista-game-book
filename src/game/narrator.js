@@ -1,6 +1,7 @@
 import { reactive, ref, watch } from 'vue'
 import { KEYS, readJson, writeJson } from 'src/services/storage'
 import { soundOn, volume, setDuck } from 'src/game/sound'
+import { useGameStore } from 'src/stores/game-store'
 
 /* =====================================================
    The narrator: reads the story aloud with the browser's
@@ -144,6 +145,7 @@ export function speak(texts, locale) {
 
   speaking.value = true
   setDuck(true)
+  useGameStore().award('listener')
   let i = 0
   const next = () => {
     if (id !== session) return

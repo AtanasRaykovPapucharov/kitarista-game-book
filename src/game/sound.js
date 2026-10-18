@@ -338,6 +338,15 @@ export const cues = {
     )
   },
 
+  /** an achievement: a small rising arpeggio with a shimmer on top */
+  achievement() {
+    if (!once('achievement', 600)) return
+    play((dest, t) => {
+      ;[72, 76, 79, 84, 88].forEach((m, i) => bell(dest, t + i * 0.09, hz(m), { gain: 0.08, decay: 1.8 }))
+      bell(dest, t + 0.5, hz(96), { gain: 0.04, decay: 2.2 })
+    })
+  },
+
   /** the volume slider's sample */
   chime() {
     play((dest, t) => bell(dest, t, hz(79), { gain: 0.1, decay: 1.4 }))

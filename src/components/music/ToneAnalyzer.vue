@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { TUNING } from 'src/components/claude/music'
 import ChordDiagram from 'src/components/claude/ChordDiagram.vue'
 import { playNote, playChord } from 'src/game/sound'
+import { useGameStore } from 'src/stores/game-store'
 import {
   chordCandidates,
   interval,
@@ -42,6 +43,14 @@ const shownScales = computed(() =>
 const pair = computed(() =>
   notes.value.length === 2 ? interval(notes.value[0], notes.value[1]) : null,
 )
+// achievements: naming a chord, and finding a mode
+const game = useGameStore()
+watch(chord, (c) => c && game.award('tone_chord'))
+watch(
+  () => scales.value.some((s) => s.exact && s.kind === 'mode'),
+  (found) => found && game.award('tone_mode'),
+)
+
 const lowest = computed(() => (notes.value.length ? NOTE_NAMES[notes.value[0] % 12] : ''))
 // guitar music is written an octave above how it sounds – show names like the chart does
 const written = (m) => noteWithOctave(m + 12)

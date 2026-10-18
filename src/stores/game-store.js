@@ -4,6 +4,10 @@ import { KEYS, readJson, writeJson, removeKey } from 'src/services/storage'
 import { useAuthStore } from 'src/stores/auth-store'
 import * as engine from 'src/game/engine'
 import { SECTIONS, sectionNumber } from 'src/story/book'
+import { Notify } from 'quasar'
+import { i18n } from 'src/boot/i18n'
+import { ACHIEVEMENT_BY_ID, newlyEarned } from 'src/game/achievements'
+import { cues } from 'src/game/sound'
 
 /* =====================================================
    One save slot per user, plus a profile that remembers
@@ -13,7 +17,13 @@ import { SECTIONS, sectionNumber } from 'src/story/book'
    never lets the reader re-roll a die.
 ===================================================== */
 
-const emptyProfile = () => ({ endings: {}, adventures: 0, bestSkill: 0, songs: [] })
+const emptyProfile = () => ({
+  endings: {},
+  adventures: 0,
+  bestSkill: 0,
+  songs: [],
+  achievements: {},
+})
 const MAX_SONGS = 30
 
 export const useGameStore = defineStore('game', {
@@ -47,6 +57,7 @@ export const useGameStore = defineStore('game', {
       const save = readJson(KEYS.save(userId), null)
       this.save = engine.isValidSave(save) ? save : null
       this.profile = { ...emptyProfile(), ...readJson(KEYS.profile(userId), {}) }
+      this.checkAchievements({ quiet: true })
     },
 
     persist() {
@@ -60,7 +71,49 @@ export const useGameStore = defineStore('game', {
       const endedNow = next.status === 'ended' && this.save?.status !== 'ended'
       this.save = next
       if (endedNow) this.recordEnding(next)
+      this.checkAchievements()
       this.persist()
+    },
+
+    /* ---------- achievements ---------- */
+
+    /** Unlocks whatever the current save and profile have earned. */
+    checkAchievements({ quiet = false } = {}) {
+      const earned = newlyEarned(this.save, this.profile)
+      if (!earned.length) return
+      const now = new Date().toISOString()
+      this.profile.achievements = { ...this.profile.achievements }
+      for (const id of earned) this.profile.achievements[id] = now
+      if (quiet) this.persist()
+      else this.announce(earned)
+    },
+
+    /** For things that happen outside the book (practice room, narrator, avatar). */
+    award(id) {
+      if (!this.userId || !ACHIEVEMENT_BY_ID[id] || this.profile.achievements?.[id]) return
+      this.profile.achievements = { ...this.profile.achievements, [id]: new Date().toISOString() }
+      this.persist()
+      this.announce([id])
+    },
+
+    announce(ids) {
+      const t = i18n.global.t
+      cues.achievement()
+      for (const id of ids.slice(0, 3)) {
+        Notify.create({
+          position: 'top',
+          color: 'dark',
+          textColor: 'white',
+          icon: ACHIEVEMENT_BY_ID[id].icon,
+          iconColor: 'accent',
+          message: t('achievements.unlocked'),
+          caption: t(`achievements.list.${id}.title`),
+          timeout: 4500,
+          actions: [
+            { label: t('achievements.see'), color: 'accent', noCaps: true, to: '/profile' },
+          ],
+        })
+      }
     },
 
     recordEnding(save) {
@@ -166,7 +219,9 @@ export const useGameStore = defineStore('game', {
           .filter((s, i) => s?.id && songs.findIndex((x) => x.id === s.id) === i)
           .slice(0, MAX_SONGS),
       }
+      this.profile.achievements = { ...(incoming.achievements ?? {}), ...this.profile.achievements }
       if (engine.isValidSave(data.save)) this.save = data.save
+      this.checkAchievements({ quiet: true })
       this.persist()
       return true
     },

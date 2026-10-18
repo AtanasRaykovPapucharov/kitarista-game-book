@@ -172,6 +172,7 @@
 
 <script setup>
 import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { useGameStore } from 'src/stores/game-store'
 import { useQuasar } from 'quasar'
 
 const props = defineProps({
@@ -233,6 +234,12 @@ const hasSignal = ref(false)
 const frequency = ref(null)
 const error = ref('')
 const tuned = ref(new Set())
+// achievement "Clean tuning": all six strings held in tune
+const game = useGameStore()
+watch(
+  () => tuned.value.size,
+  (n) => n >= 6 && game.award('tuner'),
+)
 
 const currentTuning = computed(() => TUNINGS.find((t) => t.value === tuningId.value))
 const notesLine = computed(() => formatNotes(currentTuning.value.notes))

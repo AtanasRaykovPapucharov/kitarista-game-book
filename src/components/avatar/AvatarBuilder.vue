@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 import { useAuthStore } from 'src/stores/auth-store'
+import { useGameStore } from 'src/stores/game-store'
 import UserAvatar from './UserAvatar.vue'
 import {
   AVATAR_OPTIONS,
@@ -84,7 +85,10 @@ function save() {
     message: ok ? t('avatar.saved') : t('avatar.badImage'),
     color: ok ? 'positive' : 'negative',
   })
-  if (ok) open.value = false
+  if (ok) {
+    useGameStore().award('new_face')
+    open.value = false
+  }
 }
 
 const optionLabel = (part, value, i) =>
