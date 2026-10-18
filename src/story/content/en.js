@@ -85,9 +85,9 @@ export default {
     prologue: {
       title: 'Dark',
       text: [
-        'The dark pierced him at the speed of light. He felt it with every fibre of his bodiless being. They were one, and yet they were not. His mind defined him as separate.',
-        'Where to and for how long meant nothing. Time and space had no meaning. Knowledge was part of him. Everything is nothing, and nothing gives birth to everything. Chance. Deliberate accident. Creation.',
-        'He knew that one day he would find light, and then everything would change. Everything would gain meaning. And it would be real. Real?',
+        'The dark pierced [him|her|them] at the speed of light. [He|She|They] felt it with every fibre of [his|her|their] bodiless being. They were one, and yet they were not. [His|Her|Their] mind defined [him|her|them] as separate.',
+        'Where to and for how long meant nothing. Time and space had no meaning. Knowledge was part of [him|her|them]. Everything is nothing, and nothing gives birth to everything. Chance. Deliberate accident. Creation.',
+        '[He|She|They] knew that one day [he|she|they] would find light, and then everything would change. Everything would gain meaning. And it would be real. Real?',
         'Somewhere very far away, on a small blue planet, a [boy|girl|child] was falling asleep.',
       ],
     },
