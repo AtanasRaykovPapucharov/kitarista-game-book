@@ -5,7 +5,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings-store'
 import { useAuthStore } from '@/stores/auth-store'
-import { soundOn, toggleSound } from '@/game/sound'
+import { soundOn, toggleSound, volume, setVolume, cues } from '@/game/sound'
 import logo from '@/assets/logo.png'
 
 const { t } = useI18n()
@@ -37,17 +37,33 @@ const bookItems = [
 ]
 
 const navItems = [
-  { to: '/compas', label: 'nav.compas', icon: 'fa fa-guitar' },
-  { to: '/notes', label: 'nav.notes', icon: 'library_music' },
   { to: '/tones', label: 'nav.tones', icon: 'music_note' },
   { to: '/intervals', label: 'nav.intervals', icon: 'timeline' },
-  { to: '/scales', label: 'nav.scales', icon: 'music_note' },
   { to: '/chords', label: 'nav.chords', icon: 'image_aspect_ratio' },
+  { to: '/scales', label: 'nav.scales', icon: 'line_axis' },
+  { to: '/notes', label: 'nav.notes', icon: 'library_music' },
+  { to: '/compas', label: 'nav.compas', icon: 'explore' },
   { to: '/tuner', label: 'nav.tuner', icon: 'tune' },
 
   // { to: '/flamenco', label: 'nav.flamenco', icon: 'fa fa-guitar' },
   // { to: '/about', label: 'nav.about', icon: 'info' },
 ]
+
+const footerItems = [
+  { to: '/creators', label: 'nav.creators', icon: 'groups' },
+  { to: '/support', label: 'nav.support', icon: 'favorite' },
+]
+
+const volumePercent = computed(() => Math.round(volume.value * 100))
+const volumeIcon = computed(() => {
+  if (!soundOn.value || volume.value === 0) return 'volume_off'
+  return volume.value < 0.5 ? 'volume_down' : 'volume_up'
+})
+
+// play a short chord when the slider is released, so the level can be heard
+function previewVolume() {
+  cues.success()
+}
 
 const leftDrawerOpen = ref(false)
 
@@ -86,11 +102,36 @@ function closeLeftDrawer() {
           flat
           dense
           round
-          :icon="soundOn ? 'volume_up' : 'volume_off'"
-          :aria-label="soundOn ? t('nav.soundOff') : t('nav.soundOn')"
-          :title="soundOn ? t('nav.soundOff') : t('nav.soundOn')"
-          @click="toggleSound"
-        />
+          :icon="volumeIcon"
+          :aria-label="t('nav.volume')"
+          :title="t('nav.volume')"
+        >
+          <q-menu anchor="bottom middle" self="top middle" :offset="[0, 6]">
+            <div class="volume-menu">
+              <q-btn
+                flat
+                dense
+                round
+                :icon="soundOn ? 'volume_up' : 'volume_off'"
+                :aria-label="soundOn ? t('nav.soundOff') : t('nav.soundOn')"
+                :title="soundOn ? t('nav.soundOff') : t('nav.soundOn')"
+                @click="toggleSound"
+              />
+              <q-slider
+                class="volume-slider"
+                :model-value="soundOn ? volumePercent : 0"
+                :min="0"
+                :max="100"
+                :step="5"
+                color="accent"
+                :aria-label="t('nav.volume')"
+                @update:model-value="(v) => setVolume(v / 100)"
+                @change="previewVolume"
+              />
+              <span class="volume-value">{{ soundOn ? volumePercent : 0 }}%</span>
+            </div>
+          </q-menu>
+        </q-btn>
 
         <q-btn
           flat
@@ -141,7 +182,15 @@ function closeLeftDrawer() {
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn v-else flat no-caps icon="login" :label="$q.screen.gt.xs ? t('nav.login') : undefined" :aria-label="t('nav.login')" :to="{ name: 'login' }" />
+        <q-btn
+          v-else
+          flat
+          no-caps
+          icon="login"
+          :label="$q.screen.gt.xs ? t('nav.login') : undefined"
+          :aria-label="t('nav.login')"
+          :to="{ name: 'login' }"
+        />
       </q-toolbar>
     </q-header>
 
@@ -173,6 +222,16 @@ function closeLeftDrawer() {
 
           <q-item-label header class="drawer-group">{{ t('nav.practiceRoom') }}</q-item-label>
           <q-item v-for="item in navItems" :key="item.to" clickable :to="item.to" exact>
+            <q-item-section avatar>
+              <q-icon :name="item.icon" />
+            </q-item-section>
+            <q-item-section>{{ t(item.label) }}</q-item-section>
+          </q-item>
+        </q-list>
+
+        <!-- pinned to the bottom of the menu -->
+        <q-list padding class="drawer-footer">
+          <q-item v-for="item in footerItems" :key="item.to" clickable :to="item.to" exact>
             <q-item-section avatar>
               <q-icon :name="item.icon" />
             </q-item-section>
@@ -233,6 +292,31 @@ function closeLeftDrawer() {
 
 .drawer-content {
   min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--app-border);
+}
+
+.volume-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 260px;
+  padding: 8px 14px 8px 8px;
+}
+
+.volume-slider {
+  flex: 1 1 auto;
+}
+
+.volume-value {
+  min-width: 3.2em;
+  text-align: right;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 /* phones: header stays put, only the list scrolls */

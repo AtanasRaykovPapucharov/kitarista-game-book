@@ -20,7 +20,7 @@ const revealed = computed(() => resolved.value && !rolling.value)
 
 function doRoll() {
   rolling.value = true
-  cues.dice()
+  cues.dice(props.roll.dice)
   game.rollTable()
 }
 </script>

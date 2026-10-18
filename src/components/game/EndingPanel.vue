@@ -62,7 +62,7 @@ function again() {
 
 .is-best .ending__title,
 .is-good .ending__title {
-  color: var(--gb-brass);
+  color: var(--gb-accent);
 }
 
 .is-bad .ending__title {

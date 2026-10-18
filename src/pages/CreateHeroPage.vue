@@ -28,7 +28,7 @@ function roll() {
   settledCount.value = 0
   hero.value = rollHero()
   rolls.value += 1
-  cues.dice()
+  cues.dice(4) // 1 + 2 + 1 dice for the three stats
 }
 
 function begin() {

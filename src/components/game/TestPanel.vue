@@ -23,7 +23,7 @@ const heading = computed(() => (props.test.stat === 'luck' ? t('play.testLuck') 
 
 function roll() {
   rolling.value = true
-  cues.dice()
+  cues.dice(2)
   game.rollTest()
 }
 

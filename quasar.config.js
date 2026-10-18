@@ -1,7 +1,38 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
+import { existsSync, readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { parseEnv } from 'node:util'
 import { defineConfig } from '#q-app'
+
+/* Access code (the "coming soon" gate).
+   ACCESS_CODE is read at build time from the host's environment (e.g. Vercel),
+   then from .env – or, in development while there is no .env, from .env.example.
+   Only its SHA-256 hash reaches the app; the code itself never does.
+   It deliberately has no QCLI_ prefix, so Quasar never exposes it. */
+const ACCESS_SALT = 'kitarista-access:' // must match SALT in src/services/access.js
+
+function readAccessCode(ctx) {
+  const fromHost = process.env['ACCESS_CODE'] // bracket access: read the real env, not a replaced value
+  if (fromHost) return fromHost.trim()
+  const envFile = ctx.appPaths.resolve.app('.env')
+  const file = existsSync(envFile)
+    ? envFile
+    : ctx.dev
+      ? ctx.appPaths.resolve.app('.env.example')
+      : null
+  if (!file || !existsSync(file)) return ''
+  return (parseEnv(readFileSync(file, 'utf8')).ACCESS_CODE ?? '').trim()
+}
+
+function accessHash(code) {
+  return code
+    ? createHash('sha256')
+        .update(ACCESS_SALT + code)
+        .digest('hex')
+    : ''
+}
 
 export default defineConfig((ctx) => {
   return {
@@ -35,6 +66,12 @@ export default defineConfig((ctx) => {
         src: ctx.appPaths.resolve.app('src'),
       },
 
+      // Client code sees only QCLI_* variables (import.meta.env.QCLI_*).
+      // Production reads .env and the host's environment (e.g. Vercel).
+      // In development, until a .env exists, the placeholders from
+      // .env.example are used so the creators/support pages have content.
+      env: ctx.dev && !existsSync(ctx.appPaths.resolve.app('.env')) ? { file: '.env.example' } : {},
+
       target: {
         // browser: 'baseline-widely-available',
         // node: 'node22'
@@ -47,7 +84,10 @@ export default defineConfig((ctx) => {
       // vueRouterBase,
 
       // publicPath: '/',
-      // define: {},
+      // empty string = no gate (no ACCESS_CODE configured)
+      define: {
+        'import.meta.env.QCLI_ACCESS_HASH': JSON.stringify(accessHash(readAccessCode(ctx))),
+      },
       // defineEnv: {}
       // ignorePublicFolder: true,
       // minify: false,

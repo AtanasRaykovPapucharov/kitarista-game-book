@@ -13,9 +13,8 @@ function getInitialLocale() {
   } catch {
     // storage unavailable — fall through
   }
-  const browser = typeof navigator !== 'undefined' ? navigator.language : ''
-  if (browser?.toLowerCase().startsWith('bg')) return 'bg'
-  if (browser?.toLowerCase().startsWith('en')) return 'en-US'
+  // Bulgarian by default, whatever the browser's language; a choice made
+  // in the language menu is remembered and wins on the next visit.
   return DEFAULT_LOCALE
 }
 

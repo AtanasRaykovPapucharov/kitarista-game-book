@@ -137,7 +137,7 @@ function draw() {
       ctx.value.fillStyle = isSelected
         ? selected.ringIndex !== 2
           ? 'rgba(25, 118, 210, 0.3)'
-          : 'rgba(255,211,110, 0.4)'
+          : 'rgba(125, 211, 232, 0.4)'
         : isHovered
           ? 'rgba(9, 9, 9, 0.1)'
           : 'transparent'

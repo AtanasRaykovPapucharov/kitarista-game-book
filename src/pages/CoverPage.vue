@@ -73,3 +73,43 @@ function startOver() {
     </div>
   </q-page>
 </template>
+
+<style scoped>
+/* The cover is always a night sky, in light mode too, so it carries its
+   own light-on-dark colors. The gradient keeps the title readable. */
+.q-page.gb-cover {
+  --gb-paper: #0a0b20;
+  --gb-ink: #f1effa;
+  --gb-muted: #b9bad8;
+  --gb-accent: #8fdcef;
+  --gb-hover: rgba(255, 255, 255, 0.08);
+  --gb-rule: rgba(255, 255, 255, 0.18);
+
+  color: var(--gb-ink);
+  background-color: var(--gb-paper);
+  background-image:
+    linear-gradient(90deg, rgba(8, 9, 26, 0.88) 0%, rgba(8, 9, 26, 0.6) 48%, rgba(8, 9, 26, 0.1) 100%),
+    url('../assets/images/cover-space.webp');
+  background-size: cover;
+  background-position: 70% center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 1200px) {
+  .q-page.gb-cover {
+    background-image:
+      linear-gradient(90deg, rgba(8, 9, 26, 0.88) 0%, rgba(8, 9, 26, 0.6) 55%, rgba(8, 9, 26, 0.2) 100%),
+      url('../assets/images/cover-space-1200.webp');
+  }
+}
+
+/* phones: the text spans the whole width, so the whole image is dimmed */
+@media (max-width: 700px) {
+  .q-page.gb-cover {
+    background-image:
+      linear-gradient(180deg, rgba(8, 9, 26, 0.7) 0%, rgba(8, 9, 26, 0.6) 100%),
+      url('../assets/images/cover-space-1200.webp');
+    background-position: 78% center;
+  }
+}
+</style>

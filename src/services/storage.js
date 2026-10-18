@@ -12,6 +12,7 @@ export const KEYS = {
   save: (userId) => `${PREFIX}-save:${userId}`,
   profile: (userId) => `${PREFIX}-profile:${userId}`,
   sound: `${PREFIX}-sound`,
+  volume: `${PREFIX}-volume`,
 }
 
 export function readJson(key, fallback) {

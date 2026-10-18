@@ -43,6 +43,10 @@ const take = (item) => ({ item, remove: true })
 const flag = (name) => ({ flag: name })
 const count = (counter, n = 1) => ({ counter, add: n })
 const setCount = (counter, n) => ({ counter, set: n })
+const unflag = (name) => ({ unflag: name })
+const when = (cond, effect) => ({ ...effect, if: cond })
+// Belyan pockets the pick – remembered, so he can give it back later
+const pickTaken = [when({ item: 'pick' }, flag('pick_taken')), take('pick')]
 
 export const SECTIONS = {
   /* ---------- Part I: the gift ---------- */
@@ -122,6 +126,7 @@ export const SECTIONS = {
   corridor: {
     choices: [
       { id: 'ignore', to: 'ignore' },
+      { id: 'ask', to: 'belyanAsk' },
       { id: 'joke', to: 'belyanDuel' },
       { id: 'voice', to: 'voiceScares' },
     ],
@@ -130,9 +135,79 @@ export const SECTIONS = {
     test: {
       stat: 'luck',
       success: { to: 'lecture' },
-      failure: { to: 'belyanDuel' },
+      failure: { to: 'cornered' },
     },
   },
+  // talking instead of fighting
+  belyanAsk: {
+    test: {
+      stat: 'skill',
+      success: { to: 'belyanSecret' },
+      failure: { to: 'cornered' },
+    },
+  },
+  cornered: {
+    choices: [
+      { id: 'fight', to: 'fistFight' },
+      { id: 'nerves', to: 'belyanDuel' },
+      { id: 'run', to: 'runAway' },
+    ],
+  },
+  runAway: {
+    test: {
+      stat: 'skill',
+      success: { to: 'lecture', effects: [flag('ran')] },
+      failure: { to: 'fistFight' },
+    },
+  },
+  fistFight: {
+    duel: {
+      enemy: 'belyanFist',
+      skill: 8,
+      stamina: 6,
+      yieldAfter: 3,
+      win: 'fightWon',
+      lose: 'fightLost',
+    },
+  },
+  fightWon: {
+    effects: [add('inspiration', -1), flag('fought'), flag('belyan_enemy')],
+    next: 'principal',
+  },
+  fightLost: {
+    effects: [add('inspiration', -3), ...pickTaken, flag('fought')],
+    next: 'principal',
+  },
+  principal: {
+    choices: [
+      { id: 'talk', to: 'principalTalk' },
+      { id: 'silent', to: 'silenceOffice' },
+    ],
+  },
+  principalTalk: {
+    test: {
+      stat: 'luck',
+      success: { to: 'belyanSecret' },
+      failure: { to: 'silenceOffice' },
+    },
+  },
+  silenceOffice: { effects: [flag('belyan_enemy')], next: 'lecture' },
+  belyanSecret: {
+    choices: [
+      { id: 'invite', to: 'belyanFriend' },
+      { id: 'truce', to: 'belyanTruce' },
+    ],
+  },
+  belyanFriend: {
+    effects: [
+      add('inspiration', 2),
+      unflag('belyan_enemy'),
+      flag('belyan_friend'),
+      when({ flag: 'pick_taken' }, give('pick')),
+    ],
+    next: 'lecture',
+  },
+  belyanTruce: { effects: [unflag('belyan_enemy'), flag('belyan_truce')], next: 'lecture' },
   belyanDuel: {
     duel: {
       enemy: 'belyan',
@@ -143,9 +218,13 @@ export const SECTIONS = {
       lose: 'lostBelyan',
     },
   },
-  beatBelyan: { effects: [add('luck', 1), flag('beat_belyan')], next: 'lecture' },
+  // winning the battle of wits in front of everyone costs Belyan face – he remembers
+  beatBelyan: {
+    effects: [add('luck', 1), flag('beat_belyan'), flag('belyan_enemy')],
+    next: 'lecture',
+  },
   lostBelyan: {
-    effects: [add('inspiration', -2), take('pick'), flag('lost_belyan')],
+    effects: [add('inspiration', -2), ...pickTaken, flag('lost_belyan')],
     next: 'lecture',
   },
   voiceScares: { effects: [add('darkness', 2), flag('voice_scared')], next: 'lecture' },
@@ -216,6 +295,23 @@ export const SECTIONS = {
   },
 
   nightmare: {
+    choices: [
+      { id: 'fight', to: 'shadowDuel' },
+      { id: 'climb', to: 'climbOut' },
+      { id: 'feather', to: 'featherDream', requires: { item: 'feather' } },
+      { id: 'drift', to: 'drift' },
+    ],
+  },
+  climbOut: {
+    test: {
+      stat: 'luck',
+      success: { to: 'wake' },
+      failure: { to: 'shadowDuel' },
+    },
+  },
+  featherDream: { effects: [add('luck', 1)], next: 'announcement' },
+  drift: { effects: [add('darkness', 2), add('inspiration', 2)], next: 'announcement' },
+  shadowDuel: {
     duel: {
       enemy: 'shadow',
       skill: 6,
@@ -283,10 +379,30 @@ export const SECTIONS = {
     ],
   },
   neighbor: {
+    choices: [
+      { id: 'quiet', to: 'neighborQuiet' },
+      { id: 'ignore', to: 'neighborDoor' },
+    ],
+  },
+  neighborQuiet: {
+    test: {
+      stat: 'skill',
+      success: { to: 'dayEnd', effects: [raise('skill')] },
+      failure: { to: 'dayEnd', effects: [add('inspiration', -1)] },
+    },
+  },
+  neighborDoor: {
+    choices: [
+      { id: 'apologize', to: 'neighborApology' },
+      { id: 'argue', to: 'neighborArgue' },
+    ],
+  },
+  neighborApology: { effects: [add('luck', 1), flag('neighbor_friend')], next: 'dayEnd' },
+  neighborArgue: {
     test: {
       stat: 'luck',
-      success: { to: 'dayEnd', effects: [add('inspiration', 2)] },
-      failure: { to: 'dayEnd', effects: [add('inspiration', -2)] },
+      success: { to: 'dayEnd', effects: [add('inspiration', 1)] },
+      failure: { to: 'dayEnd', effects: [add('inspiration', -3)] },
     },
   },
   grandpa: { effects: [add('luck', 1), flag('ancestors')], next: 'dayEnd' },
@@ -300,14 +416,75 @@ export const SECTIONS = {
     effects: [count('day')],
     choices: [
       { id: 'next', to: 'practice', requires: { counterMax: { day: 3 } } },
-      { id: 'saturday', to: 'openMic', requires: { counterMin: { day: 4 } } },
+      {
+        id: 'saturday',
+        to: 'openMic',
+        requires: { counterMin: { day: 4 }, notFlag: 'belyan_enemy' },
+      },
+      {
+        id: 'saturdayAmbush',
+        to: 'belyanAmbush',
+        requires: { counterMin: { day: 4 }, flag: 'belyan_enemy' },
+      },
     ],
   },
 
   /* ---------- Part V: the stage ---------- */
+  belyanAmbush: {
+    choices: [
+      { id: 'talk', to: 'ambushTalk' },
+      { id: 'run', to: 'ambushRun' },
+      { id: 'fight', to: 'ambushFight' },
+      { id: 'voice', to: 'ambushVoice' },
+    ],
+  },
+  ambushTalk: {
+    test: {
+      stat: 'skill',
+      success: { to: 'ambushPeace' },
+      failure: { to: 'ambushFight' },
+    },
+  },
+  ambushRun: {
+    test: {
+      stat: 'luck',
+      success: { to: 'openMic' },
+      failure: { to: 'ambushFight' },
+    },
+  },
+  ambushFight: {
+    duel: {
+      enemy: 'gang',
+      skill: 8,
+      stamina: 8,
+      yieldAfter: 3,
+      win: 'ambushWon',
+      lose: 'ambushLost',
+    },
+  },
+  ambushPeace: {
+    effects: [unflag('belyan_enemy'), flag('belyan_friend'), add('inspiration', 2)],
+    next: 'openMic',
+  },
+  ambushWon: {
+    effects: [add('inspiration', -1), add('luck', 1), unflag('belyan_enemy'), flag('belyan_respect')],
+    next: 'openMic',
+  },
+  ambushLost: {
+    effects: [
+      add('inspiration', -3),
+      flag('guitar_damaged'),
+      when({ item: 'strings' }, flag('used_spare')),
+      take('strings'),
+    ],
+    next: 'openMic',
+  },
+  ambushVoice: { effects: [add('darkness', 2), unflag('belyan_enemy')], next: 'openMic' },
+
   openMic: {
     choices: [
       { id: 'cover', to: 'cover' },
+      { id: 'duet', to: 'duet', requires: { flag: 'belyan_friend' } },
       { id: 'battle', to: 'kristianDuel' },
       { id: 'own', to: 'ownSong', requires: { counterMin: { song: 2 } } },
       { id: 'voice', to: 'voicePlays' },
@@ -326,6 +503,7 @@ export const SECTIONS = {
       skill: 9,
       stamina: 8,
       yieldAfter: 3,
+      playerMods: [{ flag: 'belyan_friend', add: 1 }], // Belyan keeps the beat
       win: 'beatKristian',
       lose: 'lostKristian',
     },
@@ -335,6 +513,10 @@ export const SECTIONS = {
     next: 'recipe',
   },
   lostKristian: { effects: [add('inspiration', -2)], next: 'recipe' },
+  duet: {
+    effects: [add('luck', 2), add('inspiration', 2), flag('played_duet')],
+    next: 'recipe',
+  },
   ownSong: {
     effects: [add('luck', 2), add('inspiration', 2), flag('played_own')],
     next: 'recipe',
@@ -390,6 +572,22 @@ export const SECTIONS = {
 
   finalDream: {
     choices: [
+      {
+        id: 'ask',
+        to: 'darkTalk',
+        requires: { anyFlag: ['knows_origin', 'saw_dark', 'professor_hint'] },
+      },
+      { id: 'fight', to: 'darkDuel' },
+      {
+        id: 'play',
+        to: 'lightEnd',
+        requires: { item: 'feather', counterMin: { song: 3 } },
+      },
+    ],
+  },
+  darkTalk: {
+    effects: [flag('dark_understood')],
+    choices: [
       { id: 'fight', to: 'darkDuel' },
       {
         id: 'play',
@@ -410,10 +608,12 @@ export const SECTIONS = {
         { flag: 'professor_hint', add: -1 },
         { flag: 'told_mom', add: -1 },
         { flag: 'recipe_own', add: -1 },
+        { flag: 'dark_understood', add: -2 },
       ],
       playerMods: [
         { flag: 'ancestors', add: 1 },
         { flag: 'chose_light', add: 1 },
+        { flag: 'belyan_friend', add: 1 },
       ],
       win: 'concert',
       lose: 'puppetEnd',

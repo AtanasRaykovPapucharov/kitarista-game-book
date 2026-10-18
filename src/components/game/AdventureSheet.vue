@@ -260,7 +260,7 @@ function abandon() {
 }
 
 .sheet__icon {
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   margin-top: 2px;
 }
 

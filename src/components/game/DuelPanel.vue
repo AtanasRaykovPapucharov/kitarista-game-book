@@ -24,7 +24,7 @@ const resultText = computed(() => {
 
 function fight() {
   rolling.value = true
-  cues.dice()
+  cues.dice(4) // two dice each side
   game.duelRound()
 }
 
@@ -145,7 +145,7 @@ function luck() {
 }
 
 .duel__bonus {
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   font-weight: 700;
 }
 

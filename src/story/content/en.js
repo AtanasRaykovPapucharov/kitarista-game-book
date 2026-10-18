@@ -12,6 +12,8 @@ export default {
 
   enemies: {
     belyan: 'Belyan “Sumo”',
+    belyanFist: 'Belyan',
+    gang: 'Belyan and his crew',
     shadow: 'The Shadow in the Dream',
     kristian: 'Kristian',
     dark: 'The Dark',
@@ -182,6 +184,7 @@ export default {
       ],
       choices: {
         ignore: 'Walk past him as if he doesn’t exist',
+        ask: '“What do you actually want, Belyan?”',
         joke: '“Get lost, Sumo!”',
         voice: 'Let the voice speak through you',
       },
@@ -191,7 +194,123 @@ export default {
       title: 'Chin up',
       text: ['You lift your chin and walk past him.'],
       success: 'Belyan looks around for more interesting prey and forgets about you.',
-      failure: '“Where d’you think you’re going?” A huge hand grabs your backpack. No way out – you’ll have to answer him.',
+      failure: '“Where d’you think you’re going?” A huge hand grabs your backpack and swings you round against the lockers.',
+    },
+
+    belyanAsk: {
+      title: 'The question',
+      text: [
+        'You take a breath and look him straight in the eye. “What do you actually want, Belyan?”',
+        'The question catches him off guard. For a moment his hand hangs in the air.',
+      ],
+      success: 'Belyan glances around to see who is listening. Then he nods towards the stairwell. “Not here.”',
+      failure: '“I’ll ask the questions,” he snorts, and pins you against the lockers.',
+    },
+
+    cornered: {
+      title: 'The lockers',
+      text: [
+        'Belyan pins you against the lockers. The metal is cold through your shirt. Onlookers gather – some grin, others look away.',
+        '“Well, Metal? What are you going to do now?”',
+        'Your heart is in your throat. You have a moment to decide.',
+      ],
+      choices: {
+        fight: 'Shove him as hard as you can',
+        nerves: 'Look him in the eye and don’t give an inch',
+        run: 'Duck under his arm and run',
+      },
+    },
+
+    runAway: {
+      title: 'Under his arm',
+      text: ['You crouch and duck under his arm.'],
+      success:
+        'You slip away like a fish and race down the corridor. Belyan is too heavy to catch you. You only stop outside the staff room – out of breath, but in one piece.',
+      failure: 'You trip over your own backpack. Before you can get up, Belyan is standing over you.',
+    },
+
+    fistFight: {
+      title: 'Fight',
+      text: [
+        'Someone shouts “Fight! Fight!” and the circle closes around you. Belyan is bigger but slower. You are lighter – and a lot more scared.',
+        'If you lose three rounds, you end up on the floor.',
+      ],
+    },
+
+    fightWon: {
+      title: 'A costly win',
+      text: [
+        'Belyan lunges, you twist away, and he slips on the wet floor and lands on his back. Someone laughs. Then everyone goes quiet.',
+        'Belyan turns red as a tomato. “I’ll pay you back for this,” he hisses.',
+        'At that moment your form teacher appears in the corridor. “Both of you. Principal’s office. Now.”',
+      ],
+    },
+
+    fightLost: {
+      title: 'On the floor',
+      text: [
+        'Belyan knocks you down with a single shove. Your elbow hits the floor and the stars you see are not the nice kind.',
+        { ifFlag: 'pick_taken', text: 'When you get up, he is already twirling Grandpa’s pick between his fingers, grinning.' },
+        '“Both of you! Principal’s office!” your form teacher thunders from the end of the corridor.',
+      ],
+    },
+
+    principal: {
+      title: 'Outside the office',
+      text: [
+        'You sit side by side on the bench outside the principal’s office. The clock ticks. Belyan stares at his shoes.',
+        'Up close he doesn’t look frightening. He looks tired.',
+      ],
+      choices: {
+        talk: 'Speak first',
+        silent: 'Stay silent',
+      },
+    },
+
+    principalTalk: {
+      title: 'The first word',
+      text: ['“Why me?” you ask quietly.'],
+      success: 'Belyan is silent for a long time. Then he sighs. “Because at least you’ve got something to play.”',
+      failure: '“None of your business,” he snaps, and turns to the wall.',
+    },
+
+    silenceOffice: {
+      title: 'See you around',
+      text: [
+        'The principal gives you both a lecture and lets you go. At the door Belyan leans towards you. “See you around, Metal.”',
+        'He says it quietly. That’s worse than if he had shouted it.',
+      ],
+    },
+
+    belyanSecret: {
+      title: 'The drummer',
+      text: [
+        'Belyan stares at one spot for a long time. When he speaks, his voice is different – no mockery in it.',
+        '“I heard you yesterday. Through the window. I live in the next block.”',
+        '“I had drums. Dad sold them when we moved. Said they were too loud.”',
+        'He kicks the wall with the toe of his shoe. “At least you’ve got a guitar.”',
+      ],
+      choices: {
+        invite: '“Come over. We’ll play – you on the pots and pans, me on the guitar.”',
+        truce: 'Nod and leave it at that',
+      },
+    },
+
+    belyanFriend: {
+      title: 'Pots and a guitar',
+      text: [
+        'Belyan eyes you suspiciously, as if waiting for a trick. Then, for the first time, he smiles – crooked, but real.',
+        '“Pots and pans, huh… Deal.”',
+        { ifFlag: 'pick_taken', text: 'He digs in his pocket and hands you Grandpa’s pick. “It’s yours. Sorry.”' },
+      ],
+    },
+
+    belyanTruce: {
+      title: 'Truce',
+      text: [
+        'You nod. He nods. You aren’t friends, but you aren’t enemies any more either.',
+        'As you go your separate ways, Belyan calls over his shoulder: “You play well, Metal.”',
+      ],
     },
 
     belyanDuel: {
@@ -207,6 +326,7 @@ export default {
       text: [
         'Your last line is so sharp that someone at the back bursts out laughing. Belyan turns red to the ears.',
         '“All right, Metal…” he mutters, and walks off. For the first time, a classmate nods at you with respect.',
+        'But as he walks away, you feel his eyes on your back. Belyan doesn’t forget easily.',
       ],
     },
 
@@ -229,7 +349,11 @@ export default {
     lecture: {
       title: 'What is nothing?',
       text: [
-        '“Come on, the guest professor’s lecture is starting!”',
+        { ifNotFlag: 'fought', text: '“Come on, the guest professor’s lecture is starting!”' },
+        {
+          ifFlag: 'fought',
+          text: 'You walk into the hall half an hour late, with a note from the principal. The professor just nods at an empty chair.',
+        },
         '“What is nothing?” the professor asks. “The absence of matter, mass, charge, energy, time, space and any information whatsoever. Let us limit ourselves to the first four. We will call it a vacuum, and it will be our starting point.”',
         'He talks about the global and the local – about light, which travels as a wave but is emitted and absorbed in portions, quanta. Your classmates stare with glazed eyes. But you understand every word, as if you already knew it.',
         '“You are light, little soul,” the voice whispers. In the third row, Viktoria tucks a strand of hair behind her ear.',
@@ -374,8 +498,45 @@ export default {
       title: 'The silhouette of the dark',
       text: [
         'You dream the dream again. You rush through pitch darkness, your heart pounding, an unknown fear crawling up your spine. The most frightening thing is the thought that you will never wake – that something is holding you and you are entirely in its control.',
-        'From the next room comes your mother’s voice. You wake inside the dream and glimpse the silhouette of the dark. You cling to the familiar voice and try to pull yourself out.',
+        'From the next room comes your mother’s voice. You wake inside the dream and glimpse the silhouette of the dark. It stands between you and the voice.',
+      ],
+      choices: {
+        fight: 'Turn and face the shadow',
+        climb: 'Hold on to Mum’s voice and pull yourself out',
+        feather: 'Clutch the little bird’s feather',
+        drift: 'Stop struggling and float with the dark',
+      },
+    },
+
+    climbOut: {
+      title: 'The rope',
+      text: ['You hold on to Mum’s voice like a rope and pull.'],
+      success: 'The voice grows clearer, the dark thinner. One more pull…',
+      failure: 'The voice slips away. The shadow is between you and it – and this time it won’t move.',
+    },
+
+    shadowDuel: {
+      title: 'The shadow',
+      text: [
+        'You turn to face the shadow. It has no face, but you know it is watching you.',
         'The Shadow is as strong as your Darkness. If you lose three rounds, it will hold you until morning.',
+      ],
+    },
+
+    featherDream: {
+      title: 'The feather',
+      text: [
+        'You clutch the feather in your dream – and it lights up, warm and silvery like the dawn.',
+        'The shadow draws back from the light. It doesn’t flee – it simply makes way for you.',
+        'You wake with the feather in your fist. Outside, birds are singing.',
+      ],
+    },
+
+    drift: {
+      title: 'The current',
+      text: [
+        'You stop fighting. The dark is warm and quiet, like the sea at the end of summer. It carries you.',
+        'You wake more rested than ever. Only you can’t remember the dream – and somehow that worries you.',
       ],
     },
 
@@ -476,9 +637,42 @@ export default {
 
     neighbor: {
       title: 'Mr Petko',
-      text: ['Your neighbour, Mr Petko, works night shifts and is asleep.'],
-      success: 'The pounding stops. Then a muffled voice comes through the wall: “That last one… again!”',
-      failure: 'Mr Petko rings the doorbell in his pyjamas. Mum apologises, you put the guitar away. The day is ruined.',
+      text: ['Someone is pounding on the wall. Your neighbour, Mr Petko, works night shifts and is asleep.'],
+      choices: {
+        quiet: 'Play quietly – just your fingers, no pick',
+        ignore: 'Keep playing the way you were',
+      },
+    },
+
+    neighborQuiet: {
+      title: 'Whispering strings',
+      text: ['You put down the pick and touch the strings with your fingertips. The sound turns soft, almost a whisper.'],
+      success: 'You discover that playing quietly is a whole new art. Your fingers grow more sensitive.',
+      failure: 'Without the pick everything sounds hollow. You give up for today.',
+    },
+
+    neighborDoor: {
+      title: 'The doorbell',
+      text: ['The pounding stops. Then the doorbell rings. Mr Petko is on the doorstep – in pyjamas, with puffy eyes.'],
+      choices: {
+        apologize: 'Apologise',
+        argue: '“I’m allowed to play during the day!”',
+      },
+    },
+
+    neighborApology: {
+      title: 'The accordion',
+      text: [
+        '“Sorry,” you say. “I didn’t know you were asleep.”',
+        'Mr Petko sighs. “When I was young I played the accordion. People pounded on my wall too.” He almost smiles. “After six in the evening. Then play as much as you like.”',
+      ],
+    },
+
+    neighborArgue: {
+      title: 'Spirit',
+      text: ['“I’m allowed to play during the day!” you say, louder than you meant to.'],
+      success: 'Mr Petko blinks. Then he laughs out loud. “You’ve got spirit, [boy|girl|kid]. All right. But quieter.”',
+      failure: 'Mum appears behind you just in time to hear everything. The guitar goes into the cupboard until evening.',
     },
 
     grandpa: {
@@ -508,17 +702,97 @@ export default {
       choices: {
         next: 'On to the next day',
         saturday: 'Saturday is here – off to the Star String',
+        saturdayAmbush: 'Saturday is here – off to the Star String',
       },
+    },
+
+    belyanAmbush: {
+      title: 'Ambush',
+      text: [
+        'On the corner outside the Star String, Belyan is waiting. Two older boys are with him.',
+        '“Told you we’d see each other again, Metal.” He nods at your case. “Nice guitar. Shame if it got broken.”',
+      ],
+      choices: {
+        talk: '“There are drums in there, Belyan. Real ones.”',
+        run: 'Clutch the case and dash for the shop door',
+        fight: 'Put the case down and raise your fists',
+        voice: 'Let the voice speak',
+      },
+    },
+
+    ambushTalk: {
+      title: 'Real drums',
+      text: [
+        'The words come out calmer than you expect. “There are drums in there, Belyan. Real ones. The owner lets people play.”',
+      ],
+      success: 'Belyan hesitates. His eyes slide towards the shop window.',
+      failure: '“Don’t mess with me,” he growls, and steps forward.',
+    },
+
+    ambushRun: {
+      title: 'The door',
+      text: ['You clutch the case to your chest and run.'],
+      success: 'The bell above the door jingles behind you. You’re inside. Belyan won’t come in – there are grown-ups here.',
+      failure: 'One of the older boys blocks your way. Nowhere to go.',
+    },
+
+    ambushFight: {
+      title: 'On the corner',
+      text: [
+        'His friends don’t step in – they just shout. Belyan wants to fight you himself.',
+        'If you lose three rounds, the case is his.',
+      ],
+    },
+
+    ambushPeace: {
+      title: 'The drums',
+      text: [
+        'Behind the window, in the corner, stands an old drum kit. Belyan looks at it the way you looked at your guitar on the first day.',
+        '“Just a look,” he mutters. His friends wander off, bored.',
+        'Inside, Belyan sits down behind the drums as if he’s come home.',
+      ],
+    },
+
+    ambushWon: {
+      title: 'The case is safe',
+      text: [
+        'Belyan is stronger, but you are protecting something you love, and that gives you strength. In the end he steps back, out of breath.',
+        '“All right, Metal,” he says. “All right.” For the first time it sounds like respect.',
+      ],
+    },
+
+    ambushLost: {
+      title: 'A broken string',
+      text: [
+        'Belyan pushes you aside, opens the case and yanks the strings. One snaps with a pitiful twang. They laugh and walk off.',
+        { ifFlag: 'used_spare', text: 'Sitting on the pavement, you fit the spare string from Dad. Your hands shake, but you tune it up.' },
+        {
+          ifNotFlag: 'used_spare',
+          text: 'The shop owner sees your face and, without a word, hands you a new string – on the house.',
+        },
+      ],
+    },
+
+    ambushVoice: {
+      title: 'Back off',
+      text: [
+        'You open your mouth and the voice comes out – quiet, old, strange: “Back off.”',
+        'Belyan turns pale. His friends are already on the far corner. He follows them without looking back.',
+        'You walk into the shop. Your hands are cold.',
+      ],
     },
 
     openMic: {
       title: 'The Star String',
       text: [
         'The shop smells of lacquer and dust. The stage is small, the audience about twenty people.',
+        { ifFlag: 'belyan_friend', text: 'Belyan is already behind the old drums in the corner, tapping quietly with the sticks.' },
+        { ifFlag: 'guitar_damaged', text: 'The new string hasn’t stretched yet and is slightly out of tune.' },
         'Before you plays Kristian – an older boy with a red electric guitar. He plays fast and flashy, then looks at you with a grin: “[Little guy’s|Little lady’s|Kid’s] turn.”',
       ],
       choices: {
         cover: 'Play a song everyone knows, no risks',
+        duet: 'Nod to Belyan and play together',
         battle: 'Challenge Kristian to a guitar duel',
         own: 'Play your own song',
         voice: 'Let the voice play for you',
@@ -553,6 +827,15 @@ export default {
       text: [
         'Kristian is faster, louder, more confident.',
         'But as you step off the stage he stops you: “You’ve got the hands. Now find a voice – your own, not someone else’s.”',
+      ],
+    },
+
+    duet: {
+      title: 'The two of you',
+      text: [
+        'You nod to Belyan. He raises the sticks. The first bars are shaky – then he finds the beat, and you find him.',
+        'People in the shop start tapping along. Someone whistles. Belyan grins from ear to ear.',
+        'When you finish, he reaches across the cymbals to shake your hand.',
       ],
     },
 
@@ -603,6 +886,7 @@ export default {
       text: [
         'Your mother comes into your room while you are at school. The bed isn’t made, of course. “Why make it?” she thinks. “Mum will take care of it, won’t she?”',
         'Her eye falls on a sheet of paper: “Recipe for luck”. She reads it once, then again, and stands at the window for a long time.',
+        { ifFlag: 'fought', text: 'The school has already called about the fight. Mum says nothing about it – for now.' },
         'In the evening, at dinner, she asks quietly: “Who taught you this, Tome?”',
       ],
       choices: {
@@ -661,6 +945,21 @@ export default {
         { ifItem: 'feather', text: 'The grey feather in your pocket is warm.' },
       ],
       choices: {
+        ask: '“What do you want?”',
+        fight: 'Stand up to the Dark',
+        play: 'Hold the feather tight and play your own song to the Dark',
+      },
+    },
+
+    darkTalk: {
+      title: 'What do you want?',
+      text: [
+        '“What do you want?” you ask. Your voice doesn’t tremble. Almost.',
+        'The dark is silent for a long time. Then it answers – not with words but with a feeling: endlessness, silence, a loneliness older than the stars.',
+        '“I was looking for light,” it says at last. “I thought I had to take it.”',
+        'It isn’t so frightening any more. You know what it is – and you know you can answer it.',
+      ],
+      choices: {
         fight: 'Stand up to the Dark',
         play: 'Hold the feather tight and play your own song to the Dark',
       },
@@ -679,6 +978,7 @@ export default {
       text: [
         'You wake at sunrise – quiet and light, as if someone had washed your soul.',
         'That evening the hall is full. Grandma, Grandpa, Mum and Dad Vladko are in the front row.',
+        { ifFlag: 'belyan_friend', text: 'By the wall, Belyan is drumming his fingers on his knee. He gives you a thumbs-up.' },
         { ifFlag: 'viktoria_comes', text: 'Viktoria sits in the last row, headphones round her neck. She waves.' },
         { ifNotFlag: 'viktoria_comes', text: 'You look for Viktoria, but she isn’t there. Maybe that’s how it should be.' },
         'You sit down on the chair. The voice is silent – or it is no longer a voice, just the silence between the notes.',

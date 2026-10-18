@@ -8,6 +8,7 @@ import {
 
 import routes from './routes.js'
 import { useAuthStore } from 'src/stores/auth-store'
+import { unlocked } from 'src/services/access'
 
 /*
  * If not building with SSR mode, you can
@@ -37,6 +38,12 @@ export default defineRouter(({ store }) => {
 
   // Game pages need a profile; login/register make no sense once logged in.
   Router.beforeEach((to) => {
+    // the access gate comes first: nothing is reachable until the code is entered
+    if (!unlocked.value) {
+      return to.name === 'access' ? true : { name: 'access', query: { redirect: to.fullPath } }
+    }
+    if (to.name === 'access') return { name: 'cover' }
+
     const auth = useAuthStore(store)
     if (to.meta.requiresAuth && !auth.isLoggedIn) {
       return { name: 'login', query: { redirect: to.fullPath } }

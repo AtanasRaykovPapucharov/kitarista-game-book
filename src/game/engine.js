@@ -101,10 +101,12 @@ function clampStat(state, stat) {
   state.stats[stat] = Math.max(0, Math.min(cap, state.stats[stat]))
 }
 
-/** Applies effects in place and returns a list of what changed, for the UI. */
+/** Applies effects in place and returns a list of what changed, for the UI.
+    An effect with `if` (a condition, like `requires`) only applies when it holds. */
 export function applyEffects(state, effects = []) {
   const changes = []
   for (const e of effects) {
+    if (e.if && !meets(state, e.if)) continue
     if (e.stat) {
       const before = state.stats[e.stat]
       if (e.raise) {
@@ -126,6 +128,8 @@ export function applyEffects(state, effects = []) {
       if (after !== before) changes.push({ kind: 'item', id: e.item, delta: after - before })
     } else if (e.flag) {
       state.flags[e.flag] = true
+    } else if (e.unflag) {
+      delete state.flags[e.unflag]
     } else if (e.counter) {
       const before = state.counters[e.counter] ?? 0
       state.counters[e.counter] = e.set ?? before + (e.add ?? 1)

@@ -10,7 +10,7 @@
   letter-spacing: 0.01em;
 }
 
-/* ---------- palette: night ink, moonlit paper, string bronze ---------- */
+/* ---------- palette: night ink, moonlit paper, starlight ---------- */
 :root {
   --gb-serif: 'Alegreya', 'Georgia', 'Times New Roman', serif;
   --gb-sans: 'Alegreya Sans', 'Segoe UI', 'Roboto', system-ui, sans-serif;
@@ -21,7 +21,7 @@ body.body--light {
   --gb-surface: #ffffff;
   --gb-ink: #1f2347;
   --gb-muted: #5a5f80;
-  --gb-brass: #93591a;
+  --gb-accent: #0a6c80; /* starlight, deep for light paper */
   --gb-nebula: #5b4a9e;
   --gb-rule: #d5d8e6;
   --gb-good: #2f7a52;
@@ -49,7 +49,7 @@ body.body--dark {
   --gb-surface: #1c2042;
   --gb-ink: #e8e6f4;
   --gb-muted: #a7a9c9;
-  --gb-brass: #e2ae5c;
+  --gb-accent: #7dd3e8; /* starlight */
   --gb-nebula: #a898e8;
   --gb-rule: #2f3463;
   --gb-good: #7fcf9f;
@@ -94,7 +94,7 @@ body {
 
 .q-drawer .q-item--active {
   background-color: var(--app-surface-soft);
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   font-weight: 700;
 }
 
@@ -154,6 +154,77 @@ body {
 
 
 /* =====================================================
+   Scrollbars: thin and quiet, clearer while the pointer is over the
+   area that scrolls. They stay visible (never fully hidden), so it is
+   always clear that there is more to read.
+===================================================== */
+:root {
+  --gb-scroll-thumb: rgba(232, 230, 244, 0.16);
+  --gb-scroll-thumb-hover: rgba(232, 230, 244, 0.4);
+}
+
+/* the window's own scrollbar reads its colors from <html>, not <body> */
+:root:has(> body.body--light) {
+  --gb-scroll-thumb: rgba(31, 35, 71, 0.18);
+  --gb-scroll-thumb-hover: rgba(31, 35, 71, 0.42);
+}
+
+/* Firefox, Chrome and Edge: the standard properties */
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gb-scroll-thumb) transparent;
+  }
+
+  *:hover {
+    scrollbar-color: var(--gb-scroll-thumb-hover) transparent;
+  }
+}
+
+/* Safari: the WebKit pseudo-elements */
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-color: var(--gb-scroll-thumb);
+    background-clip: padding-box;
+  }
+
+  :hover::-webkit-scrollbar-thumb {
+    background-color: var(--gb-scroll-thumb-hover);
+  }
+
+  /* a slightly fatter thumb under the pointer is easier to grab */
+  ::-webkit-scrollbar-thumb:hover {
+    border-width: 2px;
+  }
+}
+
+/* scrolling inside a menu or dialog shouldn't drag the page behind it */
+.q-drawer__content,
+.q-menu,
+.q-dialog__inner > .q-card {
+  overscroll-behavior: contain;
+}
+
+/* Windows high-contrast mode: let the system draw its own scrollbars */
+@media (forced-colors: active) {
+  * {
+    scrollbar-color: auto;
+  }
+}
+
+/* =====================================================
    Game-book pages (.gb)
 ===================================================== */
 .sr-only {
@@ -175,7 +246,7 @@ body {
 }
 
 .gb :focus-visible {
-  outline: 2px solid var(--gb-brass);
+  outline: 2px solid var(--gb-accent);
   outline-offset: 3px;
 }
 
@@ -278,7 +349,7 @@ body {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   font: inherit;
   font-weight: 500;
   text-decoration: underline;
@@ -320,7 +391,7 @@ body {
   margin: 18px 0 0;
   font-family: var(--gb-serif);
   font-size: 1.1rem;
-  color: var(--gb-brass);
+  color: var(--gb-accent);
 }
 
 .gb-cover__pitch {
@@ -399,7 +470,7 @@ body {
   font-size: clamp(4.5rem, 16vw, 7.5rem);
   font-weight: 800;
   line-height: 0.82;
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   font-variant-numeric: lining-nums;
 }
 
@@ -470,7 +541,7 @@ body {
   min-width: 2.2em;
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   text-align: right;
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -613,7 +684,7 @@ body {
   font-family: var(--gb-serif);
   font-size: 2.2rem;
   font-weight: 800;
-  color: var(--gb-brass);
+  color: var(--gb-accent);
   text-align: right;
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -683,12 +754,12 @@ body {
 }
 
 .gb-gender__option input {
-  accent-color: var(--gb-brass);
+  accent-color: var(--gb-accent);
   margin: 0;
 }
 
 .gb-gender__option:focus-within {
-  outline: 2px solid var(--gb-brass);
+  outline: 2px solid var(--gb-accent);
   outline-offset: 3px;
 }
 
@@ -755,6 +826,93 @@ body {
   margin-bottom: 8px;
 }
 
+/* ---------- creators & support ---------- */
+.gb-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.gb-note--body {
+  font-size: 1rem;
+}
+
+.gb-methods {
+  list-style: none;
+  margin: 8px 0 24px;
+  padding: 0;
+}
+
+.gb-method {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px 14px;
+  padding: 16px 0;
+  border-top: 1px solid var(--gb-rule);
+}
+
+.gb-method:last-child {
+  border-bottom: 1px solid var(--gb-rule);
+}
+
+.gb-method__icon {
+  color: var(--gb-accent);
+  margin-top: 2px;
+}
+
+.gb-method__name {
+  margin: 0;
+  font-family: var(--gb-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.gb-method__hint {
+  margin: 2px 0 0;
+  color: var(--gb-muted);
+  font-size: 0.95rem;
+}
+
+/* wallet addresses must be copied exactly, so they get a fixed-width face */
+.gb-method__address {
+  margin: 8px 0 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--gb-hover);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.gb-method__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.gb-method__wallet {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 520px) {
+  .gb-method {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .gb-method__actions {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
 /* ---------- profile ---------- */
 .gb-profile__numbers {
   display: flex;
@@ -798,7 +956,7 @@ body {
 
 .gb-endings__item.is-best h3,
 .gb-endings__item.is-good h3 {
-  color: var(--gb-brass);
+  color: var(--gb-accent);
 }
 
 .gb-endings__item.is-bad h3 {

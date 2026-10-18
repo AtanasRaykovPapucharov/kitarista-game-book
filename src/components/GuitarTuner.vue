@@ -638,7 +638,7 @@ body.body--dark .gt {
 .gt {
   --gt-ok: #0b8a69;
   --gt-ok-bright: #0b8a69;
-  --gt-off: #b45f06;
+  --gt-off: var(--gb-bad);
   --gt-ink: var(--app-header-start);
 
   max-width: 520px;
@@ -852,7 +852,7 @@ body.body--dark .gt {
     color: var(--gt-off);
   }
   .gt__status {
-    background: rgba(180, 95, 6, 0.12);
+    background: color-mix(in srgb, var(--gt-off) 12%, transparent);
   }
 }
 

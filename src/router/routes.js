@@ -1,4 +1,7 @@
 const routes = [
+  // "coming soon" gate – stands alone, without the app's header and menu
+  { path: '/access', name: 'access', component: () => import('@/pages/AccessPage.vue') },
+
   {
     path: '/',
     component: () => import('@/layouts/MainLayout.vue'),
@@ -6,6 +9,8 @@ const routes = [
       /* ---------- the game-book ---------- */
       { path: '', name: 'cover', component: () => import('@/pages/CoverPage.vue') },
       { path: 'rules', name: 'rules', component: () => import('@/pages/RulesPage.vue') },
+      { path: 'creators', name: 'creators', component: () => import('@/pages/CreatorsPage.vue') },
+      { path: 'support', name: 'support', component: () => import('@/pages/SupportPage.vue') },
       {
         path: 'login',
         name: 'login',
