@@ -309,20 +309,10 @@ const MESSAGES = {
     remove: 'Remove',
     hint: 'Click a note or a spot on the fretboard to mark it.',
   },
-  zh: {
-    title: '音位表',
-    subtitle: '各弦与各品上的音符位置：',
-    strings: '弦',
-    fret: '第 {n} 品',
-    open: '空弦',
-    clear: '清除',
-    remove: '移除',
-    hint: '点击音符或指板上的位置进行标记。',
-  },
 }
 
 const props = defineProps({
-  /** Force a language: 'bg' | 'en' | 'zh' (also 'en-US', 'zh-CN', …). */
+  /** Force a language: 'bg' | 'en' (also 'en-US', 'bg-BG', …). */
   locale: { type: String, default: null },
   /**
    * Optional v-model: the marked positions as [{ string: 1–6, fret: 0–17 }]
@@ -336,14 +326,13 @@ const emit = defineEmits(['update:modelValue'])
 
 const instance = getCurrentInstance()
 
-/** 'bg-BG' → 'bg', 'zh-CN' → 'zh', any other non-empty code → 'en', empty → null */
+/** 'bg-BG' → 'bg', any other non-empty code → 'en', empty → null */
 function normalize(code) {
   const c = String(code ?? '')
     .trim()
     .toLowerCase()
   if (!c) return null
   if (c.startsWith('bg')) return 'bg'
-  if (c.startsWith('zh')) return 'zh'
   return 'en'
 }
 

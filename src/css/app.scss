@@ -10,38 +10,66 @@
   letter-spacing: 0.01em;
 }
 
+/* ---------- palette: night ink, moonlit paper, string bronze ---------- */
+:root {
+  --gb-serif: 'Alegreya', 'Georgia', 'Times New Roman', serif;
+  --gb-sans: 'Alegreya Sans', 'Segoe UI', 'Roboto', system-ui, sans-serif;
+}
+
 body.body--light {
-  --app-page: #f1f7ff;
-  --app-page-end: #e7f7f3;
-  --app-surface: #ffffff;
-  --app-surface-soft: #e7f5f6;
-  --app-surface-raised: #d3ebf0;
-  --app-score-surface: #f2fcff;
-  --app-text: #17344d;
-  --app-muted: #426b83;
-  --app-border: #bbdce5;
-  --app-header-start: #126d79;
-  --app-header-end: #3453a5;
-  --app-strong-surface: #146c78;
-  --app-strong-text: #f4ffff;
-  --app-separator: #bbdce5;
+  --gb-paper: #f2f3f8;
+  --gb-surface: #ffffff;
+  --gb-ink: #1f2347;
+  --gb-muted: #5a5f80;
+  --gb-brass: #93591a;
+  --gb-nebula: #5b4a9e;
+  --gb-rule: #d5d8e6;
+  --gb-good: #2f7a52;
+  --gb-bad: #b23a4e;
+  --gb-hover: #e6e8f3;
+
+  --app-page: #f2f3f8;
+  --app-page-end: #e9e8f5;
+  --app-surface: #f2f3f8;
+  --app-surface-soft: #e6e8f3;
+  --app-surface-raised: #d9dcec;
+  --app-score-surface: #ffffff;
+  --app-text: #1f2347;
+  --app-muted: #5a5f80;
+  --app-border: #d5d8e6;
+  --app-header-start: #1f2347;
+  --app-header-end: #3b3170;
+  --app-strong-surface: #2c3163;
+  --app-strong-text: #f4f3ff;
+  --app-separator: #d5d8e6;
 }
 
 body.body--dark {
-  --app-page: #0c1a31;
-  --app-page-end: #102a3a;
-  --app-surface: #152945;
-  --app-surface-soft: #1b3856;
-  --app-surface-raised: #254968;
-  --app-score-surface: #d8f4f3;
-  --app-text: #e5f5ff;
-  --app-muted: #a6c8df;
-  --app-border: #345975;
-  --app-header-start: #173b68;
-  --app-header-end: #126b73;
-  --app-strong-surface: #1c526c;
-  --app-strong-text: #efffff;
-  --app-separator: #345975;
+  --gb-paper: #141731;
+  --gb-surface: #1c2042;
+  --gb-ink: #e8e6f4;
+  --gb-muted: #a7a9c9;
+  --gb-brass: #e2ae5c;
+  --gb-nebula: #a898e8;
+  --gb-rule: #2f3463;
+  --gb-good: #7fcf9f;
+  --gb-bad: #f08a9c;
+  --gb-hover: #232853;
+
+  --app-page: #141731;
+  --app-page-end: #1a1c3d;
+  --app-surface: #141731;
+  --app-surface-soft: #1c2042;
+  --app-surface-raised: #2a2f5c;
+  --app-score-surface: #e4e2f5;
+  --app-text: #e8e6f4;
+  --app-muted: #a7a9c9;
+  --app-border: #2f3463;
+  --app-header-start: #10122a;
+  --app-header-end: #2a2458;
+  --app-strong-surface: #2a2f5c;
+  --app-strong-text: #f4f3ff;
+  --app-separator: #2f3463;
 }
 
 body {
@@ -66,7 +94,7 @@ body {
 
 .q-drawer .q-item--active {
   background-color: var(--app-surface-soft);
-  color: var(--q-primary);
+  color: var(--gb-brass);
   font-weight: 700;
 }
 
@@ -122,4 +150,669 @@ body {
 .text-grey-9,
 .text-grey-10 {
   color: var(--app-muted) !important;
+}
+
+
+/* =====================================================
+   Game-book pages (.gb)
+===================================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.q-page.gb {
+  background-color: var(--gb-paper);
+  color: var(--gb-ink);
+  font-family: var(--gb-sans);
+  /* Alegreya defaults to old-style figures; stats need lining ones */
+  font-variant-numeric: lining-nums;
+  padding: clamp(20px, 5vw, 56px) clamp(18px, 5vw, 40px) 96px;
+}
+
+.gb :focus-visible {
+  outline: 2px solid var(--gb-brass);
+  outline-offset: 3px;
+}
+
+.gb-narrow {
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.gb-page-title {
+  margin: 0 0 8px;
+  font-family: var(--gb-serif);
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.gb-subtitle {
+  margin: 36px 0 12px;
+  font-family: var(--gb-serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.gb-lead {
+  margin: 0 0 24px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--gb-muted);
+}
+
+.gb-note {
+  margin: 12px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--gb-muted);
+}
+
+.gb-error {
+  margin: 0;
+  color: var(--gb-bad);
+  font-weight: 500;
+}
+
+/* ---------- buttons ---------- */
+.gb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 20px;
+  border: 1.5px solid var(--gb-ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gb-ink);
+  font-family: var(--gb-sans);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.gb-btn:hover:not(:disabled) {
+  background-color: var(--gb-hover);
+}
+
+.gb-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.gb-btn--primary {
+  background: var(--gb-ink);
+  color: var(--gb-paper);
+}
+
+.gb-btn--primary:hover:not(:disabled) {
+  background: var(--gb-ink);
+  box-shadow: 0 0 0 3px var(--gb-rule);
+}
+
+.gb-btn--danger {
+  border-color: var(--gb-bad);
+  color: var(--gb-bad);
+}
+
+.gb-btn--small {
+  min-height: 32px;
+  padding: 4px 12px;
+  font-size: 0.88rem;
+}
+
+.gb-btn--block {
+  width: 100%;
+}
+
+.gb-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gb-brass);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ---------- cover ---------- */
+.gb-cover {
+  display: flex;
+  align-items: center;
+}
+
+.gb-cover__inner {
+  max-width: 40rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.gb-cover__kind {
+  margin: 0 0 18px;
+  font-family: var(--gb-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--gb-muted);
+}
+
+.gb-cover__title {
+  margin: 0;
+  font-family: var(--gb-serif);
+  font-size: clamp(2.9rem, 11vw, 5.6rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.gb-cover__byline {
+  margin: 18px 0 0;
+  font-family: var(--gb-serif);
+  font-size: 1.1rem;
+  color: var(--gb-brass);
+}
+
+.gb-cover__pitch {
+  margin: 28px 0 0;
+  max-width: 34rem;
+  font-family: var(--gb-serif);
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.gb-cover__meta,
+.gb-cover__status {
+  margin: 10px 0 0;
+  color: var(--gb-muted);
+}
+
+.gb-cover__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-top: 30px;
+}
+
+.gb-cover__status {
+  margin-top: 22px;
+}
+
+/* ---------- reading ---------- */
+.gb-play__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 38rem);
+  justify-content: center;
+  gap: 56px;
+}
+
+/* Wide screens: the reading column keeps a book's measure, the adventure
+   sheet takes all the remaining width, right up to the window edge. */
+@media (min-width: 1024px) {
+  .q-page.gb-play {
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+
+  .gb-play__grid {
+    grid-template-columns: minmax(0, 38rem) minmax(18rem, 1fr);
+    justify-content: stretch;
+    align-items: stretch;
+    gap: clamp(32px, 4vw, 64px);
+  }
+
+  .gb-play .gb-reading {
+    padding: clamp(20px, 5vw, 56px) 0 96px;
+  }
+
+  /* No scrollbar of its own: the panel runs the full height of the page
+     and scrolls with it; its content sticks only when it fits. */
+  .gb-play__sheet {
+    width: 100%;
+    min-height: calc(100vh - 50px); /* below the app header */
+    padding: clamp(20px, 5vw, 56px) clamp(20px, 3vw, 40px) 32px;
+    border-left: 1px solid var(--gb-rule);
+    background: var(--gb-surface);
+  }
+}
+
+.gb-section-head {
+  margin-bottom: 22px;
+}
+
+/* The one loud thing: the section number, as in a printed game-book. */
+.gb-section-num {
+  margin: 0;
+  font-family: var(--gb-serif);
+  font-size: clamp(4.5rem, 16vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.82;
+  color: var(--gb-brass);
+  font-variant-numeric: lining-nums;
+}
+
+.gb-section-title {
+  margin: 10px 0 0;
+  font-family: var(--gb-serif);
+  font-style: italic;
+  font-size: 1.55rem;
+  font-weight: 400;
+  line-height: 1.25;
+  outline: none;
+}
+
+.gb-story {
+  font-family: var(--gb-serif);
+  font-size: 1.19rem;
+  line-height: 1.68;
+  hyphens: auto;
+}
+
+.gb-story p {
+  margin: 0 0 0.85em;
+}
+
+.gb-story--prologue {
+  font-style: italic;
+  color: var(--gb-muted);
+}
+
+.gb-entry-changes {
+  margin: 4px 0 8px;
+}
+
+/* ---------- "turn to" rows ---------- */
+.choice-list,
+.gb-next {
+  margin-top: 26px;
+}
+
+.turn-to {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  padding: 14px 4px 14px 0;
+  border: 0;
+  border-top: 1px solid var(--gb-rule);
+  background: none;
+  color: var(--gb-ink);
+  text-align: left;
+  font-family: var(--gb-serif);
+  font-size: 1.12rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.choice-list .turn-to:last-child,
+.turn-to:only-child {
+  border-bottom: 1px solid var(--gb-rule);
+}
+
+.turn-to:hover {
+  background: linear-gradient(90deg, transparent, var(--gb-hover));
+}
+
+.turn-to__num {
+  min-width: 2.2em;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gb-brass);
+  text-align: right;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* ---------- tests, dice tables, duels ---------- */
+.challenge {
+  margin-top: 26px;
+  padding: 20px 0 4px;
+  border-top: 2px solid var(--gb-ink);
+}
+
+.challenge__title {
+  margin: 0;
+  font-family: var(--gb-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.challenge__rule {
+  margin: 4px 0 0;
+  color: var(--gb-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.challenge__dice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 22px;
+  margin: 18px 0;
+}
+
+.challenge__verdict {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.verdict-word {
+  font-family: var(--gb-serif);
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.verdict-math {
+  color: var(--gb-muted);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.is-success .verdict-word {
+  color: var(--gb-good);
+}
+
+.is-failure .verdict-word {
+  color: var(--gb-bad);
+}
+
+.challenge__outcome {
+  margin: 0 0 10px;
+  font-family: var(--gb-serif);
+  font-size: 1.12rem;
+  line-height: 1.6;
+}
+
+.pip {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gb-ink);
+}
+
+.pip.is-on {
+  background: var(--gb-ink);
+}
+
+.pip--dark {
+  border-color: var(--gb-nebula);
+}
+
+.pip--dark.is-on {
+  background: var(--gb-nebula);
+}
+
+.gb-sheet-dialog {
+  width: 100%;
+  font-variant-numeric: lining-nums;
+  max-height: 85vh;
+  background: var(--gb-paper);
+}
+
+/* ---------- hero creation ---------- */
+.gb-hero__rows {
+  margin: 0;
+}
+
+.gb-hero__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gb-rule);
+}
+
+.gb-hero__row dt {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 14rem;
+}
+
+.gb-hero__row dd {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.gb-hero__stat {
+  font-family: var(--gb-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.gb-hero__help {
+  color: var(--gb-muted);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.gb-hero__formula {
+  color: var(--gb-muted);
+}
+
+.gb-hero__value {
+  min-width: 2ch;
+  font-family: var(--gb-serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--gb-brass);
+  text-align: right;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.gb-hero__actions,
+.gb-profile__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* ---------- auth ---------- */
+.gb-auth__card {
+  max-width: 26rem;
+  margin: 0 auto;
+}
+
+.gb-auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gb-auth__form .gb-btn {
+  margin-top: 10px;
+}
+
+.gb-auth__switch {
+  margin: 20px 0 0;
+}
+
+/* ---------- gender choice ---------- */
+.gb-gender {
+  margin: 4px 0 18px;
+  padding: 0;
+  border: 0;
+}
+
+.gb-gender__legend {
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.gb-gender__options {
+  display: flex;
+  gap: 10px;
+}
+
+.gb-gender__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 1.5px solid var(--gb-rule);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.gb-gender__option.is-checked {
+  border-color: var(--gb-ink);
+  background: var(--gb-hover);
+}
+
+.gb-gender__option input {
+  accent-color: var(--gb-brass);
+  margin: 0;
+}
+
+.gb-gender__option:focus-within {
+  outline: 2px solid var(--gb-brass);
+  outline-offset: 3px;
+}
+
+.gb-gender__hint {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+  color: var(--gb-muted);
+}
+
+.gb-gender.has-error .gb-gender__hint {
+  color: var(--gb-bad);
+}
+
+.gb-gender.has-error .gb-gender__option {
+  border-color: var(--gb-bad);
+}
+
+.gb-profile .gb-gender {
+  margin-top: 28px;
+}
+
+.gb-gender__options--wrap {
+  flex-wrap: wrap;
+}
+
+.gb-gender__other {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+  padding-left: 16px;
+  border-left: 2px solid var(--gb-rule);
+}
+
+.gb-gender--nested {
+  margin: 4px 0 0;
+}
+
+.gb-gender__option--form {
+  align-items: flex-start;
+  border-radius: 14px;
+  padding: 10px 16px;
+}
+
+.gb-gender__option--form input {
+  margin-top: 4px;
+}
+
+.gb-gender__form {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.gb-gender__example {
+  font-family: var(--gb-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--gb-muted);
+}
+
+.gb-profile__actions--tight {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+/* ---------- profile ---------- */
+.gb-profile__numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 40px;
+  margin: 0;
+}
+
+.gb-profile__numbers dt {
+  color: var(--gb-muted);
+}
+
+.gb-profile__numbers dd {
+  margin: 0;
+  font-family: var(--gb-serif);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.gb-endings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gb-endings__item {
+  padding: 14px 0;
+  border-top: 1px solid var(--gb-rule);
+}
+
+.gb-endings__item h3 {
+  margin: 0;
+  font-family: var(--gb-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.gb-endings__item p {
+  margin: 2px 0 0;
+}
+
+.gb-endings__item.is-best h3,
+.gb-endings__item.is-good h3 {
+  color: var(--gb-brass);
+}
+
+.gb-endings__item.is-bad h3 {
+  color: var(--gb-nebula);
+}
+
+.gb-endings__item.is-locked h3 {
+  color: var(--gb-muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gb-btn {
+    transition: none;
+  }
 }

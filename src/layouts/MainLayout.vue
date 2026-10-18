@@ -2,27 +2,42 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings-store'
+import { useAuthStore } from '@/stores/auth-store'
+import { soundOn, toggleSound } from '@/game/sound'
 import logo from '@/assets/logo.png'
 
 const { t } = useI18n()
 const $q = useQuasar()
 const settings = useSettingsStore()
+const auth = useAuthStore()
+const router = useRouter()
 const drawerWidth = 300
+
+function logout() {
+  auth.logout()
+  $q.notify({ message: t('auth.loggedOut') })
+  router.push({ name: 'cover' })
+}
 
 const localeOptions = [
   { value: 'en-US', label: 'English' },
   { value: 'bg', label: 'Български' },
-  { value: 'zh-CN', label: '中文' },
 ]
 
 const currentLocaleLabel = computed(
   () => localeOptions.find((l) => l.value === settings.locale)?.label ?? settings.locale,
 )
 
+const bookItems = [
+  { to: '/', label: 'nav.book', icon: 'auto_stories' },
+  { to: '/rules', label: 'nav.rules', icon: 'casino' },
+  { to: '/profile', label: 'nav.profile', icon: 'person' },
+]
+
 const navItems = [
-  // { to: '/', label: 'nav.home', icon: 'home' },
-  { to: '/', label: 'nav.compas', icon: 'fa fa-guitar' },
+  { to: '/compas', label: 'nav.compas', icon: 'fa fa-guitar' },
   { to: '/notes', label: 'nav.notes', icon: 'library_music' },
   { to: '/tones', label: 'nav.tones', icon: 'music_note' },
   { to: '/intervals', label: 'nav.intervals', icon: 'timeline' },
@@ -64,8 +79,18 @@ function closeLeftDrawer() {
             @keydown.enter.prevent="openLeftDrawer"
             @keydown.space.prevent="openLeftDrawer"
           />
-          <span class="text-h5">{{ t('appName') }}</span>
+          <span v-if="$q.screen.gt.xs" class="app-name">{{ t('appName') }}</span>
         </q-toolbar-title>
+
+        <q-btn
+          flat
+          dense
+          round
+          :icon="soundOn ? 'volume_up' : 'volume_off'"
+          :aria-label="soundOn ? t('nav.soundOff') : t('nav.soundOn')"
+          :title="soundOn ? t('nav.soundOff') : t('nav.soundOn')"
+          @click="toggleSound"
+        />
 
         <q-btn
           flat
@@ -81,7 +106,7 @@ function closeLeftDrawer() {
           flat
           no-caps
           icon="translate"
-          :label="currentLocaleLabel"
+          :label="$q.screen.gt.xs ? currentLocaleLabel : undefined"
           :aria-label="t('nav.language')"
         >
           <q-list>
@@ -98,6 +123,25 @@ function closeLeftDrawer() {
             </q-item>
           </q-list>
         </q-btn-dropdown>
+
+        <q-btn-dropdown
+          v-if="auth.currentUser"
+          flat
+          no-caps
+          icon="account_circle"
+          :label="$q.screen.gt.xs ? auth.currentUser.displayName : undefined"
+          :aria-label="t('nav.account')"
+        >
+          <q-list>
+            <q-item v-close-popup clickable dense :to="{ name: 'profile' }">
+              <q-item-section>{{ t('nav.profile') }}</q-item-section>
+            </q-item>
+            <q-item v-close-popup clickable dense @click="logout">
+              <q-item-section>{{ t('nav.logout') }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+        <q-btn v-else flat no-caps icon="login" :label="$q.screen.gt.xs ? t('nav.login') : undefined" :aria-label="t('nav.login')" :to="{ name: 'login' }" />
       </q-toolbar>
     </q-header>
 
@@ -119,6 +163,15 @@ function closeLeftDrawer() {
         </header>
 
         <q-list padding class="drawer-list">
+          <q-item-label header class="drawer-group">{{ t('nav.gameBook') }}</q-item-label>
+          <q-item v-for="item in bookItems" :key="item.to" clickable :to="item.to" exact>
+            <q-item-section avatar>
+              <q-icon :name="item.icon" />
+            </q-item-section>
+            <q-item-section>{{ t(item.label) }}</q-item-section>
+          </q-item>
+
+          <q-item-label header class="drawer-group">{{ t('nav.practiceRoom') }}</q-item-label>
           <q-item v-for="item in navItems" :key="item.to" clickable :to="item.to" exact>
             <q-item-section avatar>
               <q-icon :name="item.icon" />
@@ -155,6 +208,13 @@ function closeLeftDrawer() {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.app-name {
+  font-family: var(--gb-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .app-logo {
@@ -204,6 +264,14 @@ function closeLeftDrawer() {
   font-weight: 600;
   line-height: 1.3;
   color: var(--app-text);
+}
+
+.drawer-group {
+  font-family: var(--gb-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--app-muted);
+  padding-bottom: 6px;
 }
 
 .drawer-quiet {

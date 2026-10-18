@@ -6,10 +6,9 @@ import { placeOnStrings } from 'src/components/music/notation'
 import { useStaffPlayer } from 'src/components/music/useStaffPlayer'
 import en from './intervals-i18n/en'
 import bg from './intervals-i18n/bg'
-import zh from './intervals-i18n/zh'
 
 /* ---------- i18n ----------
- * Texts live in one file per language: intervals-i18n/en.js, bg.js, zh.js.
+ * Texts live in one file per language: intervals-i18n/en.js, bg.js.
  * They are added to the app's global messages under "guitarIntervals", so
  * the page follows the same language switch as the rest of the app.
  * Keys match the locale codes of the language picker in MainLayout.
@@ -17,7 +16,7 @@ import zh from './intervals-i18n/zh'
 
 const { t: globalT, mergeLocaleMessage } = useI18n({ useScope: 'global' })
 
-const PAGE_MESSAGES = { bg, 'en-US': en, 'zh-CN': zh }
+const PAGE_MESSAGES = { bg, 'en-US': en }
 
 for (const [locale, messages] of Object.entries(PAGE_MESSAGES)) {
   mergeLocaleMessage(locale, { guitarIntervals: messages })

@@ -3,7 +3,42 @@ const routes = [
     path: '/',
     component: () => import('@/layouts/MainLayout.vue'),
     children: [
-      { path: '', name: 'home', component: () => import('@/pages/IndexPage.vue') },
+      /* ---------- the game-book ---------- */
+      { path: '', name: 'cover', component: () => import('@/pages/CoverPage.vue') },
+      { path: 'rules', name: 'rules', component: () => import('@/pages/RulesPage.vue') },
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/pages/LoginPage.vue'),
+        meta: { guestOnly: true },
+      },
+      {
+        path: 'register',
+        name: 'register',
+        component: () => import('@/pages/RegisterPage.vue'),
+        meta: { guestOnly: true },
+      },
+      {
+        path: 'hero',
+        name: 'hero',
+        component: () => import('@/pages/CreateHeroPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'play',
+        name: 'play',
+        component: () => import('@/pages/PlayPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/pages/ProfilePage.vue'),
+        meta: { requiresAuth: true },
+      },
+
+      /* ---------- the practice room (the original Kitarista tools) ---------- */
+      { path: 'compas', name: 'compas', component: () => import('@/pages/IndexPage.vue') },
       {
         path: 'intervals',
         name: 'intervals',
@@ -16,11 +51,7 @@ const routes = [
         name: 'flamenco',
         component: () => import('@/pages/GuitarFlamencoPage.vue'),
       },
-      {
-        path: 'tuner',
-        name: 'tuner',
-        component: () => import('@/pages/GuitarTunerPage.vue'),
-      },
+      { path: 'tuner', name: 'tuner', component: () => import('@/pages/GuitarTunerPage.vue') },
       { path: 'about', name: 'about', component: () => import('@/pages/AboutPage.vue') },
       { path: 'notes', name: 'notes', component: () => import('@/pages/NotesSheetPage.vue') },
       { path: 'tones', name: 'tones', component: () => import('@/pages/GuitarTonesPage.vue') },

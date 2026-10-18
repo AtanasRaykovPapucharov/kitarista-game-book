@@ -7,6 +7,7 @@ import {
 } from 'vue-router'
 
 import routes from './routes.js'
+import { useAuthStore } from 'src/stores/auth-store'
 
 /*
  * If not building with SSR mode, you can
@@ -17,7 +18,7 @@ import routes from './routes.js'
  * with the Router instance.
  */
 
-export default defineRouter((/* { store, ssrContext } */) => {
+export default defineRouter(({ store }) => {
   const createHistory = import.meta.env.QUASAR_SERVER
     ? createMemoryHistory
     : import.meta.env.QUASAR_VUE_ROUTER_MODE === 'history'
@@ -32,6 +33,16 @@ export default defineRouter((/* { store, ssrContext } */) => {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE),
+  })
+
+  // Game pages need a profile; login/register make no sense once logged in.
+  Router.beforeEach((to) => {
+    const auth = useAuthStore(store)
+    if (to.meta.requiresAuth && !auth.isLoggedIn) {
+      return { name: 'login', query: { redirect: to.fullPath } }
+    }
+    if (to.meta.guestOnly && auth.isLoggedIn) return { name: 'cover' }
+    return true
   })
 
   return Router

@@ -1,7 +1,7 @@
 {
   "name": "kitarista",
   "version": "0.0.1",
-  "description": "A Quasar Project",
+  "description": "Kitarista – a guitar game-book: While You Listen to the Stars",
   "productName": "kitarista",
   "type": "module",
   "private": true,
@@ -13,6 +13,8 @@
     "postinstall": "quasar prepare --silent"
   },
   "dependencies": {
+    "@fontsource/alegreya": "^5.3.0",
+    "@fontsource/alegreya-sans": "^5.3.0",
     "@quasar/extras": "^2.1.0",
     "axios": "^1.20.0",
     "pinia": "^4.0.2",
