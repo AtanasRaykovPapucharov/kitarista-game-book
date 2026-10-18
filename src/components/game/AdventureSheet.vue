@@ -209,6 +209,7 @@ function abandon() {
 
 .sheet__head .sheet__title {
   margin: 0;
+  line-height: 1.2;
 }
 
 .sheet__title {
