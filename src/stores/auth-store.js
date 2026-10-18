@@ -1,5 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { KEYS, readJson, writeJson, removeKey } from 'src/services/storage'
+import { sanitizeAvatar } from 'src/components/avatar/avatar'
 
 /* =====================================================
    Local accounts.
@@ -61,6 +62,8 @@ const publicUser = (u) =>
     gender: GENDERS.includes(u.gender) ? u.gender : 'm',
     genderName: u.gender === 'x' ? (u.genderName ?? '') : '',
     address: grammarOf(u),
+    // null = the face generated from the username
+    avatar: sanitizeAvatar(u.avatar, u.username),
     createdAt: u.createdAt,
   }
 
@@ -123,6 +126,18 @@ export const useAuthStore = defineStore('auth', {
       if (hash !== user.hash) return 'auth.errors.wrongCredentials'
       this.startSession(user.id)
       return null
+    },
+
+    /** Saves a built or uploaded avatar; null goes back to the generated one. */
+    setAvatar(avatar) {
+      const user = this.users.find((u) => u.id === this.userId)
+      if (!user) return false
+      const clean = avatar ? sanitizeAvatar(avatar, user.username) : null
+      if (avatar && !clean) return false
+      if (clean) user.avatar = clean
+      else delete user.avatar
+      writeJson(KEYS.users, this.users)
+      return true
     },
 
     /** Returns an i18n error key, or null when saved. */

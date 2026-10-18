@@ -1018,6 +1018,45 @@ body {
 }
 
 /* ---------- profile ---------- */
+.gb-profile__head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.gb-profile__head .gb-page-title {
+  margin-bottom: 2px;
+}
+
+.gb-profile__avatar {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.gb-profile__avatar:focus-visible {
+  outline: 2px solid var(--gb-accent);
+  outline-offset: 3px;
+}
+
+.gb-profile__avatar-edit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gb-ink);
+  color: var(--gb-paper);
+  box-shadow: 0 0 0 3px var(--gb-paper);
+}
+
 .gb-profile__numbers {
   display: flex;
   flex-wrap: wrap;

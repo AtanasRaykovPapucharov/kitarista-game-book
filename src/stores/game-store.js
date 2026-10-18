@@ -127,6 +127,50 @@ export const useGameStore = defineStore('game', {
       return this.save ? engine.canUseItem(this.save, id) : false
     },
 
+    /** Everything worth keeping, as plain data for a backup file (no password). */
+    exportData(user) {
+      return {
+        app: 'kitarista',
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        user: user
+          ? {
+              username: user.username,
+              displayName: user.displayName,
+              gender: user.gender,
+              genderName: user.genderName,
+              address: user.address,
+              avatar: user.avatar,
+            }
+          : null,
+        save: this.save,
+        profile: this.profile,
+      }
+    },
+
+    /**
+     * Restores a backup into the logged-in profile. Endings and songs are
+     * added to what is already here; a saved adventure replaces the current one.
+     * Returns false when the file isn't a Kitarista backup.
+     */
+    importData(data) {
+      if (!data || data.app !== 'kitarista' || data.version !== 1) return false
+      const incoming = data.profile ?? {}
+      const songs = [...(incoming.songs ?? []), ...(this.profile.songs ?? [])]
+      this.profile = {
+        ...this.profile,
+        endings: { ...(incoming.endings ?? {}), ...this.profile.endings },
+        adventures: Math.max(this.profile.adventures ?? 0, incoming.adventures ?? 0),
+        bestSkill: Math.max(this.profile.bestSkill ?? 0, incoming.bestSkill ?? 0),
+        songs: songs
+          .filter((s, i) => s?.id && songs.findIndex((x) => x.id === s.id) === i)
+          .slice(0, MAX_SONGS),
+      }
+      if (engine.isValidSave(data.save)) this.save = data.save
+      this.persist()
+      return true
+    },
+
     abandon() {
       this.save = null
       this.persist()

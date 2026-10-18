@@ -7,6 +7,7 @@ import { useStory } from 'src/game/useStory'
 import { ITEMS } from 'src/story/items'
 import { DARKNESS_MAX, sectionNumber } from 'src/story/book'
 import { cues } from 'src/game/sound'
+import UserAvatar from 'src/components/avatar/UserAvatar.vue'
 import { useStory as useSongText } from 'src/game/useStory'
 
 /* sticky: keep the sheet in view while the reader scrolls the page.
@@ -88,7 +89,11 @@ function abandon() {
 <template>
   <aside v-if="save" class="sheet" :aria-label="t('play.sheet')">
     <div ref="inner" class="sheet__inner" :class="{ 'is-stuck': sticky && fits }">
-      <h2 class="sheet__title">{{ t('play.sheet') }}</h2>
+      <div class="sheet__head">
+        <UserAvatar :size="44" alt="" />
+
+        <h2 class="sheet__title">{{ t('play.sheet') }}</h2>
+      </div>
 
       <div class="sheet__body">
         <section class="sheet__block">
@@ -193,6 +198,17 @@ function abandon() {
   .sheet__sub--first {
     margin-top: 0;
   }
+}
+
+.sheet__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.sheet__head .sheet__title {
+  margin: 0;
 }
 
 .sheet__title {

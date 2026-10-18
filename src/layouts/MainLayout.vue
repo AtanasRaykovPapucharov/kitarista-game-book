@@ -7,6 +7,7 @@ import { useSettingsStore } from '@/stores/settings-store'
 import { useAuthStore } from '@/stores/auth-store'
 import { soundOn, toggleSound, volume, setVolume, cues } from '@/game/sound'
 import NarratorControls from '@/components/NarratorControls.vue'
+import UserAvatar from '@/components/avatar/UserAvatar.vue'
 import logo from '@/assets/logo.png'
 
 const { t } = useI18n()
@@ -53,6 +54,7 @@ const navItems = [
 const footerItems = [
   { to: '/creators', label: 'nav.creators', icon: 'groups' },
   { to: '/support', label: 'nav.support', icon: 'favorite' },
+  { to: '/privacy', label: 'nav.privacy', icon: 'shield' },
 ]
 
 const volumePercent = computed(() => Math.round(volume.value * 100))
@@ -133,7 +135,6 @@ function closeLeftDrawer() {
               />
               <span class="volume-value">{{ soundOn ? volumePercent : 0 }}%</span>
             </div>
-
           </q-menu>
         </q-btn>
 
@@ -173,10 +174,15 @@ function closeLeftDrawer() {
           v-if="auth.currentUser"
           flat
           no-caps
-          icon="account_circle"
-          :label="$q.screen.gt.xs ? auth.currentUser.displayName : undefined"
           :aria-label="t('nav.account')"
+          class="account-btn"
         >
+          <template #label>
+            <UserAvatar :size="30" alt="" />
+            <span v-if="$q.screen.gt.xs" class="account-name">{{
+              auth.currentUser.displayName
+            }}</span>
+          </template>
           <q-list>
             <q-item v-close-popup clickable dense :to="{ name: 'profile' }">
               <q-item-section>{{ t('nav.profile') }}</q-item-section>
@@ -311,6 +317,10 @@ function closeLeftDrawer() {
   gap: 10px;
   width: 260px;
   padding: 8px 14px 8px 8px;
+}
+
+.account-name {
+  margin-left: 8px;
 }
 
 .volume-slider {

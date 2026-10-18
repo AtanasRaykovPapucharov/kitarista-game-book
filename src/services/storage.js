@@ -14,6 +14,7 @@ export const KEYS = {
   sound: `${PREFIX}-sound`,
   volume: `${PREFIX}-volume`,
   narrator: `${PREFIX}-narrator`,
+  theme: `${PREFIX}-theme`,
 }
 
 export function readJson(key, fallback) {

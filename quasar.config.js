@@ -91,6 +91,17 @@ export default defineConfig((ctx) => {
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
+    // absolute site address for the share preview in index.html (og:url, og:image):
+    // SITE_URL if set, else Vercel's production domain, else the current one
+    htmlVariables: {
+      siteUrl: (
+        process.env['SITE_URL'] ||
+        (process.env['VERCEL_PROJECT_PRODUCTION_URL']
+          ? `https://${process.env['VERCEL_PROJECT_PRODUCTION_URL']}`
+          : 'https://kitarista-book.vercel.app')
+      ).replace(/\/$/, ''),
+    },
+
     build: {
       alias: {
         src: ctx.appPaths.resolve.app('src'),

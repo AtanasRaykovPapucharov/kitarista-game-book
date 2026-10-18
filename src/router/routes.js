@@ -11,6 +11,7 @@ const routes = [
       { path: 'rules', name: 'rules', component: () => import('@/pages/RulesPage.vue') },
       { path: 'creators', name: 'creators', component: () => import('@/pages/CreatorsPage.vue') },
       { path: 'support', name: 'support', component: () => import('@/pages/SupportPage.vue') },
+      { path: 'privacy', name: 'privacy', component: () => import('@/pages/PrivacyPage.vue') },
       {
         path: 'login',
         name: 'login',

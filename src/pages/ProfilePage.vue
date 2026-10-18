@@ -9,6 +9,8 @@ import { useStory } from 'src/game/useStory'
 import { ENDINGS } from 'src/story/book'
 import GenderFields from 'src/components/game/GenderFields.vue'
 import SongCard from 'src/components/game/SongCard.vue'
+import UserAvatar from 'src/components/avatar/UserAvatar.vue'
+import AvatarBuilder from 'src/components/avatar/AvatarBuilder.vue'
 
 const { t, locale } = useI18n()
 const $q = useQuasar()
@@ -62,6 +64,57 @@ function saveIdentity() {
 }
 
 const songs = computed(() => game.profile.songs ?? [])
+const builderOpen = ref(false)
+
+/* ---------- backup: download / restore everything ---------- */
+const fileInput = ref(null)
+
+function exportBackup() {
+  const data = game.exportData(auth.currentUser)
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `kitarista-${auth.currentUser.username}-${new Date().toISOString().slice(0, 10)}.json`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+
+function chooseBackup() {
+  fileInput.value?.click()
+}
+
+async function importBackup(e) {
+  const file = e.target.files?.[0]
+  e.target.value = ''
+  if (!file) return
+  let data = null
+  try {
+    data = JSON.parse(await file.text())
+  } catch {
+    data = null
+  }
+  if (!data || data.app !== 'kitarista') {
+    $q.notify({ message: t('profile.importFailed'), color: 'negative' })
+    return
+  }
+  $q.dialog({
+    title: t('profile.importTitle'),
+    message: t('profile.importBody'),
+    cancel: { label: t('common.cancel'), flat: true, noCaps: true },
+    ok: { label: t('profile.importAction'), color: 'primary', noCaps: true, unelevated: true },
+  }).onOk(() => {
+    const ok = game.importData(data)
+    if (ok && data.user?.gender) auth.setIdentity(data.user)
+    if (ok && data.user?.avatar) auth.setAvatar(data.user.avatar)
+    $q.notify({
+      message: ok ? t('profile.imported') : t('profile.importFailed'),
+      color: ok ? 'positive' : 'negative',
+    })
+  })
+}
 
 function removeSong(song) {
   $q.dialog({
@@ -94,7 +147,23 @@ function remove() {
 <template>
   <q-page v-if="auth.currentUser" class="gb gb-profile">
     <div class="gb-narrow">
-      <h1 class="gb-page-title">{{ auth.currentUser.displayName }}</h1>
+      <div class="gb-profile__head">
+        <button
+          type="button"
+          class="gb-profile__avatar"
+          :aria-label="t('avatar.change')"
+          @click="builderOpen = true"
+        >
+          <UserAvatar :size="96" alt="" />
+          <span class="gb-profile__avatar-edit"><q-icon name="edit" size="16px" /></span>
+        </button>
+        <div>
+          <h1 class="gb-page-title">{{ auth.currentUser.displayName }}</h1>
+          <button type="button" class="gb-link" @click="builderOpen = true">
+            {{ t('avatar.change') }}
+          </button>
+        </div>
+      </div>
       <p class="gb-lead">
         @{{ auth.currentUser.username }}.
         <template v-if="auth.currentUser.genderName">{{ auth.currentUser.genderName }}.</template>
@@ -156,6 +225,24 @@ function remove() {
         </button>
       </div>
 
+      <h2 class="gb-subtitle">{{ t('profile.backupTitle') }}</h2>
+      <p class="gb-note gb-note--body">{{ t('profile.backupLead') }}</p>
+      <div class="gb-profile__actions gb-profile__actions--tight">
+        <button type="button" class="gb-btn" @click="exportBackup">
+          {{ t('profile.export') }}
+        </button>
+        <button type="button" class="gb-btn" @click="chooseBackup">
+          {{ t('profile.import') }}
+        </button>
+        <input
+          ref="fileInput"
+          type="file"
+          accept="application/json,.json"
+          hidden
+          @change="importBackup"
+        />
+      </div>
+
       <h2 class="gb-subtitle">{{ t('profile.dangerZone') }}</h2>
       <div class="gb-profile__actions">
         <button type="button" class="gb-btn" @click="logout">{{ t('profile.logout') }}</button>
@@ -165,5 +252,6 @@ function remove() {
       </div>
       <p class="gb-note">{{ t('auth.localNotice') }}</p>
     </div>
+    <AvatarBuilder v-model="builderOpen" />
   </q-page>
 </template>
