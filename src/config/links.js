@@ -32,12 +32,12 @@ const ALL_METHODS = [
     icon: 'credit_card',
     value: clean(import.meta.env.QCLI_SUPPORT_REVOLUT),
   },
-  {
-    id: 'paypal',
-    kind: 'link',
-    icon: 'account_balance_wallet',
-    value: clean(import.meta.env.QCLI_SUPPORT_PAYPAL),
-  },
+  // {
+  //   id: 'paypal',
+  //   kind: 'link',
+  //   icon: 'account_balance_wallet',
+  //   value: clean(import.meta.env.QCLI_SUPPORT_PAYPAL),
+  // },
   {
     id: 'lightning',
     kind: 'address',
