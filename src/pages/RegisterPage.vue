@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { cues } from 'src/game/sound'
 import { useAuthStore, USERNAME_RE, PASSWORD_MIN, identityError } from 'src/stores/auth-store'
 import GenderFields from 'src/components/game/GenderFields.vue'
 
@@ -53,6 +54,7 @@ async function submit() {
     error.value = t(err)
     return
   }
+  cues.welcome()
   $q.notify({
     message: t('auth.welcome', { name: auth.currentUser.displayName }),
     color: 'positive',

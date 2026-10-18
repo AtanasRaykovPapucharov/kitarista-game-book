@@ -6,6 +6,7 @@ import { useGameStore } from 'src/stores/game-store'
 import { useStory } from 'src/game/useStory'
 import { ITEMS } from 'src/story/items'
 import { DARKNESS_MAX, sectionNumber } from 'src/story/book'
+import { cues } from 'src/game/sound'
 
 /* sticky: keep the sheet in view while the reader scrolls the page.
    It only sticks when it fits in the window, so the sheet never needs
@@ -64,6 +65,11 @@ watch(save, async () => {
 function used(item) {
   const once = item.def.use?.once
   return !!(once && save.value.flags[once])
+}
+
+function use(id) {
+  game.useItem(id)
+  cues.useItem()
 }
 
 function abandon() {
@@ -131,7 +137,7 @@ function abandon() {
                 type="button"
                 class="gb-btn gb-btn--small"
                 :disabled="!game.canUseItem(item.id)"
-                @click="game.useItem(item.id)"
+                @click="use(item.id)"
               >
                 {{ used(item) ? t('play.used') : t('play.use') }}
               </button>

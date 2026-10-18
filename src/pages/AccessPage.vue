@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useSettingsStore } from 'src/stores/settings-store'
 import { useStory } from 'src/game/useStory'
 import { tryCode, waitSeconds } from 'src/services/access'
+import { cues } from 'src/game/sound'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -35,6 +36,7 @@ async function submit() {
   const result = await tryCode(code.value)
   busy.value = false
   if (result === 'ok') {
+    cues.welcome()
     const target = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
     router.replace(target)
     return

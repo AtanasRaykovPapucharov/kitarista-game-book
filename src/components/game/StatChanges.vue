@@ -1,8 +1,25 @@
 <script setup>
+import { onBeforeUnmount, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStory } from 'src/game/useStory'
+import { cues } from 'src/game/sound'
 
-defineProps({ changes: { type: Array, default: () => [] } })
+const props = defineProps({ changes: { type: Array, default: () => [] } })
+
+// a soft note per change, after the page swish or the verdict has sounded
+let timer = null
+function sound(list) {
+  clearTimeout(timer)
+  if (list?.length) timer = setTimeout(() => cues.changes(list), 420)
+}
+onMounted(() => sound(props.changes))
+watch(
+  () => props.changes,
+  (list, old) => {
+    if (list !== old && JSON.stringify(list) !== JSON.stringify(old)) sound(list)
+  },
+)
+onBeforeUnmount(() => clearTimeout(timer))
 
 const { t } = useI18n()
 const { itemName } = useStory()

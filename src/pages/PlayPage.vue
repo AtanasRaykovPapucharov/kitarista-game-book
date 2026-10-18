@@ -13,6 +13,7 @@ import TurnToButton from 'src/components/game/TurnToButton.vue'
 import StatChanges from 'src/components/game/StatChanges.vue'
 import AdventureSheet from 'src/components/game/AdventureSheet.vue'
 import EndingPanel from 'src/components/game/EndingPanel.vue'
+import { cues } from 'src/game/sound'
 
 const { t } = useI18n()
 const $q = useQuasar()
@@ -42,6 +43,7 @@ watch(
   () => save.value?.visit,
   async (visit, old) => {
     if (old === undefined) return
+    cues.page()
     sheetOpen.value = false
     window.scrollTo({ top: 0 })
     await nextTick()

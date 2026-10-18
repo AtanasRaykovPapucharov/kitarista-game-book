@@ -40,9 +40,9 @@ const navItems = [
   { to: '/tones', label: 'nav.tones', icon: 'music_note' },
   { to: '/intervals', label: 'nav.intervals', icon: 'timeline' },
   { to: '/chords', label: 'nav.chords', icon: 'image_aspect_ratio' },
-  { to: '/scales', label: 'nav.scales', icon: 'line_axis' },
+  { to: '/scales', label: 'nav.scales', icon: 'music_note' },
   { to: '/notes', label: 'nav.notes', icon: 'library_music' },
-  { to: '/compas', label: 'nav.compas', icon: 'explore' },
+  { to: '/compas', label: 'nav.compas', icon: 'fa fa-guitar' },
   { to: '/tuner', label: 'nav.tuner', icon: 'tune' },
 
   // { to: '/flamenco', label: 'nav.flamenco', icon: 'fa fa-guitar' },
@@ -62,7 +62,7 @@ const volumeIcon = computed(() => {
 
 // play a short chord when the slider is released, so the level can be heard
 function previewVolume() {
-  cues.success()
+  cues.chime()
 }
 
 const leftDrawerOpen = ref(false)

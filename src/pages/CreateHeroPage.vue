@@ -31,6 +31,11 @@ function roll() {
   cues.dice(4) // 1 + 2 + 1 dice for the three stats
 }
 
+function onSettled() {
+  settledCount.value += 1
+  cues.tick(settledCount.value)
+}
+
 function begin() {
   game.start(hero.value)
   router.push({ name: 'play' })
@@ -50,7 +55,12 @@ function begin() {
             <span class="gb-hero__help">{{ t(`statsHelp.${row.stat}`) }}</span>
           </dt>
           <dd>
-            <DiceTray :values="hero?.dice[row.stat] ?? null" :count="row.count" :size="46" @settled="settledCount++" />
+            <DiceTray
+              :values="hero?.dice[row.stat] ?? null"
+              :count="row.count"
+              :size="46"
+              @settled="onSettled"
+            />
             <span class="gb-hero__formula">+ {{ row.base }} =</span>
             <strong class="gb-hero__value">{{ settled ? hero.stats[row.stat] : '–' }}</strong>
           </dd>
@@ -65,7 +75,9 @@ function begin() {
       </dl>
 
       <div class="gb-hero__actions">
-        <button v-if="!hero" type="button" class="gb-btn gb-btn--primary" @click="roll">{{ t('hero.roll') }}</button>
+        <button v-if="!hero" type="button" class="gb-btn gb-btn--primary" @click="roll">
+          {{ t('hero.roll') }}
+        </button>
         <template v-else>
           <button type="button" class="gb-btn gb-btn--primary" :disabled="!settled" @click="begin">
             {{ t('hero.begin') }}

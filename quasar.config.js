@@ -13,17 +13,44 @@ import { defineConfig } from '#q-app'
    It deliberately has no QCLI_ prefix, so Quasar never exposes it. */
 const ACCESS_SALT = 'kitarista-access:' // must match SALT in src/services/access.js
 
+// "zvezdi", 'zvezdi' or zvezdi → zvezdi (the Vercel UI keeps quotes literally)
+function cleanCode(value) {
+  const v = String(value ?? '').trim()
+  const quoted = v.length >= 2 && (v[0] === '"' || v[0] === "'") && v.at(-1) === v[0]
+  return (quoted ? v.slice(1, -1) : v).trim()
+}
+
+/** Returns { code, source } – source is only for the build log; the code is never printed. */
 function readAccessCode(ctx) {
-  const fromHost = process.env['ACCESS_CODE'] // bracket access: read the real env, not a replaced value
-  if (fromHost) return fromHost.trim()
+  // bracket access reads the real environment, not a value replaced at compile time
+  for (const name of ['ACCESS_CODE', 'QCLI_ACCESS_CODE']) {
+    const value = cleanCode(process.env[name])
+    if (value) return { code: value, source: `environment variable ${name}` }
+  }
   const envFile = ctx.appPaths.resolve.app('.env')
   const file = existsSync(envFile)
     ? envFile
     : ctx.dev
       ? ctx.appPaths.resolve.app('.env.example')
       : null
-  if (!file || !existsSync(file)) return ''
-  return (parseEnv(readFileSync(file, 'utf8')).ACCESS_CODE ?? '').trim()
+  if (file && existsSync(file)) {
+    const parsed = parseEnv(readFileSync(file, 'utf8'))
+    const value = cleanCode(parsed.ACCESS_CODE ?? parsed.QCLI_ACCESS_CODE)
+    if (value)
+      return { code: value, source: file.endsWith('.env.example') ? '.env.example' : '.env' }
+  }
+  return { code: '', source: '' }
+}
+
+function logAccessGate(ctx, { code, source }) {
+  if (code) {
+    console.log(`\n App • Access gate: ON (code from ${source}, ${code.length} characters)\n`)
+  } else if (ctx.prod) {
+    console.log(
+      '\n App • Access gate: OFF – no ACCESS_CODE found. On Vercel add it under' +
+        ' Settings → Environment Variables (Production) and redeploy.\n',
+    )
+  }
 }
 
 function accessHash(code) {
@@ -35,6 +62,9 @@ function accessHash(code) {
 }
 
 export default defineConfig((ctx) => {
+  const accessCode = readAccessCode(ctx)
+  logAccessGate(ctx, accessCode)
+
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -86,7 +116,7 @@ export default defineConfig((ctx) => {
       // publicPath: '/',
       // empty string = no gate (no ACCESS_CODE configured)
       define: {
-        'import.meta.env.QCLI_ACCESS_HASH': JSON.stringify(accessHash(readAccessCode(ctx))),
+        'import.meta.env.QCLI_ACCESS_HASH': JSON.stringify(accessHash(accessCode.code)),
       },
       // defineEnv: {}
       // ignorePublicFolder: true,
