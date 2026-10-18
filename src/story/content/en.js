@@ -89,6 +89,23 @@ export default {
     silence: { title: 'Silence', summary: 'Your inspiration died out and the guitar went under the bed.' },
   },
 
+  illustrations: {
+    void: 'Endless space with a violet nebula. In the centre, a vast faceless swirl of darker dark; far below, a small blue planet glows.',
+    window: 'A night window with bright stars peering in. Below it, a child sleeps under a blanket.',
+    guitar: 'A guitar with rays of light streaming from its soundhole towards the starry sky.',
+    corridor: 'A dark school corridor with lockers. Two figures – one big, one smaller – stand facing each other.',
+    observatory: 'An observatory dome and a radio telescope on a mountain ridge beneath the Milky Way. A thin beam rises from the slit in the dome.',
+    linden: 'A linden tree on a hill at dusk. A child kneels beside it while a small light rises into the sky.',
+    silhouette: 'A colossal dark silhouette with sharp, ill-fitting angles above a tiny figure. A thin golden thread leads upward – Mum’s voice.',
+    orpheus: 'A figure with a lyre walks through a tunnel towards bright light. Behind it, in the dark, a shadow waits with two pale points.',
+    shop: 'Old leaning houses on a narrow street. A shop window with a star above the door glows blue-green; a guitar and a drum are inside.',
+    stage: 'A stage under a single spotlight. A guitarist sits on a chair; the heads of the audience are in front.',
+    dark: 'A figure stands before a vast circle of darkness with a violet rim. A feather glows in its hand, casting a beam into the dark.',
+    light: 'A guitarist on a hill beneath a sky crossed by five faint lines of light, like a musical staff, with stars sitting on them like notes.',
+    puppet: 'A figure under a spotlight with raised arms. Bright threads rise from its hands, head and feet – like a puppet’s.',
+    silence: 'A dark room. A moonbeam falls on a guitar case under the bed. The strings inside glow faintly.',
+  },
+
   // the story itself, part by part (src/story/content/en/)
   sections: {
     ...part1,

@@ -1,4 +1,5 @@
 <script setup>
+import StarTwinkle from 'src/components/StarTwinkle.vue'
 import { onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
@@ -53,6 +54,7 @@ onBeforeUnmount(() => clearInterval(timer))
   <q-layout view="hHh lpR fFf">
     <q-page-container>
       <q-page class="gb gb-access">
+        <StarTwinkle />
         <nav class="gb-access__lang" :aria-label="t('nav.language')">
           <button
             v-for="l in [

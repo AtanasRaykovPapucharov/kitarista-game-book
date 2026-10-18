@@ -68,6 +68,20 @@ for (const [lang, c] of LANGS) {
   for (const key of Object.keys(c.sections)) if (!SECTIONS[key]) problems.push(`${lang}: text for unknown section "${key}"`)
 }
 
+/* ---------- illustrations ---------- */
+{
+  const fs = await import('node:fs')
+  const src = fs.readFileSync(new URL('../src/story/illustrations.js', import.meta.url), 'utf8')
+  const block = src.slice(src.indexOf('SECTION_ILLUSTRATIONS'))
+  const map = Object.fromEntries([...block.matchAll(/^\s+(\w+): '(\w+)',$/gm)].map((m) => [m[1], m[2]]))
+  for (const [section, name] of Object.entries(map)) {
+    if (!SECTIONS[section]) problems.push(`illustration for unknown section "${section}"`)
+    if (!fs.existsSync(new URL(`../src/assets/illustrations/${name}.webp`, import.meta.url)))
+      problems.push(`missing picture src/assets/illustrations/${name}.webp`)
+    for (const [lang, c] of LANGS) if (!c.illustrations?.[name]) problems.push(`${lang}: illustration "${name}" has no description`)
+  }
+}
+
 /* ---------- word forms [m|f|n] ---------- */
 const FORM = /\[([^[\]|]*(?:\|[^[\]|]*)+)\]/g
 const strings = (o, acc = []) => {

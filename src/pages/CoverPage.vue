@@ -1,4 +1,5 @@
 <script setup>
+import StarTwinkle from 'src/components/StarTwinkle.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
@@ -38,6 +39,7 @@ function startOver() {
 
 <template>
   <q-page class="gb gb-cover">
+    <StarTwinkle />
     <div class="gb-cover__inner">
       <p class="gb-cover__kind">{{ t('cover.kind') }}</p>
       <h1 class="gb-cover__title">{{ content.title }}</h1>

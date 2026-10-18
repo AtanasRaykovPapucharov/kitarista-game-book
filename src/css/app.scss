@@ -1117,3 +1117,158 @@ body {
     transition: none;
   }
 }
+
+
+/* =====================================================
+   Visual effects
+   Everything that moves stops for people who ask their
+   device for reduced motion (see the block at the end).
+===================================================== */
+
+/* the stars on the cover and the access gate twinkle behind the text */
+.gb-cover__inner,
+.gb-access__inner,
+.gb-access__lang {
+  position: relative;
+  z-index: 1;
+}
+
+/* a new section fades up like a page being turned */
+.gb-play .gb-reading {
+  animation: gb-enter 0.5s ease-out both;
+}
+
+@keyframes gb-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Darkness made visible: the edges of the page darken as it grows (0–10),
+   and from 6 on they slowly breathe, as if something were close. */
+.q-page.gb-play::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 40% 50%, transparent 42%, rgba(3, 2, 14, 0.92) 100%);
+  opacity: calc(var(--darkness, 0) * 0.85);
+  transition: opacity 1.5s ease;
+}
+
+.q-page.gb-play.is-haunted::before {
+  animation: gb-breathe 7s ease-in-out infinite;
+}
+
+@keyframes gb-breathe {
+  0%,
+  100% {
+    opacity: calc(var(--darkness, 0) * 0.85);
+  }
+  50% {
+    opacity: calc(var(--darkness, 0) * 0.85 - 0.22);
+  }
+}
+
+/* a won test or duel flashes softly */
+.challenge__verdict.is-success .verdict-word {
+  animation: gb-glow 1.8s ease-out 1;
+}
+
+@keyframes gb-glow {
+  0% {
+    text-shadow: 0 0 0 transparent;
+  }
+  30% {
+    text-shadow: 0 0 22px var(--gb-good);
+  }
+  100% {
+    text-shadow: 0 0 0 transparent;
+  }
+}
+
+/* endings set the mood of the whole page */
+.gb-play.ending-best .ending,
+.gb-play.ending-good .ending {
+  position: relative;
+}
+
+.gb-play.ending-best .ending::before,
+.gb-play.ending-good .ending::before {
+  content: '';
+  position: absolute;
+  left: -10%;
+  top: -40px;
+  width: 120%;
+  height: 220px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 30% 45%, color-mix(in srgb, var(--gb-accent) 28%, transparent), transparent 65%);
+  animation: gb-aura 6s ease-in-out infinite;
+}
+
+.gb-play.ending-best .ending__title {
+  animation: gb-starlight 4s ease-in-out infinite;
+}
+
+@keyframes gb-aura {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes gb-starlight {
+  0%,
+  100% {
+    text-shadow: 0 0 6px color-mix(in srgb, var(--gb-accent) 40%, transparent);
+  }
+  50% {
+    text-shadow: 0 0 26px var(--gb-accent);
+  }
+}
+
+/* the puppet's world drains of colour; silence grows cold and dim */
+.gb-play.ending-puppet .gb-reading {
+  filter: saturate(0.3) contrast(0.95);
+  transition: filter 4s ease;
+}
+
+.gb-play.ending-silence .gb-story {
+  animation: gb-cold 8s ease forwards;
+}
+
+@keyframes gb-cold {
+  to {
+    color: var(--gb-muted);
+    letter-spacing: 0.01em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gb-play .gb-reading,
+  .q-page.gb-play.is-haunted::before,
+  .challenge__verdict.is-success .verdict-word,
+  .gb-play.ending-best .ending::before,
+  .gb-play.ending-good .ending::before,
+  .gb-play.ending-best .ending__title,
+  .gb-play.ending-silence .gb-story {
+    animation: none;
+  }
+
+  .q-page.gb-play::before,
+  .gb-play.ending-puppet .gb-reading {
+    transition: none;
+  }
+}

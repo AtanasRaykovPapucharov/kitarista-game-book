@@ -5,7 +5,6 @@ export default {
   prologue: {
     title: 'Dark',
     text: [
-      'From the guest professor’s notebook, Rozhen Observatory, night shift: “The noise between the stars is not entirely random. At times there is something like a beat in it. As if someone were listening – and waiting.”',
       'The dark pierced [him|her|them] at the speed of light. [He|She|They] felt it with every fibre of [his|her|their] bodiless being. They were one, and yet they were not. [His|Her|Their] mind defined [him|her|them] as separate.',
       'Where to and for how long meant nothing. Time and space had no meaning. Knowledge was part of [him|her|them], as ancient as the first trembling of the vacuum from which it had surfaced. Everything is nothing, and nothing gives birth to everything. Chance. Deliberate accident. Creation.',
       'For aeons it drifted through the gulfs between the galaxies – where the light of dead suns crawls like ash, and the angles of space bend in ways no human mind could bear to follow. It could not hear. It could not see. It could only listen to the nothing seethe.',

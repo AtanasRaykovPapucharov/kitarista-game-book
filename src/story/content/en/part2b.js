@@ -57,6 +57,7 @@ export default {
       'The professor gathers his papers and raises his eyebrows when you ask what happens to something once it has been created.',
       '“Have you read the Book of Changes? ‘Every event, once it reaches its peak, turns into its opposite.’”',
       'He looks at your fingers, then at your eyes – longer than is comfortable. “You play, don’t you? It shows. Listen to the silence between the notes, [boy|girl|kid]. Everything is there.”',
+      'He reaches into his bag and takes out a worn notebook with dog-eared corners. He opens it at a page and hands it to you. In small, nervous handwriting it reads: “Rozhen Observatory, night shift. The noise between the stars is not entirely random. At times there is something like a beat in it. As if someone were listening – and waiting.”',
       'Then he lowers his voice, as if the walls had ears. “For years I have recorded the noise between the stars. Last week, for the first time, there was something like a melody in it. It stopped on the day when, I believe, someone on Earth picked up a guitar.” He smiles wearily. “Don’t mind me, I’m an old man. But be careful with voices that know too much.”',
     ],
   },

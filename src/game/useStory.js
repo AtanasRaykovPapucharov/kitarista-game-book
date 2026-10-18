@@ -64,6 +64,7 @@ export function useStory() {
     itemName: (id) => fmt(content.value.items[id]?.name ?? id),
     itemDesc: (id) => fmt(content.value.items[id]?.desc),
     enemyName: (id) => content.value.enemies[id] ?? id,
+    illustrationAlt: (name) => content.value.illustrations?.[name] ?? '',
     moodName: (mood) => content.value.song?.moods?.[mood]?.name ?? mood,
     moodHint: (mood) => content.value.song?.moods?.[mood]?.hint ?? '',
     lyric: (mood, line) => fmt(content.value.song?.lines?.[mood]?.[line] ?? ''),

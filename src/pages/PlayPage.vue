@@ -17,6 +17,9 @@ import LessonPanel from 'src/components/game/LessonPanel.vue'
 import SongComposer from 'src/components/game/SongComposer.vue'
 import SongCard from 'src/components/game/SongCard.vue'
 import { narrator, readingIndex, speak, setReader, stop as stopNarrator } from 'src/game/narrator'
+import SectionIllustration from 'src/components/game/SectionIllustration.vue'
+import { SECTION_ILLUSTRATIONS, ILLUSTRATIONS_AT_END } from 'src/story/illustrations'
+import { ENDINGS, DARKNESS_MAX } from 'src/story/book'
 import { useSettingsStore } from 'src/stores/settings-store'
 import { cues } from 'src/game/sound'
 
@@ -37,6 +40,18 @@ function narration() {
   }
   return out
 }
+const illustration = computed(() => SECTION_ILLUSTRATIONS[key.value] ?? null)
+const illustrationAtEnd = computed(() => ILLUSTRATIONS_AT_END.includes(key.value))
+
+/* The page itself shows how much of you belongs to the voice: the edges
+   darken as Darkness grows, and at 6+ they slowly breathe. Endings set a mood. */
+const darkness = computed(() => (save.value?.stats.darkness ?? 0) / DARKNESS_MAX)
+const pageClass = computed(() => ({
+  'is-haunted': (save.value?.stats.darkness ?? 0) >= 6,
+  [`ending-${ENDINGS[save.value?.endingId]?.tone}`]: save.value?.status === 'ended',
+  [`ending-${save.value?.endingId}`]: save.value?.status === 'ended',
+}))
+
 // readingIndex 0 is the title; paragraphs start at 1
 const readingParagraph = computed(() => readingIndex.value - 1)
 
@@ -88,7 +103,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <q-page v-if="save" class="gb gb-play">
+  <q-page v-if="save" class="gb gb-play" :class="pageClass" :style="{ '--darkness': darkness }">
     <div class="gb-play__grid">
       <article :key="save.visit" class="gb-reading">
         <header class="gb-section-head">
@@ -100,6 +115,8 @@ onBeforeUnmount(() => {
             {{ title(key, save) }}
           </h1>
         </header>
+
+        <SectionIllustration v-if="illustration && !illustrationAtEnd" :key="illustration" :name="illustration" />
 
         <div class="gb-story" :class="{ 'gb-story--prologue': key === 'prologue' }">
           <p
@@ -139,6 +156,13 @@ onBeforeUnmount(() => {
         />
 
         <EndingPanel v-if="section.ending" />
+
+        <SectionIllustration
+          v-if="illustration && illustrationAtEnd"
+          :key="`end-${illustration}`"
+          :name="illustration"
+          class="gb-illustration--end"
+        />
       </article>
 
       <AdventureSheet v-if="wide" sticky class="gb-play__sheet" />
