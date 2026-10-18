@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const paragraphs = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+const paragraphs = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7']
 </script>
 
 <template>

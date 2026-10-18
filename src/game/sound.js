@@ -150,10 +150,11 @@ function bell(dest, t, freq, { gain = 0.12, decay = 1.6 } = {}) {
   }
 }
 
-/** A nylon string, rounded off with a lowpass. */
-function pluck(dest, t, midi, gain = 0.32) {
+/** A nylon string, rounded off with a lowpass. `cents` detunes it (tuning lesson). */
+function pluck(dest, t, midi, gain = 0.32, cents = 0) {
   const src = ctx.createBufferSource()
   src.buffer = stringBuffer(ctx, midi)
+  if (cents) src.playbackRate.value = 2 ** (cents / 1200)
   const lp = ctx.createBiquadFilter()
   lp.type = 'lowpass'
   lp.frequency.value = 2000
@@ -352,6 +353,97 @@ export const cues = {
       }
     })
   },
+}
+
+/* ---------- lessons and the reader's song ----------
+   These are meant to be listened to, so they are a little clearer
+   than the cues, but still soft. They skip the once() throttle. */
+
+/** One guitar note; `cents` nudges it sharp or flat. */
+export function playNote(midi, { cents = 0, delay = 0, gain = 0.4 } = {}) {
+  play((dest, t) => pluck(dest, t + delay, midi, gain, cents))
+}
+
+/** A chord, gently strummed – for "listen" buttons. */
+export function playChord(name, { delay = 0 } = {}) {
+  play((dest, t) => chord(dest, t + delay, name, { gap: 0.035, gain: 0.3 }))
+}
+
+/** A soft wood-block click for the metronome; the first beat a little higher. */
+function click(dest, t, accent) {
+  const o = ctx.createOscillator()
+  o.frequency.value = accent ? 1320 : 990
+  const g = ctx.createGain()
+  envelope(g.gain, t, accent ? 0.14 : 0.1, 0.002, 0.05)
+  o.connect(g).connect(dest)
+  o.start(t)
+  o.stop(t + 0.08)
+}
+
+/**
+ * Schedules `count` metronome clicks. Returns the moment of every beat
+ * in performance.now() time, so taps can be compared with it,
+ * or null when sound is off.
+ */
+export function metronome(count, bpm, { accentEvery = 4 } = {}) {
+  let times = null
+  play((dest, t0) => {
+    const beat = 60 / bpm
+    const latency = (ctx.outputLatency || ctx.baseLatency || 0) * 1000
+    const perfAt = performance.now() + (t0 - ctx.currentTime) * 1000 + latency
+    times = []
+    for (let i = 0; i < count; i++) {
+      click(dest, t0 + i * beat, i % accentEvery === 0)
+      times.push(perfAt + i * beat * 1000)
+    }
+  })
+  return times
+}
+
+/**
+ * Plays the reader's song: each verse's four chords, two beats each,
+ * a brushed strum on the first beat and a soft arpeggio on the second.
+ * onStep(verseIndex, chordIndex) follows along; returns { stop }.
+ */
+export function playSong(verses, { bpm = 84, onStep = () => {}, onEnd = () => {} } = {}) {
+  const timers = []
+  let songGain = null
+  play((dest, t0) => {
+    songGain = ctx.createGain()
+    songGain.gain.value = 1
+    songGain.connect(dest)
+    const beat = 60 / bpm
+    let t = t0
+    verses.forEach((chords, vi) => {
+      chords.forEach((name, ci) => {
+        const at = t
+        timers.push(setTimeout(() => onStep(vi, ci), (at - ctx.currentTime) * 1000))
+        chord(songGain, at, name, { gap: 0.045, gain: 0.26 })
+        const voicing = voiceChord(name)
+        if (voicing) {
+          voicing.notes.slice(-3).forEach((n, k) => pluck(songGain, at + beat + k * (beat / 3), n.midi, 0.16))
+        }
+        t += beat * 2
+      })
+    })
+    timers.push(setTimeout(onEnd, (t - ctx.currentTime) * 1000 + 600))
+  })
+  if (!songGain) {
+    onEnd()
+    return { stop() {} }
+  }
+  return {
+    stop() {
+      timers.forEach(clearTimeout)
+      try {
+        songGain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.08)
+        setTimeout(() => songGain.disconnect(), 600)
+      } catch {
+        // already gone
+      }
+      onEnd()
+    },
+  }
 }
 
 /** Kept for the practice room and older calls. */

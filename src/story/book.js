@@ -12,6 +12,8 @@
      test     – { stat: 'luck' | 'skill', success: { to, effects? }, failure: { to, effects? } }
      roll     – { dice, outcomes: [{ range: [min, max], id, to, effects? }] }
      duel     – { enemy, skill, stamina, yieldAfter, win, lose, enemyMods?, playerMods? }
+     lesson   – a guitar lesson played in the UI: { id, success, failure, pass? }
+     showSong – the reader's song is shown (and can be played) here
      ending   – id from ENDINGS; the adventure stops here
 
    Conditions (requires):
@@ -92,7 +94,16 @@ export const SECTIONS = {
     choices: [
       { id: 'obey', to: 'voiceTip' },
       { id: 'ear', to: 'byEar' },
+      { id: 'dad', to: 'dadLesson' },
     ],
+  },
+  // Dad shows the first chords – the first guitar lesson
+  dadLesson: {
+    lesson: {
+      id: 'chords',
+      success: { to: 'school', effects: [raise('skill'), flag('lesson_chords')] },
+      failure: { to: 'school', effects: [add('inspiration', 1)] },
+    },
   },
   voiceTip: {
     effects: [raise('skill'), add('darkness', 1), flag('voice_friend')],
@@ -331,6 +342,7 @@ export const SECTIONS = {
   practice: {
     choices: [
       { id: 'scales', to: 'scales' },
+      { id: 'lesson', to: 'lessonBook' },
       { id: 'voiceLesson', to: 'voiceLesson' },
       { id: 'compose', to: 'compose', requires: { item: 'songbook' } },
       { id: 'napkins', to: 'napkins', requires: { notItem: 'songbook' } },
@@ -345,6 +357,46 @@ export const SECTIONS = {
     },
   },
   voiceLesson: { effects: [raise('skill'), add('darkness', 1)], next: 'event' },
+
+  // the lesson book: each lesson can be passed once; review is always there
+  lessonBook: {
+    choices: [
+      { id: 'chords', to: 'lessonChords', requires: { notFlag: 'lesson_chords' } },
+      { id: 'tuning', to: 'lessonTuning', requires: { notFlag: 'lesson_tuning' } },
+      { id: 'intervals', to: 'lessonIntervals', requires: { notFlag: 'lesson_intervals' } },
+      { id: 'rhythm', to: 'lessonRhythm', requires: { notFlag: 'lesson_rhythm' } },
+      { id: 'review', to: 'review' },
+    ],
+  },
+  lessonChords: {
+    lesson: {
+      id: 'chords',
+      success: { to: 'event', effects: [raise('skill'), flag('lesson_chords')] },
+      failure: { to: 'event' },
+    },
+  },
+  lessonTuning: {
+    lesson: {
+      id: 'tuning',
+      success: { to: 'event', effects: [raise('skill'), flag('lesson_tuning')] },
+      failure: { to: 'event' },
+    },
+  },
+  lessonIntervals: {
+    lesson: {
+      id: 'intervals',
+      success: { to: 'event', effects: [raise('skill'), flag('lesson_intervals')] },
+      failure: { to: 'event' },
+    },
+  },
+  lessonRhythm: {
+    lesson: {
+      id: 'rhythm',
+      success: { to: 'event', effects: [raise('skill'), add('inspiration', 1), flag('lesson_rhythm')] },
+      failure: { to: 'event' },
+    },
+  },
+  review: { effects: [add('inspiration', 1)], next: 'event' },
   compose: { effects: [count('song'), add('inspiration', 1)], next: 'event' },
   napkins: {
     test: {
@@ -518,6 +570,7 @@ export const SECTIONS = {
     next: 'recipe',
   },
   ownSong: {
+    showSong: true,
     effects: [add('luck', 2), add('inspiration', 2), flag('played_own')],
     next: 'recipe',
   },

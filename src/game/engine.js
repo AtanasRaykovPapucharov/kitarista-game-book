@@ -66,6 +66,7 @@ export function newGame(hero) {
     resolved: null,
     duel: null,
     trail: [],
+    song: { title: '', verses: [] },
     endingId: null,
     startedAt: now,
     updatedAt: now,
@@ -174,12 +175,13 @@ export function choose(state, choiceId) {
   const section = SECTIONS[state.section]
   const choice = section.choices?.find((c) => c.id === choiceId)
   if (!choice || !meets(state, choice.requires)) return state
-  if (hasPendingChallenge(state)) return state
+  if (hasPendingChallenge(state) || pendingVerses(state) > 0) return state
   return enterSection(state, choice.to, choice.effects)
 }
 
 export function continueOn(state) {
   const section = SECTIONS[state.section]
+  if (pendingVerses(state) > 0) return state
   if (state.resolved?.to) return enterSection(state, state.resolved.to)
   if (section.next && !hasPendingChallenge(state)) return enterSection(state, section.next)
   return state
@@ -187,7 +189,59 @@ export function continueOn(state) {
 
 export function hasPendingChallenge(state) {
   const section = SECTIONS[state.section]
-  return !!(section.test || section.roll || section.duel) && !state.resolved
+  return !!(section.test || section.roll || section.duel || section.lesson) && !state.resolved
+}
+
+/* ---------- the reader's own song ----------
+   Every verse the story grants (the "song" counter) is written
+   by the reader: a mood, a line of lyrics and a chord progression.
+   The book waits until each earned verse has been written. */
+export const songOf = (state) => state.song ?? { title: '', verses: [] }
+
+export function pendingVerses(state) {
+  return Math.max(0, (state.counters?.song ?? 0) - songOf(state).verses.length)
+}
+
+export function composeVerse(state, { mood, line, prog }) {
+  if (pendingVerses(state) <= 0 || !mood || line == null || prog == null) return state
+  const s = clone(state)
+  s.song = songOf(s)
+  s.song.verses.push({ mood, line, prog })
+  s.lastChanges = []
+  s.updatedAt = new Date().toISOString()
+  return s
+}
+
+export function nameSong(state, title) {
+  const clean = String(title ?? '').trim().slice(0, 60)
+  if (!clean) return state
+  const s = clone(state)
+  s.song = { ...songOf(s), title: clean }
+  s.updatedAt = new Date().toISOString()
+  return s
+}
+
+/* ---------- lessons ----------
+   A lesson is played in the UI (a short quiz or exercise); the UI
+   reports the score and the book applies success or failure. */
+export function resolveLesson(state, { score, total }) {
+  const section = SECTIONS[state.section]
+  if (!section.lesson || state.resolved) return state
+  const s = clone(state)
+  const pass = section.lesson.pass ?? Math.ceil(total * 0.6)
+  const success = score >= pass
+  const outcome = success ? section.lesson.success : section.lesson.failure
+  s.lastChanges = applyEffects(s, outcome.effects)
+  s.resolved = {
+    kind: 'lesson',
+    id: section.lesson.id,
+    score,
+    total,
+    success,
+    to: outOfInspiration(s) ? SILENCE : outcome.to,
+  }
+  s.updatedAt = new Date().toISOString()
+  return s
 }
 
 export function visibleChoices(state) {

@@ -13,6 +13,9 @@ import TurnToButton from 'src/components/game/TurnToButton.vue'
 import StatChanges from 'src/components/game/StatChanges.vue'
 import AdventureSheet from 'src/components/game/AdventureSheet.vue'
 import EndingPanel from 'src/components/game/EndingPanel.vue'
+import LessonPanel from 'src/components/game/LessonPanel.vue'
+import SongComposer from 'src/components/game/SongComposer.vue'
+import SongCard from 'src/components/game/SongCard.vue'
 import { cues } from 'src/game/sound'
 
 const { t } = useI18n()
@@ -24,7 +27,9 @@ const { title, paragraphs } = useStory()
 const save = computed(() => game.save)
 const key = computed(() => save.value?.section)
 const section = computed(() => game.section ?? {})
-const hasChallenge = computed(() => !!(section.value.test || section.value.roll || section.value.duel))
+const hasChallenge = computed(
+  () => !!(section.value.test || section.value.roll || section.value.duel || section.value.lesson),
+)
 const sheetOpen = ref(false)
 const titleEl = ref(null)
 const wide = computed(() => $q.screen.gt.sm)
@@ -59,7 +64,9 @@ watch(
         <header class="gb-section-head">
           <p class="gb-section-num" aria-hidden="true">{{ game.sectionNumber }}</p>
           <h1 ref="titleEl" class="gb-section-title" tabindex="-1">
-            <span class="sr-only">{{ t('play.sectionLabel', { number: game.sectionNumber }) }}. </span>
+            <span class="sr-only"
+              >{{ t('play.sectionLabel', { number: game.sectionNumber }) }}.
+            </span>
             {{ title(key, save) }}
           </h1>
         </header>
@@ -68,13 +75,26 @@ watch(
           <p v-for="(p, i) in paragraphs(key, save)" :key="i">{{ p }}</p>
         </div>
 
-        <StatChanges v-if="!hasChallenge" :changes="save.lastChanges ?? []" class="gb-entry-changes" />
+        <StatChanges
+          v-if="!hasChallenge"
+          :changes="save.lastChanges ?? []"
+          class="gb-entry-changes"
+        />
 
         <TestPanel v-if="section.test" :test="section.test" />
         <RollPanel v-else-if="section.roll" :roll="section.roll" />
         <DuelPanel v-else-if="section.duel" />
+        <LessonPanel v-else-if="section.lesson" :lesson="section.lesson" />
 
-        <ChoiceList v-if="game.choices.length" :section="key" :choices="game.choices" @choose="game.choose" />
+        <SongComposer v-if="game.songPending" />
+        <SongCard v-else-if="section.showSong && game.song.verses.length" :song="game.song" />
+
+        <ChoiceList
+          v-if="game.choices.length"
+          :section="key"
+          :choices="game.choices"
+          @choose="game.choose"
+        />
         <TurnToButton
           v-else-if="section.next && !hasChallenge"
           :to="section.next"

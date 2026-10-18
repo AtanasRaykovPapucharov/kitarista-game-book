@@ -6,11 +6,19 @@ import { useGameStore } from 'src/stores/game-store'
 import { useStory } from 'src/game/useStory'
 import { ENDINGS } from 'src/story/book'
 import { cues } from 'src/game/sound'
+import { useQuasar } from 'quasar'
+import SongCard from './SongCard.vue'
 
 const { t } = useI18n()
 const router = useRouter()
 const game = useGameStore()
 const { ending } = useStory()
+const $q = useQuasar()
+
+function nameSong(title) {
+  game.nameSong(title)
+  $q.notify({ message: t('song.savedToProfile'), color: 'positive' })
+}
 
 const id = computed(() => game.save.endingId)
 const meta = computed(() => ENDINGS[id.value])
@@ -29,9 +37,20 @@ function again() {
     <p class="ending__kicker">{{ t('play.ended') }}</p>
     <h2 class="ending__title">{{ ending(id).title }}</h2>
     <p class="ending__summary">{{ ending(id).summary }}</p>
-    <p class="ending__count">{{ t('cover.endingsFound', { found, total: Object.keys(ENDINGS).length }) }}</p>
+    <SongCard
+      v-if="game.song.verses.length"
+      :song="game.song"
+      nameable
+      :heading="id === 'light' || id === 'guitarist' ? t('song.yourSong') : t('song.unfinished')"
+      @name="nameSong"
+    />
+    <p class="ending__count">
+      {{ t('cover.endingsFound', { found, total: Object.keys(ENDINGS).length }) }}
+    </p>
     <div class="ending__actions">
-      <button type="button" class="gb-btn gb-btn--primary" @click="again">{{ t('play.newAdventure') }}</button>
+      <button type="button" class="gb-btn gb-btn--primary" @click="again">
+        {{ t('play.newAdventure') }}
+      </button>
       <router-link :to="{ name: 'profile' }" class="gb-btn">{{ t('play.allEndings') }}</router-link>
     </div>
   </section>

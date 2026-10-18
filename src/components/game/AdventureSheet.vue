@@ -7,6 +7,7 @@ import { useStory } from 'src/game/useStory'
 import { ITEMS } from 'src/story/items'
 import { DARKNESS_MAX, sectionNumber } from 'src/story/book'
 import { cues } from 'src/game/sound'
+import { useStory as useSongText } from 'src/game/useStory'
 
 /* sticky: keep the sheet in view while the reader scrolls the page.
    It only sticks when it fits in the window, so the sheet never needs
@@ -52,6 +53,8 @@ const items = computed(() =>
 )
 const trail = computed(() => (save.value?.trail ?? []).slice(-14).map(sectionNumber))
 const song = computed(() => save.value?.counters?.song ?? 0)
+const { lyric } = useSongText()
+const verses = computed(() => (save.value?.song?.verses ?? []).map((v) => lyric(v.mood, v.line)))
 
 // the inner wrapper only exists while there is a save; re-observe when it appears
 watch(save, async () => {
@@ -118,6 +121,9 @@ function abandon() {
               <dd>{{ t('stats.songVerses', song) }}</dd>
             </div>
           </dl>
+          <ol v-if="verses.length" class="sheet__verses">
+            <li v-for="(v, i) in verses" :key="i">{{ v }}</li>
+          </ol>
         </section>
 
         <section class="sheet__block">
@@ -230,6 +236,16 @@ function abandon() {
 .sheet__of {
   color: var(--gb-muted);
   margin-left: 2px;
+}
+
+.sheet__verses {
+  margin: 8px 0 4px;
+  padding-left: 1.3em;
+  font-family: var(--gb-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--gb-muted);
 }
 
 .sheet__dark {

@@ -13,7 +13,8 @@ import { SECTIONS, sectionNumber } from 'src/story/book'
    never lets the reader re-roll a die.
 ===================================================== */
 
-const emptyProfile = () => ({ endings: {}, adventures: 0, bestSkill: 0 })
+const emptyProfile = () => ({ endings: {}, adventures: 0, bestSkill: 0, songs: [] })
+const MAX_SONGS = 30
 
 export const useGameStore = defineStore('game', {
   state: () => ({
@@ -30,6 +31,8 @@ export const useGameStore = defineStore('game', {
     choices: (state) => (state.save ? engine.visibleChoices(state.save) : []),
     pendingChallenge: (state) => (state.save ? engine.hasPendingChallenge(state.save) : false),
     canDuelLuck: (state) => (state.save ? engine.canDuelLuck(state.save) : false),
+    song: (state) => (state.save ? engine.songOf(state.save) : { title: '', verses: [] }),
+    songPending: (state) => (state.save ? engine.pendingVerses(state.save) > 0 : false),
   },
 
   actions: {
@@ -89,6 +92,33 @@ export const useGameStore = defineStore('game', {
     },
     duelLuck() {
       this.commit(engine.duelLuck(this.save))
+    },
+    finishLesson(result) {
+      this.commit(engine.resolveLesson(this.save, result))
+    },
+    composeVerse(verse) {
+      this.commit(engine.composeVerse(this.save, verse))
+    },
+    /** Names the song and keeps it in the profile ("songs you wrote"). */
+    nameSong(title) {
+      const next = engine.nameSong(this.save, title)
+      if (next === this.save) return
+      const song = engine.songOf(next)
+      const id = next.startedAt // one song per adventure
+      const entry = {
+        id,
+        title: song.title,
+        verses: song.verses,
+        endingId: next.endingId,
+        at: new Date().toISOString(),
+      }
+      const songs = (this.profile.songs ?? []).filter((x) => x.id !== id)
+      this.profile.songs = [entry, ...songs].slice(0, MAX_SONGS)
+      this.commit(next)
+    },
+    removeSong(id) {
+      this.profile.songs = (this.profile.songs ?? []).filter((x) => x.id !== id)
+      this.persist()
     },
     useItem(id) {
       this.commit(engine.useItem(this.save, id))

@@ -635,6 +635,93 @@ body {
   background: var(--gb-paper);
 }
 
+/* ---------- lessons ---------- */
+.lesson-quiz {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.lesson-quiz__count {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--gb-muted);
+}
+
+.lesson-quiz__ask {
+  margin: 4px 0 0;
+  font-family: var(--gb-serif);
+  font-size: 1.15rem;
+}
+
+.lesson-quiz__figure {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--gb-surface);
+}
+
+.lesson-quiz__figure .chord-diagram {
+  width: 108px;
+  height: auto;
+}
+
+.lesson-quiz__figure--wide {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.lesson-quiz__figure--wide .mini-fretboard {
+  width: min(100%, 460px);
+  height: auto;
+}
+
+.lesson-quiz__options,
+.lesson-quiz__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lesson-quiz__option {
+  min-width: 5.5rem;
+}
+
+.lesson-quiz__option--tall {
+  flex-direction: column;
+  padding: 8px 18px;
+  border-radius: 16px;
+}
+
+.lesson-quiz__hint {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--gb-muted);
+}
+
+.lesson-quiz__option.is-right {
+  border-color: var(--gb-good);
+  color: var(--gb-good);
+  opacity: 1;
+}
+
+.lesson-quiz__option.is-wrong {
+  border-color: var(--gb-bad);
+  color: var(--gb-bad);
+  opacity: 1;
+}
+
+.lesson-quiz__feedback {
+  margin: 0;
+  font-weight: 500;
+}
+
+.gb-profile__song-remove {
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
 /* ---------- hero creation ---------- */
 .gb-hero__rows {
   margin: 0;

@@ -10,6 +10,49 @@ export default {
   pitch:
     'Tome gets a guitar for [his|her|their] birthday – and with it, a voice from the depths of space. Will [he|she|they] become a guitarist? And whose hands will be doing the playing?',
 
+  song: {
+    moods: {
+      tender: { name: 'Tender', hint: 'Light and quiet, like a lullaby' },
+      sad: { name: 'Sad', hint: 'Minor keys, memories, goodbyes' },
+      brave: { name: 'Brave', hint: 'Loud and straight ahead' },
+      starry: { name: 'Starry', hint: 'Dreamy, with maj7 chords' },
+    },
+    lines: {
+      tender: [
+        'Softly I play, and soft is the night,',
+        'Mum is singing somewhere in my dream,',
+        'the light tiptoes into my room,',
+        'every string remembers its home,',
+        'Grandpa says: listen to the grass grow,',
+        'pancakes, sunshine and a guitar –',
+      ],
+      sad: [
+        'the little bird fell asleep under the linden,',
+        'my room is full of silence,',
+        'everything created fades away,',
+        'I’m alone, but the song is with me,',
+        'you leave tomorrow and I say nothing,',
+        'I said goodbye without a sound,',
+      ],
+      brave: [
+        'I won’t step back, not one inch,',
+        'with a guitar in my hands I’m not afraid,',
+        'hear me, dark – this is my voice,',
+        'if I fall, I’ll get up again,',
+        'I play loud – let the whole block hear,',
+        'my hands, my song,',
+      ],
+      starry: [
+        'I’m stardust, singing to the stars,',
+        'nothing gave birth to you and me,',
+        'while I listen to the stars, they whisper,',
+        'a song grows in the empty place,',
+        'the light has travelled a million years,',
+        'the dark shines when I hear it,',
+      ],
+    },
+  },
+
   enemies: {
     belyan: 'Belyan “Sumo”',
     belyanFist: 'Belyan',
@@ -131,7 +174,18 @@ export default {
       choices: {
         obey: 'Listen to the voice and move your finger',
         ear: 'Find the right note yourself, by ear',
+        dad: 'Call Dad Vladko to show you the first chords',
       },
+    },
+
+    dadLesson: {
+      title: 'The first chords',
+      text: [
+        'Dad Vladko sits on the edge of the bed and picks up the guitar. “Every great guitarist started with three or four chords. Watch my fingers.”',
+        'The voice is silent, as if it were listening too.',
+      ],
+      success: 'Dad smiles. “Well, you don’t need me any more.”',
+      failure: '“Never mind,” says Dad. “Fingers remember more slowly than heads. Again tomorrow.”',
     },
 
     voiceTip: {
@@ -569,6 +623,7 @@ export default {
       text: ['The guitar is waiting on your bed. How will you spend the day?'],
       choices: {
         scales: 'Scales up and down until your fingers ache',
+        lesson: 'Open the lesson book',
         voiceLesson: 'Let the voice teach you',
         compose: 'Write your own song in the songbook',
         napkins: 'Write your own song on whatever you can find',
@@ -589,6 +644,61 @@ export default {
         '“Allow me,” says the voice. Your fingers race along the neck as if they belonged to someone else. In one day you learn what others work months for.',
         'But in the evening your hands tremble, and in the mirror your eyes look darker.',
       ],
+    },
+
+    lessonBook: {
+      title: 'The lesson book',
+      text: [
+        'Under your bed there is an old book of guitar lessons. The pages smell of dust and a little of stars.',
+        'Which lesson will you take today?',
+      ],
+      choices: {
+        chords: 'Lesson 1: The first chords',
+        tuning: 'Lesson 2: Tuning by ear',
+        intervals: 'Lesson 3: Intervals',
+        rhythm: 'Lesson 4: Rhythm',
+        review: 'Go over what you have learned',
+      },
+    },
+
+    lessonChords: {
+      title: 'Lesson 1: The first chords',
+      text: ['You open the book at the first lesson. Drawings of guitar necks, dots, circles and little crosses.'],
+      success: 'Chords are no longer a mystery. Your fingers find them on their own.',
+      failure: 'The diagrams still muddle you. You’ll look at them again in the practice room.',
+    },
+
+    lessonTuning: {
+      title: 'Lesson 2: Tuning by ear',
+      text: [
+        'A guitar goes out of tune when you move it, when it’s cold, sometimes just because. A good guitarist hears when a string has wandered off.',
+      ],
+      success: 'Your ears grow sharper. You can hear even the smallest drift now.',
+      failure: 'The notes still sound the same to you. Ears grow slowly – like grass.',
+    },
+
+    lessonIntervals: {
+      title: 'Lesson 3: Intervals',
+      text: [
+        'An interval is the distance between two notes. Each distance has a character: the octave sounds like an echo, the fifth like a bell, the third like the start of a song.',
+      ],
+      success: 'You begin to hear the shape of melodies, not just the sounds.',
+      failure: 'The intervals still blur together. But now you know what to listen for.',
+    },
+
+    lessonRhythm: {
+      title: 'Lesson 4: Rhythm',
+      text: [
+        'Rhythm is the heart of every song. Without it, even the most beautiful notes scatter.',
+        { ifFlag: 'belyan_friend', text: 'Belyan turns up with two wooden spoons and taps on the edge of your desk. “I count, you play.”' },
+      ],
+      success: 'You and rhythm are friends at last.',
+      failure: 'The rhythm slips away from you. The metronome is patient – it will wait.',
+    },
+
+    review: {
+      title: 'Review',
+      text: ['You leaf through the lessons you already know and play them one after another. Nothing new – and that is exactly what’s nice about it.'],
     },
 
     compose: {

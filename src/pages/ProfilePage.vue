@@ -8,6 +8,7 @@ import { useGameStore } from 'src/stores/game-store'
 import { useStory } from 'src/game/useStory'
 import { ENDINGS } from 'src/story/book'
 import GenderFields from 'src/components/game/GenderFields.vue'
+import SongCard from 'src/components/game/SongCard.vue'
 
 const { t, locale } = useI18n()
 const $q = useQuasar()
@@ -58,6 +59,17 @@ function saveIdentity() {
     }),
   })
   resetIdentity()
+}
+
+const songs = computed(() => game.profile.songs ?? [])
+
+function removeSong(song) {
+  $q.dialog({
+    title: t('song.removeTitle'),
+    message: song.title,
+    cancel: { label: t('common.cancel'), flat: true, noCaps: true },
+    ok: { label: t('common.delete'), color: 'negative', noCaps: true, unelevated: true },
+  }).onOk(() => game.removeSong(song.id))
 }
 
 function logout() {
@@ -134,6 +146,15 @@ function remove() {
           </template>
         </li>
       </ul>
+
+      <h2 class="gb-subtitle">{{ t('song.songsTitle') }}</h2>
+      <p v-if="!songs.length" class="gb-note">{{ t('song.noSongs') }}</p>
+      <div v-for="s in songs" :key="s.id" class="gb-profile__song">
+        <SongCard :song="s" :heading="t('song.writtenOn', { date: date(s.at) })" />
+        <button type="button" class="gb-link gb-profile__song-remove" @click="removeSong(s)">
+          {{ t('song.remove') }}
+        </button>
+      </div>
 
       <h2 class="gb-subtitle">{{ t('profile.dangerZone') }}</h2>
       <div class="gb-profile__actions">
