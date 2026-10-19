@@ -6,20 +6,24 @@ import { storyContent } from 'src/story/content'
 /* =====================================================
    Story text for the current language, with the small
    amount of logic paragraphs need:
-     [masculine|feminine|neutral] → the form of address the reader chose
+     [masculine|feminine|neutral|plural] → the form of address the reader chose
      {counter} placeholders → values from the save
      { ifFlag | ifNotFlag | ifItem, text } → shown when true
 ===================================================== */
 
 const GENDER_FORM = /\[([^[\]|]*(?:\|[^[\]|]*)+)\]/g
-const FORM_INDEX = { m: 0, f: 1, n: 2 }
+const FORM_INDEX = { m: 0, f: 1, n: 2, p: 3 }
 
-/** Picks one form from "[m|f|n]"; a missing form falls back to the first. */
+/**
+ * Picks one form from "[m|f|n]" or "[m|f|n|p]".
+ * Plural falls back to the neutral form where a word has no plural sense
+ * (nouns such as "дете"); anything else missing falls back to the first.
+ */
 export function applyGender(text, form) {
   const i = FORM_INDEX[form] ?? 0
   return text.replace(GENDER_FORM, (m, body) => {
     const forms = body.split('|')
-    return forms[i] ?? forms[0]
+    return forms[i] ?? (form === 'p' ? forms[2] : undefined) ?? forms[0]
   })
 }
 
@@ -39,7 +43,7 @@ export function useStory() {
   // the settings store owns the app language (vue-i18n runs in legacy mode)
   const settings = useSettingsStore()
   const auth = useAuthStore()
-  const content = computed(() => storyContent(settings.locale))
+  const content = computed(() => storyContent(settings.locale, auth.grammar))
   const gender = computed(() => auth.grammar)
 
   const fmt = (text, save) => interpolate(applyGender(text ?? '', gender.value), save)

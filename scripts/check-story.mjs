@@ -5,7 +5,7 @@
    - all text exists in Bulgarian and English
      (titles, paragraphs, choices, dice outcomes, test/lesson
      results, enemies, endings, items, song moods and lines)
-   - every [m|f|n] word form has exactly three forms
+   - every word form has three or four forms: [m|f|n] or [m|f|n|p]
    - every section can be reached (random playthroughs)
    Exits with code 1 when something is wrong.
 ===================================================== */
@@ -19,13 +19,18 @@ const { MOODS, LINES_PER_MOOD } = await import('src/story/song.js')
 const E = await import('src/game/engine.js')
 const bg = (await import('src/story/content/bg.js')).default
 const en = (await import('src/story/content/en.js')).default
+const bgPlural = (await import('src/story/content/bg-plural.js')).default
+const { sourceHash } = await import('../tools/make-plural.mjs')
 
 const GAMES = Number(process.argv[2]) || 5000
 const problems = []
 const LANGS = [
   ['bg', bg],
   ['en', en],
+  ['bg-вие', bgPlural],
 ]
+if (bgPlural.source !== sourceHash(bg))
+  problems.push('bg-plural.js is out of date with the Bulgarian text – run: npm run make-plural')
 
 /* ---------- structure and text ---------- */
 for (const [key, s] of Object.entries(SECTIONS)) {
@@ -92,7 +97,8 @@ const strings = (o, acc = []) => {
 for (const [lang, c] of LANGS) {
   for (const s of strings(c)) {
     for (const m of s.matchAll(FORM)) {
-      if (m[1].split('|').length !== 3) problems.push(`${lang}: "${m[0]}" should have three forms [m|f|n]`)
+      const n = m[1].split('|').length
+      if (n !== 3 && n !== 4) problems.push(`${lang}: "${m[0]}" should have three or four forms [m|f|n] / [m|f|n|p]`)
     }
     if (/\[[^\]]*$|^[^[]*\]/.test(s.replace(FORM, ''))) problems.push(`${lang}: unbalanced [ ] in "${s.slice(0, 50)}…"`)
   }

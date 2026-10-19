@@ -79,12 +79,14 @@ export default {
     addressForms: {
       m: 'He/him',
       f: 'She/her',
-      n: 'They/them',
+      n: 'Neutral (they/them)',
+      p: 'Plural (they/them)',
     },
     addressExamples: {
       m: '“Grandma’s boy”',
       f: '“Grandma’s girl”',
       n: '“Grandma’s darling”',
+      p: '“look how you’ve grown”',
     },
     genderHint: 'The story will address you this way.',
     loginAction: 'Log in',

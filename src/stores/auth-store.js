@@ -14,7 +14,7 @@ import { sanitizeAvatar } from 'src/components/avatar/avatar'
 export const USERNAME_RE = /^[a-zA-Z0-9_.-]{3,20}$/
 export const PASSWORD_MIN = 6
 export const GENDERS = ['m', 'f', 'x'] // boy, girl, other
-export const ADDRESS_FORMS = ['m', 'f', 'n'] // masculine, feminine, neutral word forms
+export const ADDRESS_FORMS = ['m', 'f', 'n', 'p'] // masculine, feminine, neutral, plural word forms
 export const GENDER_NAME_MAX = 30
 
 /** Returns an i18n error key, or null when the identity is complete. */
