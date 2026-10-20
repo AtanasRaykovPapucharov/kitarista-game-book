@@ -21,6 +21,8 @@ export const ITEMS = {
   strings: { icon: 'linear_scale' },
   feather: { icon: 'flutter_dash' },
   metronome: { icon: 'timer', attack: 1 },
+  // a shard from the fallen star; it rings like a bell when the dark is near
+  starglass: { icon: 'diamond', attack: 1 },
   recipe: {
     icon: 'receipt_long',
     use: { effects: [{ stat: 'luck', restore: true }], once: 'recipe_used' },

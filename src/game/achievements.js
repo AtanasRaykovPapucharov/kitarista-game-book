@@ -53,6 +53,7 @@ export const ACHIEVEMENTS = [
   // ---------- the story ----------
   { id: 'witness', group: 'story', icon: 'flutter_dash', rule: (s) => flag(s, 'witness') },
   { id: 'no_look_back', group: 'story', icon: 'wb_twilight', rule: (s) => flag(s, 'chose_light') },
+  { id: 'sent_home', group: 'story', icon: 'rocket_launch', rule: (s) => !!s?.flags?.colour_home },
   {
     id: 'dark_talk',
     group: 'story',

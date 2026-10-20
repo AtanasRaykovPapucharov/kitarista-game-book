@@ -2,6 +2,7 @@ import part1 from './en/part1.js'
 import part2a from './en/part2a.js'
 import part2b from './en/part2b.js'
 import part3 from './en/part3.js'
+import part3b from './en/part3b.js'
 import part4 from './en/part4.js'
 import part5 from './en/part5.js'
 import part6 from './en/part6.js'
@@ -66,6 +67,7 @@ export default {
     belyanFist: 'Belyan',
     gang: 'Belyan and his crew',
     shadow: 'The Shadow in the Dream',
+    colour: 'The colour from the well',
     kristian: 'Kristian',
     dark: 'The Dark',
   },
@@ -74,6 +76,7 @@ export default {
     guitar: { name: 'Guitar', desc: 'Yours. It smells of fresh lacquer.' },
     pancakes: { name: 'Mum’s pancakes', desc: 'Eat one to restore 4 Inspiration.' },
     pick: { name: 'Bone pick', desc: 'Grandpa’s. +1 to your attack in duels.' },
+    starglass: { name: 'Star-glass', desc: 'A piece of the fallen star. It rings when the dark is near. +1 to attack in a duel.' },
     songbook: { name: 'Songbook', desc: 'A gift from Grandma. Composing comes easier with it.' },
     strings: { name: 'Spare strings', desc: 'Strings break at the worst possible moment.' },
     feather: { name: 'Grey feather', desc: 'From the little bird under the linden. It guards you from the dark.' },
@@ -103,6 +106,7 @@ export default {
     dark: 'A figure stands before a vast circle of darkness with a violet rim. A feather glows in its hand, casting a beam into the dark.',
     light: 'A guitarist on a hill beneath a sky crossed by five faint lines of light, like a musical staff, with stars sitting on them like notes.',
     puppet: 'A figure under a spotlight with raised arms. Bright threads rise from its hands, head and feet – like a puppet’s.',
+    well: 'An ancient stone well in a meadow at the edge of a pine forest. Grey dust covers the ground around it, and a pillar of light in a nameless colour rises from the water.',
     silence: 'A dark room. A moonbeam falls on a guitar case under the bed. The strings inside glow faintly.',
   },
 
@@ -112,6 +116,7 @@ export default {
     ...part2a,
     ...part2b,
     ...part3,
+    ...part3b,
     ...part4,
     ...part5,
     ...part6,

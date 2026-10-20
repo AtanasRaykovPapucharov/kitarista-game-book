@@ -98,6 +98,7 @@ export default {
       'The presence thickens before you into a silhouette – vast, faceless, as old as nothing itself. Around it, space bends into angles that do not exist, and the stars behind it tremble, as though their light hesitated to pass.',
       '“I am what you came from and what you will return to,” it says. “Nothing gives birth to everything. For aeons I listened to silence. Give me your hands, and at last I will sing.”',
       { ifItem: 'feather', text: 'The grey feather in your pocket is warm, like a small living heart.' },
+      { ifItem: 'starglass', text: 'The star-glass in your pocket rings softly – like a little bell that remembers the way home.' },
     ],
     choices: {
       ask: '“What do you want?”',
@@ -112,6 +113,7 @@ export default {
       '“What do you want?” you ask. Your voice doesn’t tremble. Almost.',
       'The dark is silent for a long time. Then it answers – not with words but with a feeling that floods you like a cold sea: endlessness, silence, a loneliness older than the stars. Aeons without a single sound. Countless worlds it drifted past, deaf.',
       '“I was looking for light,” it says at last. “I thought I had to take it. That if I had your hands, I would have the song.”',
+      { ifFlag: 'colour_home', text: '“You sent the other one home,” it says. “The small, hungry one. I saw it rise towards the Swan. No one had ever shown the way to a thing like us.”' },
       'It isn’t so frightening any more. You know what it is – and you know you can answer it.',
     ],
     choices: {
@@ -152,6 +154,7 @@ export default {
       '“So that’s what it was,” it says, almost tenderly. “That’s why I was looking for light. Not to eat it – to hear it.”',
       'It doesn’t vanish. It becomes the silence between your notes – the pause in which a song draws breath. At the concert you play your own song, and some swear that during the last chord the lights in the hall flicker like stars. In the last row, the guest professor takes off his glasses and wipes them for a long time.',
       'That same night, at the Rozhen Observatory, the receivers record something no one can explain: in the noise between the stars, very softly, a melody is playing. Yours.',
+      { ifFlag: 'colour_home', text: 'And from the direction of Cygnus, barely audible, a second one answers it – short and grateful, like a greeting from someone who is home.' },
       'The dark shines. Nothing gives birth to everything.',
     ],
   },

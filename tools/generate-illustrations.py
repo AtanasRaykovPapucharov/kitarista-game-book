@@ -519,10 +519,62 @@ def silence():
     return img
 
 
+def well():
+    img = sky(141, top=(4, 5, 18), bottom=(22, 20, 54), neb_amount=0.85, band=(0.62, 0.2, 0.55), stars=3000)
+    L = Layer()
+    # pine forest on the slopes
+    rng = np.random.default_rng(21)
+    for i in range(46):
+        x = rng.uniform(-20, W + 20)
+        base = 470 - 60 * math.exp(-((x - 1050) / 260) ** 2) - 40 * math.exp(-((x - 120) / 200) ** 2)
+        h = rng.uniform(80, 170)
+        if 420 < x < 780:
+            continue  # the meadow stays open
+        L.poly([(x, base - h), (x - h * 0.22, base), (x + h * 0.22, base)], INK2 if h < 120 else INK)
+    L.poly([(0, 470), (W, 460), (W, H), (0, H)], INK)
+    img = over(img, L)
+    # grey dust around the well
+    L2 = Layer()
+    L2.ellipse(600, 500, 230, 42, (52, 52, 66, 255))
+    L2.ellipse(600, 500, 170, 30, (64, 64, 78, 255))
+    img = over(img, L2)
+    # the pillar of a colour with no name: shifting, sickly hues
+    y, x = np.mgrid[0:H, 0:W]
+    col = np.zeros((H, W, 3))
+    width = 34 + (480 - y) * 0.09
+    mask = np.exp(-((x - 600) / np.maximum(width, 1)) ** 2) * (y < 486) * np.clip((486 - y) / 60, 0, 1)
+    mask *= 0.55 + 0.45 * np.sin(y / 23 + np.sin(x / 17))
+    hue = (y / 140.0) % 1.0
+    # pale and sickly: a faint shimmer of hues over a washed-out grey-green
+    col[..., 0] = 0.62 + 0.16 * np.sin(hue * 6.28)
+    col[..., 1] = 0.70 + 0.14 * np.sin(hue * 6.28 + 2.3)
+    col[..., 2] = 0.66 + 0.16 * np.sin(hue * 6.28 + 4.4)
+    glowmask = gaussian_filter(mask, 8)
+    arr = np.asarray(img.convert('RGB')).astype(np.float32) / 255
+    arr = 1 - (1 - arr) * (1 - col * (mask * 0.55 + glowmask * 0.45)[..., None])
+    img = Image.fromarray((np.clip(arr, 0, 1) * 255).astype(np.uint8)).convert('RGBA')
+    # the stone well with its carved arch, in front of the light
+    L3 = Layer()
+    L3.ellipse(600, 492, 66, 16, (30, 30, 46, 255))
+    L3.rect(534, 462, 666, 492, (24, 24, 40, 255))
+    L3.ellipse(600, 462, 66, 15, (40, 40, 60, 255))
+    L3.ellipse(600, 462, 50, 10, (8, 8, 16, 255))
+    L3.rect(540, 360, 556, 466, (24, 24, 40, 255)); L3.rect(644, 360, 660, 466, (24, 24, 40, 255))
+    L3.d.arc([540 * S, 320 * S, 660 * S, 400 * S], 180, 360, fill=(24, 24, 40, 255), width=16 * S)
+    for k in range(9):  # the notches – notes in stone
+        L3.rect(552 + k * 11, 366 + (k % 3) * 3, 556 + k * 11, 372 + (k % 2) * 5, (90, 90, 120, 255))
+    # a small figure with a guitar at the edge of the dust
+    person(L3, 712, 512, 112, INK)
+    guitar(L3, 724, 480, 34, angle=-0.8, fill=INK)
+    img = over(img, L3)
+    img = glow(img, 600, 456, 40, (200, 230, 210), 0.45)
+    return img
+
+
 SCENES = {
     'void': void, 'window': window, 'guitar': guitar_light, 'corridor': corridor,
     'observatory': observatory, 'linden': linden, 'silhouette': silhouette, 'orpheus': orpheus,
-    'shop': shop, 'stage': stage, 'dark': dark, 'light': light_end, 'puppet': puppet, 'silence': silence,
+    'shop': shop, 'stage': stage, 'well': well, 'dark': dark, 'light': light_end, 'puppet': puppet, 'silence': silence,
 }
 
 if __name__ == '__main__':

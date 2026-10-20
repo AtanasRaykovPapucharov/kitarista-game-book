@@ -28,6 +28,8 @@ export const SECTION_ILLUSTRATIONS = {
   walkHome: 'linden',
   nightmare: 'silhouette',
   grandpa: 'orpheus',
+  well: 'well',
+  dawnWell: 'well',
   belyanAmbush: 'shop',
   openMic: 'shop',
   concert: 'stage',

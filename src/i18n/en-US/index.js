@@ -536,6 +536,7 @@ export default {
       song_named: { title: 'A song with a name', desc: 'Name your song at the end of the book.' },
       witness: { title: 'Last respects', desc: 'Don’t walk past the dying bird.' },
       no_look_back: { title: 'Don’t look back', desc: 'In the first dream, fly towards the light without looking back.' },
+      sent_home: { title: 'Sent home', desc: 'Show the colour from the Thracian well the way back to the stars.' },
       dark_talk: { title: 'A talk with the dark', desc: 'Ask the Dark what it wants.' },
       clean_strings: { title: 'Clean strings', desc: 'Reach an ending without a single point of Darkness.' },
       ending_guitarist: { title: 'Your song for everyone', desc: 'Reach the ending where you play your own song at the concert.' },

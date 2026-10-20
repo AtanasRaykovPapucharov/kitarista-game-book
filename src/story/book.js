@@ -320,8 +320,8 @@ export const SECTIONS = {
       failure: { to: 'shadowDuel' },
     },
   },
-  featherDream: { effects: [add('luck', 1)], next: 'announcement' },
-  drift: { effects: [add('darkness', 2), add('inspiration', 2)], next: 'announcement' },
+  featherDream: { effects: [add('luck', 1)], next: 'villageTrip' },
+  drift: { effects: [add('darkness', 2), add('inspiration', 2)], next: 'villageTrip' },
   shadowDuel: {
     duel: {
       enemy: 'shadow',
@@ -333,8 +333,102 @@ export const SECTIONS = {
       lose: 'heldDark',
     },
   },
-  wake: { effects: [add('inspiration', -1), add('luck', 1)], next: 'announcement' },
-  heldDark: { effects: [add('darkness', 1)], next: 'announcement' },
+  wake: { effects: [add('inspiration', -1), add('luck', 1)], next: 'villageTrip' },
+  heldDark: { effects: [add('darkness', 1)], next: 'villageTrip' },
+
+  /* ---------- Part III½: the Thracian well ----------
+     After Lovecraft's "The Colour Out of Space": a star falls by an
+     ancient well in Grandpa's village under Rozhen. Something in it
+     drinks colour from the living. Send it home – or don't. */
+  villageTrip: { next: 'village' },
+  village: {
+    choices: [
+      { id: 'grandpa', to: 'keepers', requires: { notFlag: 'knows_keepers' } },
+      { id: 'observatory', to: 'observatory', requires: { notFlag: 'saw_spectrum' } },
+      { id: 'well', to: 'well' },
+    ],
+  },
+  keepers: { effects: [flag('knows_keepers'), add('inspiration', 1)], next: 'village' },
+  observatory: {
+    effects: [flag('saw_spectrum'), flag('professor_hint'), add('luck', 1)],
+    next: 'village',
+  },
+  well: {
+    choices: [
+      { id: 'carvings', to: 'carvings', requires: { notFlag: 'read_carvings' } },
+      { id: 'fruit', to: 'fruit', requires: { notFlag: 'ate_fruit' } },
+      { id: 'look', to: 'lookIn' },
+      { id: 'leave', to: 'nightStorm' },
+    ],
+  },
+  carvings: { effects: [flag('read_carvings')], next: 'well' },
+  fruit: { effects: [flag('ate_fruit'), add('inspiration', -2)], next: 'well' },
+  lookIn: {
+    test: {
+      stat: 'luck',
+      success: { to: 'nightStorm', effects: [flag('saw_colour')] },
+      failure: { to: 'nightStorm', effects: [add('inspiration', -2), add('darkness', 1)] },
+    },
+  },
+  nightStorm: {
+    choices: [
+      { id: 'stay', to: 'byStove' },
+      { id: 'ask', to: 'listenerFear' },
+      { id: 'out', to: 'stormDuel' },
+    ],
+  },
+  byStove: { effects: [add('inspiration', 2)], next: 'dawnWell' },
+  listenerFear: {
+    choices: [
+      { id: 'together', to: 'pact' },
+      { id: 'alone', to: 'dawnWell' },
+    ],
+  },
+  pact: {
+    test: {
+      stat: 'luck',
+      success: { to: 'dawnWell', effects: [flag('listener_helped')] },
+      failure: { to: 'dawnWell', effects: [add('darkness', 1)] },
+    },
+  },
+  stormDuel: {
+    duel: {
+      enemy: 'colour',
+      skill: 7,
+      stamina: 6,
+      yieldAfter: 3,
+      enemyMods: [{ flag: 'saw_spectrum', add: -1 }],
+      win: 'colourWeak',
+      lose: 'colourDrinks',
+    },
+  },
+  colourWeak: { effects: [flag('colour_weak'), raise('skill')], next: 'dawnWell' },
+  colourDrinks: { effects: [add('inspiration', -3)], next: 'dawnWell' },
+  dawnWell: {
+    choices: [
+      { id: 'keepers', to: 'sendHome', requires: { flag: 'read_carvings' } },
+      { id: 'own', to: 'sendHome', requires: { counterMin: { song: 1 } } },
+      { id: 'improvise', to: 'improviseWell' },
+      { id: 'voice', to: 'voiceSends' },
+    ],
+  },
+  improviseWell: {
+    test: {
+      stat: 'skill',
+      success: { to: 'sendHome' },
+      failure: { to: 'colourStays', effects: [add('inspiration', -1)] },
+    },
+  },
+  sendHome: {
+    effects: [flag('colour_home'), give('starglass'), add('inspiration', 3), add('luck', 1)],
+    next: 'returnHome',
+  },
+  colourStays: { effects: [flag('colour_stays')], next: 'returnHome' },
+  voiceSends: {
+    effects: [flag('voice_sent'), add('darkness', 2), raise('skill')],
+    next: 'returnHome',
+  },
+  returnHome: { next: 'announcement' },
 
   /* ---------- Part IV: the practice week ---------- */
   announcement: { effects: [setCount('day', 1)], next: 'practice' },
@@ -392,7 +486,10 @@ export const SECTIONS = {
   lessonRhythm: {
     lesson: {
       id: 'rhythm',
-      success: { to: 'event', effects: [raise('skill'), add('inspiration', 1), flag('lesson_rhythm')] },
+      success: {
+        to: 'event',
+        effects: [raise('skill'), add('inspiration', 1), flag('lesson_rhythm')],
+      },
       failure: { to: 'event' },
     },
   },
@@ -519,7 +616,12 @@ export const SECTIONS = {
     next: 'openMic',
   },
   ambushWon: {
-    effects: [add('inspiration', -1), add('luck', 1), unflag('belyan_enemy'), flag('belyan_respect')],
+    effects: [
+      add('inspiration', -1),
+      add('luck', 1),
+      unflag('belyan_enemy'),
+      flag('belyan_respect'),
+    ],
     next: 'openMic',
   },
   ambushLost: {
@@ -662,6 +764,8 @@ export const SECTIONS = {
         { flag: 'told_mom', add: -1 },
         { flag: 'recipe_own', add: -1 },
         { flag: 'dark_understood', add: -2 },
+        { flag: 'colour_home', add: -1 },
+        { flag: 'listener_helped', add: -1 },
       ],
       playerMods: [
         { flag: 'ancestors', add: 1 },
