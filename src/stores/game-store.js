@@ -7,6 +7,7 @@ import { SECTIONS, sectionNumber } from 'src/story/book'
 import { Notify } from 'quasar'
 import { i18n } from 'src/boot/i18n'
 import { ACHIEVEMENT_BY_ID, newlyEarned } from 'src/game/achievements'
+import { MISSIONS } from 'src/story/missions'
 import { cues } from 'src/game/sound'
 
 /* =====================================================
@@ -41,6 +42,7 @@ export const useGameStore = defineStore('game', {
     choices: (state) => (state.save ? engine.visibleChoices(state.save) : []),
     pendingChallenge: (state) => (state.save ? engine.hasPendingChallenge(state.save) : false),
     canDuelLuck: (state) => (state.save ? engine.canDuelLuck(state.save) : false),
+    musicTopics: (state) => (state.save ? engine.musicTopics(state.save) : []),
     song: (state) => (state.save ? engine.songOf(state.save) : { title: '', verses: [] }),
     songPending: (state) => (state.save ? engine.pendingVerses(state.save) > 0 : false),
   },
@@ -140,8 +142,34 @@ export const useGameStore = defineStore('game', {
     rollTable() {
       this.commit(engine.resolveRoll(this.save))
     },
-    duelRound() {
-      this.commit(engine.duelRound(this.save))
+    duelRound(opts) {
+      this.commit(engine.duelRound(this.save, opts))
+    },
+
+    /* ---------- practice-room missions ---------- */
+
+    /** Called by the practice tools: { type: 'chord' | 'scale' | 'interval' | 'tuned', … }. */
+    missionEvent(event) {
+      if (!this.save || this.save.status !== 'playing') return
+      for (const [id, state] of Object.entries(this.save.missions ?? {})) {
+        if (state !== 'active' || !MISSIONS[id]?.check(event)) continue
+        this.commit(engine.completeMission(this.save, id))
+        const t = i18n.global.t
+        cues.achievement()
+        Notify.create({
+          position: 'top',
+          color: 'dark',
+          textColor: 'white',
+          icon: MISSIONS[id].icon,
+          iconColor: 'accent',
+          message: t('missions.done'),
+          caption: `${t(`missions.list.${id}.title`)} · ${t(`missions.reward.${id}`)}`,
+          timeout: 5000,
+          actions: [
+            { label: t('missions.backToBook'), color: 'accent', noCaps: true, to: '/play' },
+          ],
+        })
+      }
     },
     duelLuck() {
       this.commit(engine.duelLuck(this.save))

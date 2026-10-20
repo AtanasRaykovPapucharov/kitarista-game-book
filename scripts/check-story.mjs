@@ -73,6 +73,22 @@ for (const [lang, c] of LANGS) {
   for (const key of Object.keys(c.sections)) if (!SECTIONS[key]) problems.push(`${lang}: text for unknown section "${key}"`)
 }
 
+/* ---------- practice-room missions ---------- */
+{
+  const { MISSIONS } = await import('src/story/missions.js')
+  const ui = { bg: (await import('src/i18n/bg/index.js')).default, en: (await import('src/i18n/en-US/index.js')).default }
+  for (const [key, sec] of Object.entries(SECTIONS)) {
+    if (sec.mission && !MISSIONS[sec.mission]) problems.push(`${key}: unknown mission "${sec.mission}"`)
+  }
+  for (const id of Object.keys(MISSIONS)) {
+    for (const [lang, u] of Object.entries(ui)) {
+      const m = u.missions?.list?.[id]
+      if (!m?.title || !m?.task || !u.missions?.reward?.[id]) problems.push(`${lang}: mission "${id}" needs a title, task and reward text`)
+    }
+    if (!Object.values(SECTIONS).some((sec) => sec.mission === id)) problems.push(`mission "${id}" is never handed out`)
+  }
+}
+
 /* ---------- illustrations ---------- */
 {
   const fs = await import('node:fs')

@@ -167,6 +167,11 @@ export default {
     noSave: 'You have no adventure in progress.',
   },
   duel: {
+    musicMove: 'Music move',
+    musicHelp: 'Music move: answer a question about what you learned in the practice room. Right: +3 to this round’s attack, wrong: −1.',
+    musicLocked: 'Complete missions in the practice room to unlock music moves in duels.',
+    musicHit: 'The music move was right: +3.',
+    musicMiss: 'The music move was wrong: −1.',
     title: 'Duel',
     you: 'You',
     nerve: 'Nerve',
@@ -429,7 +434,7 @@ export default {
     },
     scales: {
       ionian: 'Ionian (major)',
-      dorian: 'Dorian',
+      dorian: '+1 Luck (and maximum)',
       phrygian: 'Phrygian',
       lydian: 'Lydian',
       mixolydian: 'Mixolydian',
@@ -537,6 +542,9 @@ export default {
       witness: { title: 'Last respects', desc: 'Don’t walk past the dying bird.' },
       no_look_back: { title: 'Don’t look back', desc: 'In the first dream, fly towards the light without looking back.' },
       sent_home: { title: 'Sent home', desc: 'Show the colour from the Thracian well the way back to the stars.' },
+      eurydice: { title: 'Eurydice', desc: 'Lead Viktoria out of the sea’s song without looking back.' },
+      true_voice: { title: 'The true voice', desc: 'Find Mite in the mine among the Echo’s voices.' },
+      all_missions: { title: 'Practice-room pupil', desc: 'Complete all six missions from the book.' },
       dark_talk: { title: 'A talk with the dark', desc: 'Ask the Dark what it wants.' },
       clean_strings: { title: 'Clean strings', desc: 'Reach an ending without a single point of Darkness.' },
       ending_guitarist: { title: 'Your song for everyone', desc: 'Reach the ending where you play your own song at the concert.' },
@@ -549,6 +557,57 @@ export default {
       listener: { title: 'A bedtime story', desc: 'Let the narrator read you a section of the book.' },
       new_face: { title: 'A new face', desc: 'Create your own avatar.' },
     },
+  },
+  missions: {
+    title: 'Missions',
+    label: 'Practice room mission',
+    doneLabel: 'Mission complete',
+    done: 'Mission complete!',
+    backToBook: 'Back to the book',
+    rewardIs: 'Reward: {reward}.',
+    unlocks: 'Unlocks a music move in duels: {topic}.',
+    tools: { tones: 'Open Tones', tuner: 'Open Tuner' },
+    topics: { chords: 'chords', intervals: 'intervals', scales: 'scales and modes', tuning: 'tuning by ear' },
+    reward: {
+      chord_c: '+1 Inspiration (and maximum)',
+      tune: '+1 Luck (and maximum)',
+      fifth: '+1 Skill',
+      chord_am: '+1 Luck (and maximum)',
+      pentatonic: '+1 Inspiration (and maximum)',
+      dorian: '+1 Luck',
+    },
+    list: {
+      chord_c: {
+        title: 'The C major chord',
+        task: 'Dad says: “Every guitarist’s first chord is C.” In Tones, mark the notes of C major on the fretboard – C, E and G – for example in the open shape x32010.',
+      },
+      tune: {
+        title: 'Six strings in tune',
+        task: '“An untuned string is a door. Keep it shut.” Tune all six strings of your real guitar with the Tuner.',
+      },
+      fifth: {
+        title: 'The bell – a perfect fifth',
+        task: 'In Tones, mark two notes a perfect fifth apart – 7 semitones, for example E and B.',
+      },
+      chord_am: {
+        title: 'The sad A minor',
+        task: 'The Thracians saw off their dead with songs. Many sad songs start from A minor: in Tones, mark A, C and E.',
+      },
+      pentatonic: {
+        title: 'The keepers’ song',
+        task: 'The notches on the arch come in groups of five. That is a pentatonic scale. In Tones, mark the five notes of A minor pentatonic: A, C, D, E and G.',
+      },
+      dorian: {
+        title: 'The mode of the sea',
+        task: 'The lighthouse keeper hums an old fishermen’s song in the Dorian mode. In Tones, mark the seven notes of D Dorian – D, E, F, G, A, B and C – with D as the lowest.',
+      },
+    },
+  },
+  mq: {
+    diagram: 'Which chord is this?',
+    interval: 'Which interval do you hear?',
+    oddNote: 'Which note is NOT in {scale}?',
+    tuning: 'Is the string higher or lower than the reference?',
   },
   about: {
     title: 'About',

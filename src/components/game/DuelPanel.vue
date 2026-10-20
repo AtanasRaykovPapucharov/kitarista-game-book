@@ -6,6 +6,7 @@ import { useStory } from 'src/game/useStory'
 import { cues } from 'src/game/sound'
 import DiceTray from './DiceTray.vue'
 import TurnToButton from './TurnToButton.vue'
+import MusicMove from './MusicMove.vue'
 
 const { t } = useI18n()
 const game = useGameStore()
@@ -19,14 +20,22 @@ const showRound = computed(() => last.value && !rolling.value)
 
 const resultText = computed(() => {
   if (!last.value) return ''
-  return { win: t('duel.roundWon'), lose: t('duel.roundLost'), tie: t('duel.roundTie') }[last.value.result]
+  return { win: t('duel.roundWon'), lose: t('duel.roundLost'), tie: t('duel.roundTie') }[
+    last.value.result
+  ]
 })
 
-function fight() {
+function fight(bonus = 0) {
+  asking.value = false
   rolling.value = true
   cues.dice(4) // two dice each side
-  game.duelRound()
+  game.duelRound({ bonus })
 }
+
+/* a music move: answer a question from what was learned in the practice room */
+const asking = ref(false)
+const topics = computed(() => game.musicTopics)
+const answered = (correct) => fight(correct ? 3 : -1)
 
 function settled() {
   rolling.value = false
@@ -44,7 +53,9 @@ function luck() {
   <section v-if="duel" class="challenge duel">
     <header class="challenge__head">
       <h2 class="challenge__title">{{ t('duel.title') }}: {{ enemyName(duel.enemy) }}</h2>
-      <p class="challenge__rule">{{ t('duel.lostRounds', { lost: duel.lost, max: duel.yieldAfter }) }}</p>
+      <p class="challenge__rule">
+        {{ t('duel.lostRounds', { lost: duel.lost, max: duel.yieldAfter }) }}
+      </p>
     </header>
 
     <div class="duel__sides">
@@ -55,16 +66,22 @@ function luck() {
           <span v-if="duel.playerBonus" class="duel__bonus">+{{ duel.playerBonus }}</span>
         </p>
         <p class="duel__stat">
-          {{ t('stats.inspiration') }} {{ game.save.stats.inspiration }} / {{ game.save.initial.inspiration }}
+          {{ t('stats.inspiration') }} {{ game.save.stats.inspiration }} /
+          {{ game.save.initial.inspiration }}
         </p>
         <DiceTray :values="last?.playerDice ?? null" :size="44" @settled="settled" />
-        <p v-if="showRound" class="duel__attack">{{ t('duel.attackValue', { n: last.playerTotal }) }}</p>
+        <p v-if="showRound" class="duel__attack">
+          {{ t('duel.attackValue', { n: last.playerTotal }) }}
+        </p>
       </div>
 
       <div class="duel__side">
         <h3 class="duel__name">{{ enemyName(duel.enemy) }}</h3>
         <p class="duel__stat">{{ t('duel.enemySkill', { n: duel.enemySkill }) }}</p>
-        <div class="duel__nerve" :aria-label="`${t('duel.nerve')} ${duel.enemyStamina} / ${duel.enemyStaminaMax}`">
+        <div
+          class="duel__nerve"
+          :aria-label="`${t('duel.nerve')} ${duel.enemyStamina} / ${duel.enemyStaminaMax}`"
+        >
           <span class="duel__nerve-label">{{ t('duel.nerve') }}</span>
           <span
             v-for="n in duel.enemyStaminaMax"
@@ -74,17 +91,41 @@ function luck() {
           />
         </div>
         <DiceTray :values="last?.enemyDice ?? null" :size="44" />
-        <p v-if="showRound" class="duel__attack">{{ t('duel.attackValue', { n: last.enemyTotal }) }}</p>
+        <p v-if="showRound" class="duel__attack">
+          {{ t('duel.attackValue', { n: last.enemyTotal }) }}
+        </p>
       </div>
     </div>
 
     <p v-if="showRound" class="challenge__outcome" aria-live="polite">
       {{ t('duel.round', { n: duel.rounds.length }) }}. {{ resultText }}
-      <template v-if="last.luck"> {{ last.luck.lucky ? t('duel.luckGood') : t('duel.luckBad') }}</template>
+      <template v-if="last.music">
+        {{ last.music > 0 ? t('duel.musicHit') : t('duel.musicMiss') }}</template
+      >
+      <template v-if="last.luck">
+        {{ last.luck.lucky ? t('duel.luckGood') : t('duel.luckBad') }}</template
+      >
     </p>
 
-    <div v-if="!resolved" class="duel__actions">
-      <button type="button" class="gb-btn gb-btn--primary" :disabled="rolling" @click="fight">
+    <MusicMove
+      v-if="asking && !resolved && !rolling"
+      :topics="topics"
+      @answer="answered"
+      @cancel="asking = false"
+    />
+
+    <div v-if="!resolved && !asking" class="duel__actions">
+      <button
+        v-if="topics.length"
+        type="button"
+        class="gb-btn"
+        :disabled="rolling"
+        :title="t('duel.musicHelp')"
+        @click="asking = true"
+      >
+        <q-icon name="music_note" size="18px" class="q-mr-xs" />{{ t('duel.musicMove') }}
+      </button>
+      <button type="button" class="gb-btn gb-btn--primary" :disabled="rolling" @click="fight()">
         {{ t('duel.fight') }}
       </button>
       <button
@@ -97,7 +138,12 @@ function luck() {
         {{ t('duel.useLuck') }} ({{ game.save.stats.luck }})
       </button>
     </div>
-    <p v-if="!resolved && game.canDuelLuck && !rolling" class="challenge__rule">{{ t('duel.luckHelp') }}</p>
+    <p v-if="!resolved && game.canDuelLuck && !rolling" class="challenge__rule">
+      {{ t('duel.luckHelp') }}
+    </p>
+    <p v-if="!resolved && !asking" class="challenge__rule">
+      {{ topics.length ? t('duel.musicHelp') : t('duel.musicLocked') }}
+    </p>
 
     <template v-if="resolved && !rolling">
       <p class="challenge__verdict" :class="resolved.won ? 'is-success' : 'is-failure'">

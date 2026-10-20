@@ -5,7 +5,9 @@ import part3 from './en/part3.js'
 import part3b from './en/part3b.js'
 import part4 from './en/part4.js'
 import part5 from './en/part5.js'
+import part5b from './en/part5b.js'
 import part6 from './en/part6.js'
+import part6b from './en/part6b.js'
 
 /* The game-book text in English.
    Keys match src/story/book.js.
@@ -68,6 +70,8 @@ export default {
     gang: 'Belyan and his crew',
     shadow: 'The Shadow in the Dream',
     colour: 'The colour from the well',
+    deep: 'The song from the deep',
+    echo: 'The echo',
     kristian: 'Kristian',
     dark: 'The Dark',
   },
@@ -77,6 +81,7 @@ export default {
     pancakes: { name: 'Mum’s pancakes', desc: 'Eat one to restore 4 Inspiration.' },
     pick: { name: 'Bone pick', desc: 'Grandpa’s. +1 to your attack in duels.' },
     starglass: { name: 'Star-glass', desc: 'A piece of the fallen star. It rings when the dark is near. +1 to attack in a duel.' },
+    seashell: { name: 'Shell from Maglitsa', desc: 'Hold it to your ear to regain 3 Inspiration. Once.' },
     songbook: { name: 'Songbook', desc: 'A gift from Grandma. Composing comes easier with it.' },
     strings: { name: 'Spare strings', desc: 'Strings break at the worst possible moment.' },
     feather: { name: 'Grey feather', desc: 'From the little bird under the linden. It guards you from the dark.' },
@@ -107,6 +112,8 @@ export default {
     light: 'A guitarist on a hill beneath a sky crossed by five faint lines of light, like a musical staff, with stars sitting on them like notes.',
     puppet: 'A figure under a spotlight with raised arms. Bright threads rise from its hands, head and feet – like a puppet’s.',
     well: 'An ancient stone well in a meadow at the edge of a pine forest. Grey dust covers the ground around it, and a pillar of light in a nameless colour rises from the water.',
+    sea: 'A long stone pier in thick fog. At its end stands a small figure, and the sea before it rises like a vast, breathing hill. A lighthouse beam cuts through the fog.',
+    mine: 'The mouth of an old mine in a mountainside at night. Rusty rails run into the dark, and deep inside a lantern glimmers.',
     silence: 'A dark room. A moonbeam falls on a guitar case under the bed. The strings inside glow faintly.',
   },
 
@@ -119,6 +126,8 @@ export default {
     ...part3b,
     ...part4,
     ...part5,
+    ...part5b,
+    ...part6b,
     ...part6,
   },
 }

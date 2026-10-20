@@ -45,11 +45,17 @@ const pair = computed(() =>
 )
 // achievements: naming a chord, and finding a mode
 const game = useGameStore()
-watch(chord, (c) => c && game.award('tone_chord'))
-watch(
-  () => scales.value.some((s) => s.exact && s.kind === 'mode'),
-  (found) => found && game.award('tone_mode'),
-)
+// achievements and book missions hear what is marked here
+watch(chord, (c) => {
+  if (!c) return
+  game.award('tone_chord')
+  game.missionEvent({ type: 'chord', root: c.root, quality: c.quality })
+})
+watch(exactScales, (list) => {
+  if (list.some((s) => s.kind === 'mode')) game.award('tone_mode')
+  for (const s of list) game.missionEvent({ type: 'scale', key: s.key, root: s.root })
+})
+watch(pair, (iv) => iv && game.missionEvent({ type: 'interval', semis: iv.semis }))
 
 const lowest = computed(() => (notes.value.length ? NOTE_NAMES[notes.value[0] % 12] : ''))
 // guitar music is written an octave above how it sounds – show names like the chart does

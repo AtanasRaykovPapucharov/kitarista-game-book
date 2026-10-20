@@ -238,7 +238,11 @@ const tuned = ref(new Set())
 const game = useGameStore()
 watch(
   () => tuned.value.size,
-  (n) => n >= 6 && game.award('tuner'),
+  (n) => {
+    if (n < 6) return
+    game.award('tuner')
+    game.missionEvent({ type: 'tuned' })
+  },
 )
 
 const currentTuning = computed(() => TUNINGS.find((t) => t.value === tuningId.value))

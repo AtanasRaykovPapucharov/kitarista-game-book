@@ -13,6 +13,7 @@
 
 import { SECTIONS, START, SILENCE, DARKNESS_MAX, ENDINGS } from 'src/story/book'
 import { ITEMS } from 'src/story/items'
+import { MISSIONS, topicsOf } from 'src/story/missions'
 
 export const SAVE_VERSION = 1
 
@@ -67,6 +68,7 @@ export function newGame(hero) {
     duel: null,
     trail: [],
     song: { title: '', verses: [] },
+    missions: {}, // id → 'active' | 'done'
     endingId: null,
     startedAt: now,
     updatedAt: now,
@@ -166,6 +168,10 @@ export function enterSection(state, key, viaEffects = []) {
     s.endingId = section.ending
   }
   if (section.duel) s.duel = startDuel(s, section.duel)
+  // a section can hand the reader a practice-room mission
+  if (section.mission && !(s.missions ?? {})[section.mission]) {
+    s.missions = { ...(s.missions ?? {}), [section.mission]: 'active' }
+  }
 
   s.updatedAt = new Date().toISOString()
   return s
@@ -213,7 +219,9 @@ export function composeVerse(state, { mood, line, prog }) {
 }
 
 export function nameSong(state, title) {
-  const clean = String(title ?? '').trim().slice(0, 60)
+  const clean = String(title ?? '')
+    .trim()
+    .slice(0, 60)
   if (!clean) return state
   const s = clone(state)
   s.song = { ...songOf(s), title: clean }
@@ -321,7 +329,8 @@ function modsTotal(state, mods = []) {
 
 export function playerAttackBonus(state, def) {
   let bonus = modsTotal(state, def.playerMods)
-  for (const [id, n] of Object.entries(state.items)) if (n > 0 && ITEMS[id]?.attack) bonus += ITEMS[id].attack
+  for (const [id, n] of Object.entries(state.items))
+    if (n > 0 && ITEMS[id]?.attack) bonus += ITEMS[id].attack
   return bonus
 }
 
@@ -346,14 +355,33 @@ function finishDuelIfOver(s, def) {
   else if (d.lost >= d.yieldAfter) s.resolved = { kind: 'duel', won: false, to: def.lose }
 }
 
-export function duelRound(state) {
+/* ---------- practice-room missions ---------- */
+export const musicTopics = (state) => topicsOf(state.missions)
+
+/** Finishes an active mission: its reward, and a "know_<topic>" flag. */
+export function completeMission(state, id) {
+  if (state.missions?.[id] !== 'active' || !MISSIONS[id]) return state
+  const s = clone(state)
+  s.missions = { ...s.missions, [id]: 'done' }
+  applyEffects(s, [...MISSIONS[id].reward, { flag: `know_${MISSIONS[id].topic}` }])
+  s.updatedAt = new Date().toISOString()
+  return s
+}
+
+/**
+ * One duel round. A "music move" (a question answered in the duel panel)
+ * adds `bonus` to this round's attack: +3 when right, −1 when wrong –
+ * only possible once a mission has unlocked a topic.
+ */
+export function duelRound(state, { bonus = 0 } = {}) {
   const def = SECTIONS[state.section].duel
   if (!def || state.resolved || !state.duel) return state
   const s = clone(state)
   const d = s.duel
   const playerDice = rollDice(2)
   const enemyDice = rollDice(2)
-  const playerTotal = sum(playerDice) + s.stats.skill + d.playerBonus
+  const music = musicTopics(s).length ? Math.max(-1, Math.min(3, Math.round(bonus) || 0)) : 0
+  const playerTotal = sum(playerDice) + s.stats.skill + d.playerBonus + music
   const enemyTotal = sum(enemyDice) + d.enemySkill
   let result = 'tie'
   if (playerTotal > enemyTotal) {
@@ -365,7 +393,15 @@ export function duelRound(state) {
     d.lost += 1
     s.stats.inspiration = Math.max(0, s.stats.inspiration - 2)
   }
-  d.rounds.push({ playerDice, enemyDice, playerTotal, enemyTotal, result, luck: null })
+  d.rounds.push({
+    playerDice,
+    enemyDice,
+    playerTotal,
+    enemyTotal,
+    result,
+    luck: null,
+    music: music || null,
+  })
   s.lastChanges = result === 'lose' ? [{ kind: 'stat', id: 'inspiration', delta: -2 }] : []
   finishDuelIfOver(s, def)
   s.updatedAt = new Date().toISOString()
@@ -374,7 +410,13 @@ export function duelRound(state) {
 
 export function canDuelLuck(state) {
   const round = state.duel?.rounds.at(-1)
-  return !!round && round.result !== 'tie' && round.luck === null && !state.resolved && state.stats.luck > 0
+  return (
+    !!round &&
+    round.result !== 'tie' &&
+    round.luck === null &&
+    !state.resolved &&
+    state.stats.luck > 0
+  )
 }
 
 export function duelLuck(state) {

@@ -8,6 +8,7 @@ import { ITEMS } from 'src/story/items'
 import { DARKNESS_MAX, sectionNumber } from 'src/story/book'
 import { cues } from 'src/game/sound'
 import UserAvatar from 'src/components/avatar/UserAvatar.vue'
+import { MISSIONS } from 'src/story/missions'
 import { useStory as useSongText } from 'src/game/useStory'
 
 /* sticky: keep the sheet in view while the reader scrolls the page.
@@ -55,6 +56,11 @@ const items = computed(() =>
 const trail = computed(() => (save.value?.trail ?? []).slice(-14).map(sectionNumber))
 const song = computed(() => save.value?.counters?.song ?? 0)
 const { lyric } = useSongText()
+const missions = computed(() =>
+  Object.entries(save.value?.missions ?? {})
+    .map(([id, state]) => ({ id, done: state === 'done', tool: MISSIONS[id]?.tool }))
+    .sort((a, b) => a.done - b.done),
+)
 const verses = computed(() => (save.value?.song?.verses ?? []).map((v) => lyric(v.mood, v.line)))
 
 // the inner wrapper only exists while there is a save; re-observe when it appears
@@ -129,6 +135,19 @@ function abandon() {
           <ol v-if="verses.length" class="sheet__verses">
             <li v-for="(v, i) in verses" :key="i">{{ v }}</li>
           </ol>
+        </section>
+
+        <section v-if="missions.length" class="sheet__block">
+          <h3 class="sheet__sub sheet__sub--first">{{ t('missions.title') }}</h3>
+          <ul class="sheet__missions">
+            <li v-for="mm in missions" :key="mm.id" :class="{ 'is-done': mm.done }">
+              <q-icon :name="mm.done ? 'check_circle' : 'radio_button_unchecked'" size="16px" />
+              <router-link v-if="!mm.done" :to="mm.tool" class="gb-link">{{
+                t(`missions.list.${mm.id}.title`)
+              }}</router-link>
+              <span v-else>{{ t(`missions.list.${mm.id}.title`) }}</span>
+            </li>
+          </ul>
         </section>
 
         <section class="sheet__block">
@@ -253,6 +272,24 @@ function abandon() {
 .sheet__of {
   color: var(--gb-muted);
   margin-left: 2px;
+}
+
+.sheet__missions {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.92rem;
+}
+
+.sheet__missions li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.sheet__missions li.is-done {
+  color: var(--gb-muted);
 }
 
 .sheet__verses {

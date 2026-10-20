@@ -99,6 +99,7 @@ export const SECTIONS = {
   },
   // Dad shows the first chords – the first guitar lesson
   dadLesson: {
+    mission: 'chord_c',
     lesson: {
       id: 'chords',
       success: { to: 'school', effects: [raise('skill'), flag('lesson_chords')] },
@@ -361,7 +362,7 @@ export const SECTIONS = {
       { id: 'leave', to: 'nightStorm' },
     ],
   },
-  carvings: { effects: [flag('read_carvings')], next: 'well' },
+  carvings: { mission: 'pentatonic', effects: [flag('read_carvings')], next: 'well' },
   fruit: { effects: [flag('ate_fruit'), add('inspiration', -2)], next: 'well' },
   lookIn: {
     test: {
@@ -470,6 +471,7 @@ export const SECTIONS = {
     },
   },
   lessonTuning: {
+    mission: 'tune',
     lesson: {
       id: 'tuning',
       success: { to: 'event', effects: [raise('skill'), flag('lesson_tuning')] },
@@ -477,6 +479,7 @@ export const SECTIONS = {
     },
   },
   lessonIntervals: {
+    mission: 'fifth',
     lesson: {
       id: 'intervals',
       success: { to: 'event', effects: [raise('skill'), flag('lesson_intervals')] },
@@ -554,7 +557,7 @@ export const SECTIONS = {
       failure: { to: 'dayEnd', effects: [add('inspiration', -3)] },
     },
   },
-  grandpa: { effects: [add('luck', 1), flag('ancestors')], next: 'dayEnd' },
+  grandpa: { mission: 'chord_am', effects: [add('luck', 1), flag('ancestors')], next: 'dayEnd' },
   whisper: {
     choices: [
       { id: 'listen', to: 'dayEnd', effects: [add('darkness', 1), raise('skill')] },
@@ -647,8 +650,8 @@ export const SECTIONS = {
   cover: {
     test: {
       stat: 'skill',
-      success: { to: 'recipe', effects: [add('luck', 1)] },
-      failure: { to: 'recipe', effects: [add('inspiration', -2)] },
+      success: { to: 'seaTrip', effects: [add('luck', 1)] },
+      failure: { to: 'seaTrip', effects: [add('inspiration', -2)] },
     },
   },
   kristianDuel: {
@@ -664,22 +667,94 @@ export const SECTIONS = {
   },
   beatKristian: {
     effects: [add('inspiration', 3), flag('beat_kristian'), give('metronome')],
-    next: 'recipe',
+    next: 'seaTrip',
   },
-  lostKristian: { effects: [add('inspiration', -2)], next: 'recipe' },
+  lostKristian: { effects: [add('inspiration', -2)], next: 'seaTrip' },
   duet: {
     effects: [add('luck', 2), add('inspiration', 2), flag('played_duet')],
-    next: 'recipe',
+    next: 'seaTrip',
   },
   ownSong: {
     showSong: true,
     effects: [add('luck', 2), add('inspiration', 2), flag('played_own')],
-    next: 'recipe',
+    next: 'seaTrip',
   },
   voicePlays: {
     effects: [add('darkness', 2), add('inspiration', 2), flag('voice_played')],
-    next: 'recipe',
+    next: 'seaTrip',
   },
+
+  /* ---------- Part V½: the misty shore ----------
+     After Lovecraft's "The Shadow over Innsmouth": a class trip to the
+     fog-bound fishing town Viktoria's mother came from. The sea sings,
+     and calls her. Lead her out of the dark without looking back. */
+  seaTrip: { next: 'fogTown' },
+  fogTown: {
+    choices: [
+      { id: 'lighthouse', to: 'lighthouse' },
+      { id: 'harbour', to: 'harbour' },
+      { id: 'group', to: 'stayGroup' },
+    ],
+  },
+  lighthouse: { mission: 'dorian', effects: [flag('knows_deep'), add('luck', 1)], next: 'harbour' },
+  harbour: {
+    choices: [
+      { id: 'hold', to: 'holdHand' },
+      { id: 'follow', to: 'pier' },
+      { id: 'voice', to: 'deepVoice' },
+    ],
+  },
+  holdHand: {
+    test: {
+      stat: 'luck',
+      success: { to: 'pier', effects: [flag('held_her')] },
+      failure: { to: 'pier', effects: [add('inspiration', -2)] },
+    },
+  },
+  pier: {
+    choices: [
+      { id: 'lead', to: 'songBack' },
+      { id: 'answer', to: 'deepDuel' },
+      { id: 'voice', to: 'deepVoice' },
+    ],
+  },
+  songBack: {
+    test: {
+      stat: 'skill',
+      success: { to: 'ledOut' },
+      failure: { to: 'lookedBack' },
+    },
+  },
+  deepDuel: {
+    duel: {
+      enemy: 'deep',
+      skill: 8,
+      stamina: 8,
+      yieldAfter: 3,
+      enemyMods: [
+        { flag: 'knows_deep', add: -1 },
+        { flag: 'held_her', add: -1 },
+      ],
+      win: 'ledOut',
+      lose: 'lookedBack',
+    },
+  },
+  ledOut: {
+    effects: [
+      flag('viktoria_saved'),
+      flag('viktoria_comes'),
+      give('seashell'),
+      add('inspiration', 2),
+    ],
+    next: 'seaReturn',
+  },
+  lookedBack: { effects: [flag('sea_took'), add('inspiration', -2)], next: 'seaReturn' },
+  deepVoice: {
+    effects: [flag('viktoria_comes'), flag('voice_deal_sea'), add('darkness', 2)],
+    next: 'seaReturn',
+  },
+  stayGroup: { effects: [flag('sea_took')], next: 'seaReturn' },
+  seaReturn: { next: 'recipe' },
 
   /* ---------- Part VI: the recipe for luck ---------- */
   recipe: {
@@ -704,9 +779,59 @@ export const SECTIONS = {
   },
   tellMom: {
     effects: [add('darkness', -2), add('inspiration', 2), flag('told_mom')],
-    next: 'concertEve',
+    next: 'mineCall',
   },
-  hideMom: { effects: [add('darkness', 1)], next: 'concertEve' },
+  hideMom: { effects: [add('darkness', 1)], next: 'mineCall' },
+
+  /* ---------- Part VI½: under the village ----------
+     After Lovecraft's "The Lurking Fear": a boy is lost in the old lead
+     mine under Grandpa's village, and something down there calls
+     with borrowed voices. Find the true one. */
+  mineCall: { next: 'mineEntrance' },
+  mineEntrance: {
+    choices: [
+      { id: 'miner', to: 'oldMiner', requires: { notFlag: 'knows_echo' } },
+      { id: 'goIn', to: 'tunnels' },
+    ],
+  },
+  oldMiner: { effects: [flag('knows_echo')], next: 'mineEntrance' },
+  tunnels: {
+    choices: [
+      { id: 'mom', to: 'falseMom' },
+      { id: 'listen', to: 'listenTrue' },
+      { id: 'glass', to: 'starglassWay', requires: { item: 'starglass' } },
+      { id: 'shout', to: 'shoutName' },
+    ],
+  },
+  shoutName: { effects: [flag('echo_learned'), add('darkness', 1)], next: 'falseMom' },
+  listenTrue: {
+    test: {
+      stat: 'luck',
+      success: { to: 'foundMite' },
+      failure: { to: 'falseMom' },
+    },
+  },
+  starglassWay: { effects: [flag('starglass_way')], next: 'foundMite' },
+  falseMom: {
+    duel: {
+      enemy: 'echo',
+      skill: 7,
+      stamina: 7,
+      yieldAfter: 3,
+      enemyMods: [
+        { flag: 'knows_echo', add: -1 },
+        { flag: 'told_mom', add: -1 },
+      ],
+      win: 'foundMite',
+      lose: 'lostInDark',
+    },
+  },
+  foundMite: {
+    effects: [flag('mite_saved'), add('luck', 1), add('inspiration', 2)],
+    next: 'mineExit',
+  },
+  lostInDark: { effects: [add('inspiration', -3)], next: 'mineExit' },
+  mineExit: { next: 'concertEve' },
 
   /* ---------- Part VII: the dark ---------- */
   concertEve: {
@@ -766,6 +891,7 @@ export const SECTIONS = {
         { flag: 'dark_understood', add: -2 },
         { flag: 'colour_home', add: -1 },
         { flag: 'listener_helped', add: -1 },
+        { flag: 'viktoria_saved', add: -1 },
       ],
       playerMods: [
         { flag: 'ancestors', add: 1 },

@@ -18,6 +18,7 @@ import SongComposer from 'src/components/game/SongComposer.vue'
 import SongCard from 'src/components/game/SongCard.vue'
 import { narrator, readingIndex, speak, setReader, stop as stopNarrator } from 'src/game/narrator'
 import SectionIllustration from 'src/components/game/SectionIllustration.vue'
+import MissionCard from 'src/components/game/MissionCard.vue'
 import { SECTION_ILLUSTRATIONS, ILLUSTRATIONS_AT_END } from 'src/story/illustrations'
 import { ENDINGS, DARKNESS_MAX } from 'src/story/book'
 import { useSettingsStore } from 'src/stores/settings-store'
@@ -138,6 +139,8 @@ onBeforeUnmount(() => {
         <RollPanel v-else-if="section.roll" :roll="section.roll" />
         <DuelPanel v-else-if="section.duel" />
         <LessonPanel v-else-if="section.lesson" :lesson="section.lesson" />
+
+        <MissionCard v-if="section.mission" :id="section.mission" />
 
         <SongComposer v-if="game.songPending" />
         <SongCard v-else-if="section.showSong && game.song.verses.length" :song="game.song" />

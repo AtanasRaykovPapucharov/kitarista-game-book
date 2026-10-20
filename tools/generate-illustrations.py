@@ -571,10 +571,79 @@ def well():
     return img
 
 
+def sea():
+    img = sky(151, top=(10, 14, 26), bottom=(40, 52, 66), nebula=(90, 120, 140), neb_amount=0.25, stars=600)
+    y, x = np.mgrid[0:H, 0:W]
+    arr = np.asarray(img.convert('RGB')).astype(np.float32) / 255
+    # the sea, and a vast smooth hill of water breathing in the bay
+    sea_top = 330 - 70 * np.exp(-((x - 760) / 240) ** 2)
+    water = y > sea_top
+    deep = np.array([0.05, 0.10, 0.12])
+    shade = 0.6 + 0.4 * np.clip((y - sea_top) / 260, 0, 1)
+    arr[water] = deep * (1 / shade[water])[..., None] * 0.9
+    glowsea = np.exp(-((x - 760) / 200) ** 2) * np.exp(-((y - 360) / 60) ** 2) * water
+    arr += glowsea[..., None] * np.array([0.10, 0.35, 0.30])
+    # fog in thick, soft bands
+    fog = fbm(W, H, 5, 3, seed=7)
+    fogmask = np.clip((fog - 0.35) * 1.6, 0, 1) * np.exp(-((y - 300) / 170) ** 2)
+    arr = arr * (1 - fogmask[..., None] * 0.55) + fogmask[..., None] * np.array([0.55, 0.62, 0.66]) * 0.55
+    img = Image.fromarray((np.clip(arr, 0, 1) * 255).astype(np.uint8)).convert('RGBA')
+    # the lighthouse beam
+    img = cone(img, (150, 170), (1150, 60), (1150, 190), (230, 235, 210), 0.30, 16)
+    L = Layer()
+    # cliff and lighthouse on the left
+    L.poly([(0, 330), (90, 300), (220, 320), (260, 600), (0, 600)], INK2)
+    L.poly([(130, 300), (170, 300), (162, 160), (138, 160)], (200, 205, 200, 255))
+    L.rect(132, 148, 168, 162, INK2)
+    # the long stone pier running into the fog
+    L.poly([(260, 600), (420, 600), (700, 392), (676, 392)], INK)
+    for k in range(9):
+        t = k / 8
+        xk, yk = 340 + (688 - 340) * t, 600 - (600 - 392) * t
+        L.rect(xk - 4 + (1 - t) * -20, yk - 6, xk + 4, yk, INK)
+    # Viktoria at the end of the pier, and Tommy halfway, guitar on the back
+    person(L, 690, 392, 46, INK)
+    person(L, 560, 492, 82, INK)
+    guitar(L, 572, 470, 24, angle=0.5, fill=INK)
+    img = over(img, L)
+    img = glow(img, 150, 170, 22, (255, 245, 210), 1.0)
+    return img
+
+
+def mine():
+    img = sky(161, top=(4, 4, 14), bottom=(18, 16, 40), neb_amount=0.55, band=(0.3, 0.2, 0.4), stars=1800)
+    L = Layer()
+    # the mountainside
+    L.poly([(0, 120), (300, 60), (620, 140), (900, 90), (1200, 170), (1200, 600), (0, 600)], INK2)
+    L.poly([(0, 330), (1200, 280), (1200, 600), (0, 600)], INK)
+    img = over(img, L)
+    # the dark mouth of the mine, and a lantern deep inside
+    L2 = Layer()
+    L2.rect(470, 240, 730, 470, (2, 2, 6, 255))
+    L2.rect(458, 228, 742, 246, (40, 30, 26, 255))      # lintel beam
+    L2.rect(458, 240, 476, 470, (40, 30, 26, 255)); L2.rect(724, 240, 742, 470, (40, 30, 26, 255))
+    img = over(img, L2)
+    img = glow(img, 615, 380, 70, (255, 190, 110), 0.7)
+    img = glow(img, 615, 380, 14, (255, 230, 170), 1.0)
+    L3 = Layer()
+    # rusty rails coming out of the dark
+    for off in (-34, 34):
+        L3.line([(600 + off * 0.5, 470), (600 + off * 5, 600)], (90, 60, 44, 255), 4)
+    for k in range(6):
+        y = 480 + k * 22; w = 26 + k * 30
+        L3.rect(600 - w, y, 600 + w, y + 5, (54, 40, 32, 255))
+    img = over(img, L3)
+    # a figure standing in the mouth, black against the lantern light behind
+    L4 = Layer()
+    person(L4, 590, 468, 118, (1, 1, 4, 255))
+    img = over(img, L4)
+    return img
+
+
 SCENES = {
     'void': void, 'window': window, 'guitar': guitar_light, 'corridor': corridor,
     'observatory': observatory, 'linden': linden, 'silhouette': silhouette, 'orpheus': orpheus,
-    'shop': shop, 'stage': stage, 'well': well, 'dark': dark, 'light': light_end, 'puppet': puppet, 'silence': silence,
+    'shop': shop, 'stage': stage, 'well': well, 'sea': sea, 'mine': mine, 'dark': dark, 'light': light_end, 'puppet': puppet, 'silence': silence,
 }
 
 if __name__ == '__main__':

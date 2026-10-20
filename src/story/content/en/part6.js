@@ -98,6 +98,7 @@ export default {
       'The presence thickens before you into a silhouette – vast, faceless, as old as nothing itself. Around it, space bends into angles that do not exist, and the stars behind it tremble, as though their light hesitated to pass.',
       '“I am what you came from and what you will return to,” it says. “Nothing gives birth to everything. For aeons I listened to silence. Give me your hands, and at last I will sing.”',
       { ifItem: 'feather', text: 'The grey feather in your pocket is warm, like a small living heart.' },
+      { ifFlag: 'echo_learned', text: 'And then the Dark speaks in Mum’s voice – gentle, warm, familiar. Only it is one heartbeat late. You know what that is now.' },
       { ifItem: 'starglass', text: 'The star-glass in your pocket rings softly – like a little bell that remembers the way home.' },
     ],
     choices: {
@@ -164,6 +165,7 @@ export default {
     text: [
       'You play your own song. The first note is hesitant, the second firm, the third yours.',
       { ifFlag: 'viktoria_comes', text: 'In the last row, Viktoria has taken off her headphones.' },
+      { ifFlag: 'viktoria_saved', text: 'She is holding the shell from Maglitsa. When you finish, she puts it to her ear and smiles – as if the sea had heard too.' },
       'When you finish, for a moment there is total silence – that full, living silence in which a whole hall holds its breath. Then the hall erupts.',
       'The voice is somewhere far away, defeated but not destroyed – the dark never dies, it only waits. But tonight the song is stronger than it.',
       'That night you dream of stars. You aren’t rushing through the dark – you stand on a hill and listen to them. You are a guitarist.',

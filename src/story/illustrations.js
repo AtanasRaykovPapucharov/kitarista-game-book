@@ -17,19 +17,22 @@ export const ILLUSTRATION_URLS = Object.fromEntries(
 )
 
 // these are shown at the bottom of the section, after "Continue", not above the text
-export const ILLUSTRATIONS_AT_END = ['prologue']
+export const ILLUSTRATIONS_AT_END = []
 
 export const SECTION_ILLUSTRATIONS = {
-  prologue: 'void',
   eve: 'window',
   firstStrum: 'guitar',
   corridor: 'corridor',
   lecture: 'observatory',
   walkHome: 'linden',
   nightmare: 'silhouette',
+  origin: 'void',
   grandpa: 'orpheus',
   well: 'well',
   dawnWell: 'well',
+  harbour: 'sea',
+  pier: 'sea',
+  tunnels: 'mine',
   belyanAmbush: 'shop',
   openMic: 'shop',
   concert: 'stage',

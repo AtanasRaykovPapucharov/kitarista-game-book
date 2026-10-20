@@ -54,6 +54,8 @@ export const ACHIEVEMENTS = [
   { id: 'witness', group: 'story', icon: 'flutter_dash', rule: (s) => flag(s, 'witness') },
   { id: 'no_look_back', group: 'story', icon: 'wb_twilight', rule: (s) => flag(s, 'chose_light') },
   { id: 'sent_home', group: 'story', icon: 'rocket_launch', rule: (s) => !!s?.flags?.colour_home },
+  { id: 'eurydice', group: 'story', icon: 'waves', rule: (s) => !!s?.flags?.viktoria_saved },
+  { id: 'true_voice', group: 'story', icon: 'hearing', rule: (s) => !!s?.flags?.mite_saved },
   {
     id: 'dark_talk',
     group: 'story',
@@ -94,6 +96,12 @@ export const ACHIEVEMENTS = [
   { id: 'tone_chord', group: 'practice', icon: 'piano', event: true },
   { id: 'tone_mode', group: 'practice', icon: 'blur_circular', event: true },
   { id: 'tuner', group: 'practice', icon: 'tune', event: true },
+  {
+    id: 'all_missions',
+    group: 'practice',
+    icon: 'military_tech',
+    rule: (s) => Object.values(s?.missions ?? {}).filter((m) => m === 'done').length >= 6,
+  },
   { id: 'listener', group: 'practice', icon: 'record_voice_over', event: true },
   { id: 'new_face', group: 'practice', icon: 'face', event: true },
 ]

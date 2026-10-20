@@ -23,6 +23,11 @@ export const ITEMS = {
   metronome: { icon: 'timer', attack: 1 },
   // a shard from the fallen star; it rings like a bell when the dark is near
   starglass: { icon: 'diamond', attack: 1 },
+  // a sea snail shell from the misty shore: hold it to your ear and the sea gives back a little warmth
+  seashell: {
+    icon: 'waves',
+    use: { effects: [{ stat: 'inspiration', add: 3 }], consume: true },
+  },
   recipe: {
     icon: 'receipt_long',
     use: { effects: [{ stat: 'luck', restore: true }], once: 'recipe_used' },
