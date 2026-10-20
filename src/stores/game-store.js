@@ -43,6 +43,7 @@ export const useGameStore = defineStore('game', {
     pendingChallenge: (state) => (state.save ? engine.hasPendingChallenge(state.save) : false),
     canDuelLuck: (state) => (state.save ? engine.canDuelLuck(state.save) : false),
     musicTopics: (state) => (state.save ? engine.musicTopics(state.save) : []),
+    missionNews: (state) => state.save?.missionNews ?? [],
     song: (state) => (state.save ? engine.songOf(state.save) : { title: '', verses: [] }),
     songPending: (state) => (state.save ? engine.pendingVerses(state.save) > 0 : false),
   },
@@ -148,27 +149,20 @@ export const useGameStore = defineStore('game', {
 
     /* ---------- practice-room missions ---------- */
 
+    dismissMissionNews() {
+      if (!this.save?.missionNews?.length) return
+      this.save = { ...this.save, missionNews: [] }
+      this.persist()
+    },
+
     /** Called by the practice tools: { type: 'chord' | 'scale' | 'interval' | 'tuned', … }. */
     missionEvent(event) {
       if (!this.save || this.save.status !== 'playing') return
       for (const [id, state] of Object.entries(this.save.missions ?? {})) {
         if (state !== 'active' || !MISSIONS[id]?.check(event)) continue
         this.commit(engine.completeMission(this.save, id))
-        const t = i18n.global.t
+        // the practice room's banner and the book's result card show what was won
         cues.achievement()
-        Notify.create({
-          position: 'top',
-          color: 'dark',
-          textColor: 'white',
-          icon: MISSIONS[id].icon,
-          iconColor: 'accent',
-          message: t('missions.done'),
-          caption: `${t(`missions.list.${id}.title`)} · ${t(`missions.reward.${id}`)}`,
-          timeout: 5000,
-          actions: [
-            { label: t('missions.backToBook'), color: 'accent', noCaps: true, to: '/play' },
-          ],
-        })
       }
     },
     duelLuck() {

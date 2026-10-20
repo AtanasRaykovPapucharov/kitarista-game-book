@@ -19,6 +19,7 @@ import SongCard from 'src/components/game/SongCard.vue'
 import { narrator, readingIndex, speak, setReader, stop as stopNarrator } from 'src/game/narrator'
 import SectionIllustration from 'src/components/game/SectionIllustration.vue'
 import MissionCard from 'src/components/game/MissionCard.vue'
+import MissionResult from 'src/components/game/MissionResult.vue'
 import { SECTION_ILLUSTRATIONS, ILLUSTRATIONS_AT_END } from 'src/story/illustrations'
 import { ENDINGS, DARKNESS_MAX } from 'src/story/book'
 import { useSettingsStore } from 'src/stores/settings-store'
@@ -107,6 +108,7 @@ onBeforeUnmount(() => {
   <q-page v-if="save" class="gb gb-play" :class="pageClass" :style="{ '--darkness': darkness }">
     <div class="gb-play__grid">
       <article :key="save.visit" class="gb-reading">
+        <MissionResult />
         <header class="gb-section-head">
           <p class="gb-section-num" aria-hidden="true">{{ game.sectionNumber }}</p>
           <h1 ref="titleEl" class="gb-section-title" tabindex="-1">

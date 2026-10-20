@@ -158,6 +158,7 @@ export function enterSection(state, key, viaEffects = []) {
   s.visit += 1
   s.resolved = null
   s.duel = null
+  s.missionNews = []
   s.trail = [...s.trail, target].slice(-60)
   s.lastChanges = [...changes, ...applyEffects(s, section.effects)]
 
@@ -363,6 +364,8 @@ export function completeMission(state, id) {
   if (state.missions?.[id] !== 'active' || !MISSIONS[id]) return state
   const s = clone(state)
   s.missions = { ...s.missions, [id]: 'done' }
+  // shown in the book until the reader dismisses it or turns the page
+  s.missionNews = [...(s.missionNews ?? []).filter((x) => x !== id), id]
   applyEffects(s, [...MISSIONS[id].reward, { flag: `know_${MISSIONS[id].topic}` }])
   s.updatedAt = new Date().toISOString()
   return s

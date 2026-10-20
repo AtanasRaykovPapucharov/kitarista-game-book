@@ -8,6 +8,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import { soundOn, toggleSound, volume, setVolume, cues } from '@/game/sound'
 import NarratorControls from '@/components/NarratorControls.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
+import MissionBanner from '@/components/game/MissionBanner.vue'
 import logo from '@/assets/logo.png'
 
 const { t } = useI18n()
@@ -42,9 +43,9 @@ const navItems = [
   { to: '/tones', label: 'nav.tones', icon: 'music_note' },
   { to: '/intervals', label: 'nav.intervals', icon: 'timeline' },
   { to: '/chords', label: 'nav.chords', icon: 'image_aspect_ratio' },
-  { to: '/scales', label: 'nav.scales', icon: 'line_axis' },
+  { to: '/scales', label: 'nav.scales', icon: 'music_note' },
   { to: '/notes', label: 'nav.notes', icon: 'library_music' },
-  { to: '/compas', label: 'nav.compas', icon: 'explore' },
+  { to: '/compas', label: 'nav.compas', icon: 'fa fa-guitar' },
   { to: '/tuner', label: 'nav.tuner', icon: 'tune' },
 
   // { to: '/flamenco', label: 'nav.flamenco', icon: 'fa fa-guitar' },
@@ -53,8 +54,8 @@ const navItems = [
 
 const footerItems = [
   { to: '/creators', label: 'nav.creators', icon: 'groups' },
-  { to: '/privacy', label: 'nav.privacy', icon: 'shield' },
   { to: '/support', label: 'nav.support', icon: 'favorite' },
+  { to: '/privacy', label: 'nav.privacy', icon: 'shield' },
 ]
 
 const volumePercent = computed(() => Math.round(volume.value * 100))
@@ -268,6 +269,8 @@ function closeLeftDrawer() {
 
     <q-page-container>
       <router-view />
+      <!-- the book's mission for this practice tool, pinned to the bottom of the screen -->
+      <MissionBanner />
     </q-page-container>
   </q-layout>
 </template>
