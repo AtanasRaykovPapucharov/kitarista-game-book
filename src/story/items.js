@@ -23,6 +23,11 @@ export const ITEMS = {
   metronome: { icon: 'timer', attack: 1 },
   // a shard from the fallen star; it rings like a bell when the dark is near
   starglass: { icon: 'diamond', attack: 1 },
+  // the old man's notes: play from them to get back on your feet
+  zannsheets: {
+    icon: 'library_music',
+    use: { effects: [{ stat: 'inspiration', add: 4 }], consume: true },
+  },
   // a sea snail shell from the misty shore: hold it to your ear and the sea gives back a little warmth
   seashell: {
     icon: 'waves',

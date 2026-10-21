@@ -640,10 +640,59 @@ def mine():
     return img
 
 
+def zann():
+    img = sky(171, top=(6, 6, 20), bottom=(24, 22, 56), neb_amount=0.45, band=(0.2, 0.3, -0.3), stars=1600)
+    y, x = np.mgrid[0:H, 0:W]
+    arr = np.asarray(img.convert('RGB')).astype(np.float32)
+    # beyond the wall (top right): not a town, not stars – only darkness
+    void = np.clip((x - 700) / 160, 0, 1) * np.clip((330 - y) / 80, 0, 1)
+    arr *= (1 - 0.97 * void[..., None])
+    img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).convert('RGBA')
+    rng = np.random.default_rng(17)
+    for _ in range(9):  # points of light in colours stars don't have
+        px, py = rng.uniform(820, 1180), rng.uniform(20, 250)
+        img = glow(img, px, py, rng.uniform(4, 8), tuple(int(c) for c in rng.choice([(190, 255, 120), (255, 90, 210), (90, 255, 230)])), 0.9)
+    L = Layer()
+    # the old town under the wall, and the wall itself across the top right
+    L.poly([(600, 370), (1200, 340), (1200, 600), (600, 600)], INK2)
+    L.poly([(640, 330), (1200, 300), (1200, 360), (640, 380)], INK)
+    for k in range(10):
+        bx = 650 + k * 56
+        L.rect(bx, 300 - (k * 3), bx + 28, 334 - (k * 3), INK)
+    # the steep street: steps climbing from bottom left to the wall
+    for k in range(14):
+        x0 = 120 + k * 46; y0 = 600 - k * 22
+        L.rect(x0, y0 - 22, x0 + 70, y0, INK2 if k % 2 else (18, 18, 44, 255))
+    # leaning houses on both sides
+    houses = [(-20, 600, 150, 220, 0.10), (130, 560, 120, 230, 0.07), (420, 600, 140, 300, -0.08), (560, 520, 120, 260, -0.12)]
+    for hx, base, w, h, lean in houses:
+        top = base - h
+        L.poly([(hx, base), (hx + w, base), (hx + w + lean * h, top), (hx + lean * h, top)], INK)
+        L.poly([(hx + lean * h - 8, top), (hx + w / 2 + lean * h, top - 50), (hx + w + lean * h + 8, top)], INK)
+    # the last house, tall, against the wall – its attic is above the wall
+    L.poly([(660, 400), (780, 400), (790, 150), (668, 150)], INK)
+    L.poly([(660, 150), (729, 90), (798, 150)], INK)
+    img = over(img, L)
+    # the attic window glows warm, shutters ajar
+    img = glow(img, 728, 200, 34, (255, 190, 110), 0.7)
+    W2 = Layer()
+    W2.rect(712, 182, 744, 222, (255, 214, 150, 255))
+    W2.rect(706, 182, 714, 222, (40, 30, 26, 255)); W2.rect(742, 182, 750, 222, (40, 30, 26, 255))
+    img = over(img, W2)
+    # a lone figure with a guitar climbing the steps
+    P = Layer()
+    person(P, 338, 490, 78, (2, 2, 8, 255))
+    guitar(P, 350, 468, 23, angle=0.5, fill=(2, 2, 8, 255))
+    img = over(img, P)
+    for (lx, ly) in [(205, 360), (468, 330), (605, 300)]:  # a few lit windows below
+        img = glow(img, lx, ly, 9, (200, 180, 255), 0.4)
+    return img
+
+
 SCENES = {
     'void': void, 'window': window, 'guitar': guitar_light, 'corridor': corridor,
     'observatory': observatory, 'linden': linden, 'silhouette': silhouette, 'orpheus': orpheus,
-    'shop': shop, 'stage': stage, 'well': well, 'sea': sea, 'mine': mine, 'dark': dark, 'light': light_end, 'puppet': puppet, 'silence': silence,
+    'shop': shop, 'stage': stage, 'well': well, 'sea': sea, 'mine': mine, 'zann': zann, 'dark': dark, 'light': light_end, 'puppet': puppet, 'silence': silence,
 }
 
 if __name__ == '__main__':

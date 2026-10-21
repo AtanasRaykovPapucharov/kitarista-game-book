@@ -435,7 +435,7 @@ export default {
     },
     scales: {
       ionian: 'Ionian (major)',
-      dorian: '+1 Luck (and maximum)',
+      dorian: 'Dorian',
       phrygian: 'Phrygian',
       lydian: 'Lydian',
       mixolydian: 'Mixolydian',
@@ -545,9 +545,10 @@ export default {
       sent_home: { title: 'Sent home', desc: 'Show the colour from the Thracian well the way back to the stars.' },
       eurydice: { title: 'Without looking back', desc: 'Lead {friend} out of the sea’s song without looking back.' },
       true_voice: { title: 'The true voice', desc: 'Find Mite in the mine among the Echo’s voices.' },
-      all_missions: { title: 'Practice-room pupil', desc: 'Complete all six missions from the book.' },
+      all_missions: { title: 'Practice-room pupil', desc: 'Complete all seven missions from the book.' },
       real_guitar: { title: 'On a real guitar', desc: 'Play three exercises from “Play with me” on a real guitar.' },
-      real_all: { title: 'The teacher heard you', desc: 'Play all five exercises from “Play with me”.' },
+      real_all: { title: 'The teacher heard you', desc: 'Play all six exercises from “Play with me”.' },
+      window_keeper: { title: 'Keeper of the window', desc: 'Hold the window above the wall shut with Old Tsanko until dawn.' },
       dark_talk: { title: 'A talk with the dark', desc: 'Ask the Dark what it wants.' },
       clean_strings: { title: 'Clean strings', desc: 'Reach an ending without a single point of Darkness.' },
       ending_guitarist: { title: 'Your song for everyone', desc: 'Reach the ending where you play your own song at the concert.' },
@@ -586,7 +587,8 @@ export default {
       fifth: '+1 Skill',
       chord_am: '+1 Luck (and maximum)',
       pentatonic: '+1 Inspiration (and maximum)',
-      dorian: '+1 Luck',
+      dorian: '+1 Luck (and maximum)',
+      zann: '+1 Luck (and maximum)',
     },
     list: {
       chord_c: {
@@ -612,6 +614,10 @@ export default {
       dorian: {
         title: 'The mode of the sea',
         task: 'The lighthouse keeper hums an old fishermen’s song in the Dorian mode. In Tones, mark the seven notes of D Dorian – D, E, F, G, A, B and C – with D as the lowest.',
+      },
+      zann: {
+        title: 'Old Tsanko’s song',
+        task: 'The old man’s melody is in the Phrygian dominant mode. In Tones, mark its seven notes from E: E, F, G♯, A, B, C and D, with E as the lowest. Or play it on the real guitar.',
       },
     },
   },

@@ -50,6 +50,13 @@ export const MISSIONS = {
     reward: [{ stat: 'luck', raise: 1 }],
     check: (e) => e.type === 'scale' && e.key === 'dorian' && e.root === 2,
   },
+  zann: {
+    topic: 'scales',
+    tool: '/tones',
+    icon: 'nights_stay',
+    reward: [{ stat: 'luck', raise: 1 }],
+    check: (e) => e.type === 'scale' && e.key === 'phrygianDominant' && e.root === 4,
+  },
 }
 
 export const MISSION_IDS = Object.keys(MISSIONS)

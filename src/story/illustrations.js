@@ -33,6 +33,8 @@ export const SECTION_ILLUSTRATIONS = {
   harbour: 'sea',
   pier: 'sea',
   tunnels: 'mine',
+  zannStreet: 'zann',
+  zannNight: 'zann',
   belyanAmbush: 'shop',
   openMic: 'shop',
   concert: 'stage',

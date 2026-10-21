@@ -111,6 +111,10 @@ for (const [lang, c] of LANGS) {
     }
     if (!Object.values(SECTIONS).some((sec) => sec.mission === id)) problems.push(`mission "${id}" is never handed out`)
   }
+  // scale and mode names in Tones must be names, not reward texts pasted in by mistake
+  for (const [lang, u] of Object.entries(ui)) {
+    for (const [k, v] of Object.entries(u.tones?.scales ?? {})) if (/^\+\d/.test(v)) problems.push(`${lang}: tones.scales.${k} looks like a reward: "${v}"`)
+  }
 }
 
 const strings = (o, acc = []) => {

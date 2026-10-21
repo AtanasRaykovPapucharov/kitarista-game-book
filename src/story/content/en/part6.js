@@ -98,6 +98,7 @@ export default {
       'The presence thickens before you into a silhouette – vast, faceless, as old as nothing itself. Around it, space bends into angles that do not exist, and the stars behind it tremble, as though their light hesitated to pass.',
       '“I am what you came from and what you will return to,” it says. “Nothing gives birth to everything. For aeons I listened to silence. Give me your hands, and at last I will sing.”',
       { ifItem: 'feather', text: 'The grey feather in your pocket is warm, like a small living heart.' },
+      { ifFlag: 'zann_saved', text: 'Somewhere far away, as if through a thick wall, you hear Old Tsanko’s gadulka. He is still playing. The window is still shut.' },
       { ifFlag: 'echo_learned', text: 'And then the Dark speaks in Mum’s voice – gentle, warm, familiar. Only it is one heartbeat late. You know what that is now.' },
       { ifItem: 'starglass', text: 'The star-glass in your pocket rings softly – like a little bell that remembers the way home.' },
     ],

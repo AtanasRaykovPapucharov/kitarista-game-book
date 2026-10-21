@@ -20,6 +20,11 @@ export const EXERCISES = {
     icon: 'waves',
     steps: [at(4, 0), at(4, 2), at(4, 3), at(3, 0), at(3, 2), at(2, 0), at(2, 1), at(2, 3)],
   },
+  // E Phrygian dominant – the old man's song: E F G♯ A B C D E
+  zann: {
+    icon: 'nights_stay',
+    steps: [at(6, 0), at(6, 1), at(6, 4), at(5, 0), at(5, 2), at(5, 3), at(4, 0), at(4, 2)],
+  },
 }
 
 export const EXERCISE_IDS = Object.keys(EXERCISES)

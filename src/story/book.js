@@ -650,8 +650,8 @@ export const SECTIONS = {
   cover: {
     test: {
       stat: 'skill',
-      success: { to: 'seaTrip', effects: [add('luck', 1)] },
-      failure: { to: 'seaTrip', effects: [add('inspiration', -2)] },
+      success: { to: 'zannNote', effects: [add('luck', 1)] },
+      failure: { to: 'zannNote', effects: [add('inspiration', -2)] },
     },
   },
   kristianDuel: {
@@ -667,22 +667,90 @@ export const SECTIONS = {
   },
   beatKristian: {
     effects: [add('inspiration', 3), flag('beat_kristian'), give('metronome')],
-    next: 'seaTrip',
+    next: 'zannNote',
   },
-  lostKristian: { effects: [add('inspiration', -2)], next: 'seaTrip' },
+  lostKristian: { effects: [add('inspiration', -2)], next: 'zannNote' },
   duet: {
     effects: [add('luck', 2), add('inspiration', 2), flag('played_duet')],
-    next: 'seaTrip',
+    next: 'zannNote',
   },
   ownSong: {
     showSong: true,
     effects: [add('luck', 2), add('inspiration', 2), flag('played_own')],
-    next: 'seaTrip',
+    next: 'zannNote',
   },
   voicePlays: {
     effects: [add('darkness', 2), add('inspiration', 2), flag('voice_played')],
-    next: 'seaTrip',
+    next: 'zannNote',
   },
+
+  /* ---------- Part V¼: the window above the wall ----------
+     After Lovecraft's "The Music of Erich Zann": the mute old man from
+     the Star String plays every night in his attic, so that a window
+     above the old city wall stays shut. Tonight he asks for help. */
+  zannNote: {
+    choices: [
+      { id: 'go', to: 'zannStreet' },
+      { id: 'skip', to: 'zannSkip' },
+    ],
+  },
+  zannSkip: { effects: [flag('zann_missed')], next: 'seaTrip' },
+  zannStreet: { next: 'zannRoom' },
+  zannRoom: {
+    mission: 'zann',
+    choices: [
+      { id: 'learn', to: 'zannLesson' },
+      { id: 'ask', to: 'zannWarning' },
+    ],
+  },
+  zannLesson: {
+    test: {
+      stat: 'skill',
+      success: { to: 'zannNight', effects: [flag('zann_learned')] },
+      failure: { to: 'zannNight' },
+    },
+  },
+  zannWarning: { effects: [flag('zann_warned')], next: 'zannNight' },
+  zannNight: {
+    choices: [
+      { id: 'join', to: 'zannDuel' },
+      { id: 'look', to: 'zannLook' },
+      { id: 'shut', to: 'zannShut' },
+      { id: 'voice', to: 'zannVoice' },
+    ],
+  },
+  zannDuel: {
+    duel: {
+      enemy: 'beyond',
+      skill: 8,
+      stamina: 8,
+      yieldAfter: 3,
+      enemyMods: [
+        { flag: 'zann_learned', add: -2 },
+        { flag: 'know_scales', add: -1 },
+        { flag: 'zann_warned', add: -1 },
+      ],
+      win: 'zannDawn',
+      lose: 'zannGone',
+    },
+  },
+  zannLook: {
+    test: {
+      stat: 'luck',
+      success: { to: 'zannDuel', effects: [flag('saw_beyond'), add('darkness', 1)] },
+      failure: { to: 'zannGone', effects: [add('darkness', 2), add('inspiration', -2)] },
+    },
+  },
+  zannShut: {
+    test: {
+      stat: 'luck',
+      success: { to: 'zannDawn' },
+      failure: { to: 'zannGone' },
+    },
+  },
+  zannVoice: { effects: [flag('voice_opened'), add('darkness', 2)], next: 'zannGone' },
+  zannDawn: { effects: [flag('zann_saved'), give('zannsheets'), add('luck', 1)], next: 'seaTrip' },
+  zannGone: { effects: [flag('zann_gone'), add('inspiration', -1)], next: 'seaTrip' },
 
   /* ---------- Part V½: the misty shore ----------
      After Lovecraft's "The Shadow over Innsmouth": a class trip to the
@@ -892,6 +960,7 @@ export const SECTIONS = {
         { flag: 'colour_home', add: -1 },
         { flag: 'listener_helped', add: -1 },
         { flag: 'viktoria_saved', add: -1 },
+        { flag: 'zann_saved', add: -1 },
       ],
       playerMods: [
         { flag: 'ancestors', add: 1 },

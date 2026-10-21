@@ -54,6 +54,7 @@ export const ACHIEVEMENTS = [
   { id: 'witness', group: 'story', icon: 'flutter_dash', rule: (s) => flag(s, 'witness') },
   { id: 'no_look_back', group: 'story', icon: 'wb_twilight', rule: (s) => flag(s, 'chose_light') },
   { id: 'sent_home', group: 'story', icon: 'rocket_launch', rule: (s) => !!s?.flags?.colour_home },
+  { id: 'window_keeper', group: 'story', icon: 'nights_stay', rule: (s) => !!s?.flags?.zann_saved },
   { id: 'eurydice', group: 'story', icon: 'waves', rule: (s) => !!s?.flags?.viktoria_saved },
   { id: 'true_voice', group: 'story', icon: 'hearing', rule: (s) => !!s?.flags?.mite_saved },
   {
@@ -106,13 +107,13 @@ export const ACHIEVEMENTS = [
     id: 'real_all',
     group: 'practice',
     icon: 'school',
-    rule: (s, p) => Object.keys(p?.realPlayed ?? {}).length >= 5,
+    rule: (s, p) => Object.keys(p?.realPlayed ?? {}).length >= 6,
   },
   {
     id: 'all_missions',
     group: 'practice',
     icon: 'military_tech',
-    rule: (s) => Object.values(s?.missions ?? {}).filter((m) => m === 'done').length >= 6,
+    rule: (s) => Object.values(s?.missions ?? {}).filter((m) => m === 'done').length >= 7,
   },
   { id: 'listener', group: 'practice', icon: 'record_voice_over', event: true },
   { id: 'new_face', group: 'practice', icon: 'face', event: true },

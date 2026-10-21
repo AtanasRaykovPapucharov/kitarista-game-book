@@ -10,6 +10,7 @@ const NOTE = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B�
 const SCALES = {
   minorPentatonic: { root: 9, pcs: [9, 0, 2, 4, 7] }, // A C D E G
   dorian: { root: 2, pcs: [2, 4, 5, 7, 9, 11, 0] }, // D E F G A B C
+  phrygianDominant: { root: 4, pcs: [4, 5, 8, 9, 11, 0, 2] }, // E F G♯ A B C D
 }
 
 export function makeQuestion(topics) {
