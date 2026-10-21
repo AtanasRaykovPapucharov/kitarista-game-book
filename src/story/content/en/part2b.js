@@ -77,9 +77,7 @@ export default {
 
   invite: {
     title: 'If…',
-    text: [
-      'You take a breath. “I… play. Guitar. There’s a concert at the end of the month, and if…”',
-    ],
+    text: ['You take a breath. “I… play. Guitar. There’s a concert at the end of the month, and if…”'],
     success:
       '“I’ll come,” ‹she says|he says› before you can finish – and stops, as if ‹she|he› had heard something behind your words. “I leave the next day. So it’ll be the last thing I hear here. Make it good.”',
     failure:

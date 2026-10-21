@@ -112,8 +112,7 @@ export default {
       'Dad Vladko sits on the edge of the bed and picks up the guitar with the careful tenderness grown-ups use for babies. “Every great guitarist started with three or four chords. Watch my fingers.”',
       'While he talks, the voice in you is silent. It hasn’t gone – it is simply silent, like someone standing in the next room, listening through the wall.',
     ],
-    success:
-      'Dad smiles. “Well, you don’t need me any more. Your fingers remember more than I showed them – as if they knew already.”',
+    success: 'Dad smiles. “Well, you don’t need me any more. Your fingers remember more than I showed them – as if they knew already.”',
     failure:
       '“Never mind,” says Dad. “Fingers remember more slowly than heads. Again tomorrow.” He ruffles your hair, and the voice in you clicks its tongue softly, like a teacher who already knows how the lesson will end.',
   },

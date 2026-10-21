@@ -35,10 +35,7 @@ export default {
     text: [
       'Your mother comes into your room while you are at school. The bed isn’t made, of course. “Why make it?” she thinks. “Mum will take care of it, won’t she?”',
       'Her eye falls on a sheet of paper: “Recipe for luck”. She reads it once, then again, and stands at the window for a long time, looking at the sky as though searching it for something she saw long ago.',
-      {
-        ifFlag: 'fought',
-        text: 'The school has already called about the fight. Mum says nothing about it – for now.',
-      },
+      { ifFlag: 'fought', text: 'The school has already called about the fight. Mum says nothing about it – for now.' },
       'In the evening, at dinner, she asks quietly: “Who taught you this, {hero}?”',
     ],
     choices: {
@@ -88,9 +85,7 @@ export default {
 
   struggle: {
     title: 'The last chance',
-    text: [
-      'The dark is so deep in you that your words are its words. Your lips are already shaping the “yes”. All you have left is luck.',
-    ],
+    text: ['The dark is so deep in you that your words are its words. Your lips are already shaping the “yes”. All you have left is luck.'],
     success:
       'At the last moment you hear Mum’s voice from the next room – she is singing softly, as on the nights when you were a baby – and you cling to it. “No!” you shout. The dark draws back – and waits for you in the dream.',
     failure: 'You try, but your mouth says “yes”. The door opens by itself, without a sound.',
@@ -102,18 +97,9 @@ export default {
       'You rush through pitch darkness. This time you don’t run.',
       'The presence thickens before you into a silhouette – vast, faceless, as old as nothing itself. Around it, space bends into angles that do not exist, and the stars behind it tremble, as though their light hesitated to pass.',
       '“I am what you came from and what you will return to,” it says. “Nothing gives birth to everything. For aeons I listened to silence. Give me your hands, and at last I will sing.”',
-      {
-        ifItem: 'feather',
-        text: 'The grey feather in your pocket is warm, like a small living heart.',
-      },
-      {
-        ifFlag: 'echo_learned',
-        text: 'And then the Dark speaks in Mum’s voice – gentle, warm, familiar. Only it is one heartbeat late. You know what that is now.',
-      },
-      {
-        ifItem: 'starglass',
-        text: 'The star-glass in your pocket rings softly – like a little bell that remembers the way home.',
-      },
+      { ifItem: 'feather', text: 'The grey feather in your pocket is warm, like a small living heart.' },
+      { ifFlag: 'echo_learned', text: 'And then the Dark speaks in Mum’s voice – gentle, warm, familiar. Only it is one heartbeat late. You know what that is now.' },
+      { ifItem: 'starglass', text: 'The star-glass in your pocket rings softly – like a little bell that remembers the way home.' },
     ],
     choices: {
       ask: '“What do you want?”',
@@ -128,10 +114,7 @@ export default {
       '“What do you want?” you ask. Your voice doesn’t tremble. Almost.',
       'The dark is silent for a long time. Then it answers – not with words but with a feeling that floods you like a cold sea: endlessness, silence, a loneliness older than the stars. Aeons without a single sound. Countless worlds it drifted past, deaf.',
       '“I was looking for light,” it says at last. “I thought I had to take it. That if I had your hands, I would have the song.”',
-      {
-        ifFlag: 'colour_home',
-        text: '“You sent the other one home,” it says. “The small, hungry one. I saw it rise towards the Swan. No one had ever shown the way to a thing like us.”',
-      },
+      { ifFlag: 'colour_home', text: '“You sent the other one home,” it says. “The small, hungry one. I saw it rise towards the Swan. No one had ever shown the way to a thing like us.”' },
       'It isn’t so frightening any more. You know what it is – and you know you can answer it.',
     ],
     choices: {
@@ -153,18 +136,9 @@ export default {
     text: [
       'You wake at sunrise – quiet and light, as if someone had washed your soul. The voice is somewhere deep down, quiet and small, like an echo in a distant cave.',
       'That evening the hall is full. Grandma, Grandpa, Mum and Dad Vladko are in the front row. In the last row, half hidden in shadow, sits the guest professor with his tired eyes.',
-      {
-        ifFlag: 'belyan_friend',
-        text: 'By the wall, Belyan is drumming his fingers on his knee. He gives you a thumbs-up.',
-      },
-      {
-        ifFlag: 'viktoria_comes',
-        text: '{friend} sits in the last row, headphones round ‹her|his› neck. ‹She waves|He waves›.',
-      },
-      {
-        ifNotFlag: 'viktoria_comes',
-        text: 'You look for {friend}, but ‹she isn’t|he isn’t› there. Maybe that’s how it should be.',
-      },
+      { ifFlag: 'belyan_friend', text: 'By the wall, Belyan is drumming his fingers on his knee. He gives you a thumbs-up.' },
+      { ifFlag: 'viktoria_comes', text: '{friend} sits in the last row, headphones round ‹her|his› neck. ‹She waves|He waves›.' },
+      { ifNotFlag: 'viktoria_comes', text: 'You look for {friend}, but ‹she isn’t|he isn’t› there. Maybe that’s how it should be.' },
       'You sit down on the chair. The voice is silent – or it is no longer a voice, just the silence between the notes.',
     ],
     choices: {
@@ -181,10 +155,7 @@ export default {
       '“So that’s what it was,” it says, almost tenderly. “That’s why I was looking for light. Not to eat it – to hear it.”',
       'It doesn’t vanish. It becomes the silence between your notes – the pause in which a song draws breath. At the concert you play your own song, and some swear that during the last chord the lights in the hall flicker like stars. In the last row, the guest professor takes off his glasses and wipes them for a long time.',
       'That same night, at the Rozhen Observatory, the receivers record something no one can explain: in the noise between the stars, very softly, a melody is playing. Yours.',
-      {
-        ifFlag: 'colour_home',
-        text: 'And from the direction of Cygnus, barely audible, a second one answers it – short and grateful, like a greeting from someone who is home.',
-      },
+      { ifFlag: 'colour_home', text: 'And from the direction of Cygnus, barely audible, a second one answers it – short and grateful, like a greeting from someone who is home.' },
       'The dark shines. Nothing gives birth to everything.',
     ],
   },
@@ -193,14 +164,8 @@ export default {
     title: 'The Guitarist',
     text: [
       'You play your own song. The first note is hesitant, the second firm, the third yours.',
-      {
-        ifFlag: 'viktoria_comes',
-        text: 'In the last row, {friend} has taken off ‹her|his› headphones.',
-      },
-      {
-        ifFlag: 'viktoria_saved',
-        text: '‹She is|He is› holding the shell from Maglitsa. When you finish, ‹she puts|he puts› it to ‹her|his› ear and smiles – as if the sea had heard too.',
-      },
+      { ifFlag: 'viktoria_comes', text: 'In the last row, {friend} has taken off ‹her|his› headphones.' },
+      { ifFlag: 'viktoria_saved', text: '‹She is|He is› holding the shell from Maglitsa. When you finish, ‹she puts|he puts› it to ‹her|his› ear and smiles – as if the sea had heard too.' },
       'When you finish, for a moment there is total silence – that full, living silence in which a whole hall holds its breath. Then the hall erupts.',
       'The voice is somewhere far away, defeated but not destroyed – the dark never dies, it only waits. But tonight the song is stronger than it.',
       'That night you dream of stars. You aren’t rushing through the dark – you stand on a hill and listen to them. You are a guitarist.',

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from 'src/stores/game-store'
 import { MISSIONS } from 'src/story/missions'
+import { EXERCISES } from 'src/story/exercises'
 
 /* A practice-room mission handed out by this section. */
 const props = defineProps({ id: { type: String, required: true } })
@@ -26,11 +27,20 @@ const done = computed(() => game.save?.missions?.[props.id] === 'done')
         {{ t('missions.rewardIs', { reward: t(`missions.reward.${id}`) }) }}
         {{ t('missions.unlocks', { topic: t(`missions.topics.${m.topic}`) }) }}
       </p>
-      <router-link v-if="!done" :to="m.tool" class="gb-btn gb-btn--small mission__go">
-        <q-icon name="open_in_new" size="16px" class="q-mr-xs" />{{
-          t(`missions.tools.${m.tool.slice(1)}`)
-        }}
-      </router-link>
+      <div v-if="!done" class="mission__actions">
+        <router-link :to="m.tool" class="gb-btn gb-btn--small mission__go">
+          <q-icon name="open_in_new" size="16px" class="q-mr-xs" />{{
+            t(`missions.tools.${m.tool.slice(1)}`)
+          }}
+        </router-link>
+        <router-link
+          v-if="EXERCISES[id]"
+          :to="{ path: '/coach', query: { ex: id } }"
+          class="gb-btn gb-btn--small mission__go"
+        >
+          <q-icon name="mic" size="16px" class="q-mr-xs" />{{ t('missions.playReal') }}
+        </router-link>
+      </div>
     </div>
   </aside>
 </template>
@@ -91,8 +101,14 @@ const done = computed(() => game.save?.missions?.[props.id] === 'done')
   color: var(--gb-muted);
 }
 
-.mission__go {
+.mission__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 10px;
+}
+
+.mission__go {
   text-decoration: none;
 }
 </style>

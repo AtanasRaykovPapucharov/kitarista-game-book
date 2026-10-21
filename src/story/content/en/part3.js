@@ -57,9 +57,7 @@ export default {
 
   ownMusic: {
     title: 'Your own music',
-    text: [
-      'You close your eyes and look for the music inside you – not the music being whispered to you, but that quiet, uncertain tune that was there before the voice came.',
-    ],
+    text: ['You close your eyes and look for the music inside you – not the music being whispered to you, but that quiet, uncertain tune that was there before the voice came.'],
     success:
       'The melody comes slowly – yours, a little crooked and completely real. The voice falls silent. For the first time the quiet in the room is yours alone, and it is warm, not bottomless.',
     failure:
@@ -84,10 +82,8 @@ export default {
   climbOut: {
     title: 'The rope',
     text: ['You hold on to Mum’s voice like a rope let down into an abyss, and pull.'],
-    success:
-      'The voice grows clearer, the dark thinner, like a curtain with morning showing through. One more pull…',
-    failure:
-      'The voice slips away. The shadow is between you and it – and this time it won’t move.',
+    success: 'The voice grows clearer, the dark thinner, like a curtain with morning showing through. One more pull…',
+    failure: 'The voice slips away. The shadow is between you and it – and this time it won’t move.',
   },
 
   shadowDuel: {

@@ -47,6 +47,7 @@ const navItems = [
   { to: '/notes', label: 'nav.notes', icon: 'library_music' },
   { to: '/compas', label: 'nav.compas', icon: 'explore' },
   { to: '/tuner', label: 'nav.tuner', icon: 'tune' },
+  { to: '/coach', label: 'nav.coach', icon: 'mic' },
 
   // { to: '/flamenco', label: 'nav.flamenco', icon: 'fa fa-guitar' },
   // { to: '/about', label: 'nav.about', icon: 'info' },

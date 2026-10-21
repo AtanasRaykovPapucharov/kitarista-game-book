@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from 'src/stores/game-store'
 import { MISSIONS } from 'src/story/missions'
+import { EXERCISES } from 'src/story/exercises'
 
 /* In the practice room: the book's mission for this tool, always in view,
    with a way back to the book – and, once done, what was won. */
@@ -16,7 +17,12 @@ const done = computed(() => (playing.value ? game.missionNews.filter((id) => MIS
 const active = computed(() =>
   playing.value
     ? Object.entries(game.save.missions ?? {})
-        .filter(([id, state]) => state === 'active' && MISSIONS[id]?.tool === route.path)
+        .filter(
+          ([id, state]) =>
+            state === 'active' &&
+            (MISSIONS[id]?.tool === route.path ||
+              (route.path === '/coach' && EXERCISES[id] && route.query.ex === id)),
+        )
         .map(([id]) => id)
     : [],
 )
@@ -54,7 +60,7 @@ const statOf = (id) => MISSIONS[id].reward[0].stat
       <q-icon :name="MISSIONS[id].icon" size="26px" class="mission-banner__icon" />
       <div class="mission-banner__text">
         <strong>{{ t('missions.fromBook', { title: t(`missions.list.${id}.title`) }) }}</strong>
-        <span>{{ t(`missions.list.${id}.task`) }}</span>
+        <span>{{ route.path === '/coach' ? t('missions.coachTask') : t(`missions.list.${id}.task`) }}</span>
         <span class="mission-banner__hint">{{ t('missions.inProgress') }}</span>
       </div>
       <router-link to="/play" class="gb-btn mission-banner__back">

@@ -97,6 +97,18 @@ export const ACHIEVEMENTS = [
   { id: 'tone_mode', group: 'practice', icon: 'blur_circular', event: true },
   { id: 'tuner', group: 'practice', icon: 'tune', event: true },
   {
+    id: 'real_guitar',
+    group: 'practice',
+    icon: 'mic',
+    rule: (s, p) => Object.keys(p?.realPlayed ?? {}).length >= 3,
+  },
+  {
+    id: 'real_all',
+    group: 'practice',
+    icon: 'school',
+    rule: (s, p) => Object.keys(p?.realPlayed ?? {}).length >= 5,
+  },
+  {
     id: 'all_missions',
     group: 'practice',
     icon: 'military_tech',

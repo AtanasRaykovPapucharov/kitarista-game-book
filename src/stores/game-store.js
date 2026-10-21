@@ -24,6 +24,7 @@ const emptyProfile = () => ({
   bestSkill: 0,
   songs: [],
   achievements: {},
+  realPlayed: {}, // exercises played on the real guitar – a skill, kept across adventures
 })
 const MAX_SONGS = 30
 
@@ -149,6 +150,18 @@ export const useGameStore = defineStore('game', {
 
     /* ---------- practice-room missions ---------- */
 
+    /** An exercise played on the real guitar ("Play with me"). */
+    recordRealPlay(id) {
+      if (!this.userId || !id) return
+      this.profile.realPlayed = {
+        ...(this.profile.realPlayed ?? {}),
+        [id]: new Date().toISOString(),
+      }
+      this.persist()
+      this.checkAchievements()
+      this.missionEvent({ type: 'played', exercise: id })
+    },
+
     dismissMissionNews() {
       if (!this.save?.missionNews?.length) return
       this.save = { ...this.save, missionNews: [] }
@@ -159,7 +172,9 @@ export const useGameStore = defineStore('game', {
     missionEvent(event) {
       if (!this.save || this.save.status !== 'playing') return
       for (const [id, state] of Object.entries(this.save.missions ?? {})) {
-        if (state !== 'active' || !MISSIONS[id]?.check(event)) continue
+        // a mission counts whether it was marked in Tones or played on the real guitar
+        const played = event.type === 'played' && event.exercise === id
+        if (state !== 'active' || !(played || MISSIONS[id]?.check(event))) continue
         this.commit(engine.completeMission(this.save, id))
         // the practice room's banner and the book's result card show what was won
         cues.achievement()
