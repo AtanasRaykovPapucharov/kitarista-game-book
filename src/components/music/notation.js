@@ -111,7 +111,11 @@ export function restsFor(beats) {
   while (left > 1e-6) {
     const r = REST_VALUES.find((v) => v.beats <= left + 1e-6)
     if (!r) break
-    out.push(r.dot ? { rest: true, note: [], octave: 1, type: r.type, dot: true } : { rest: true, note: [], octave: 1, type: r.type })
+    out.push(
+      r.dot
+        ? { rest: true, note: [], octave: 1, type: r.type, dot: true }
+        : { rest: true, note: [], octave: 1, type: r.type },
+    )
     left -= r.beats
   }
   return out
@@ -385,10 +389,13 @@ export function placeOnStrings(midis) {
     }
   }
   walk(0)
-  return best ?? notes.map((midi) => {
-    const string = stringForMidi(midi)
-    return { string, midi, fret: midi - TUNING[string - 1] }
-  })
+  return (
+    best ??
+    notes.map((midi) => {
+      const string = stringForMidi(midi)
+      return { string, midi, fret: midi - TUNING[string - 1] }
+    })
+  )
 }
 
 /* ---------- playback timeline ---------- */
@@ -426,7 +433,12 @@ export function buildTimeline(staves) {
     e.soundBeats = e.beats
     if (e.tiedIn) continue
     let j = i
-    while (events[j]?.tie && events[j + 1] && !events[j + 1].rest && sameSound(events[j], events[j + 1])) {
+    while (
+      events[j]?.tie &&
+      events[j + 1] &&
+      !events[j + 1].rest &&
+      sameSound(events[j], events[j + 1])
+    ) {
       events[j + 1].tiedIn = true
       e.soundBeats += events[j + 1].beats
       j++

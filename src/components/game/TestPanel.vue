@@ -19,7 +19,9 @@ const rolling = ref(false)
 const revealed = computed(() => resolved.value && !rolling.value)
 
 const statLabel = computed(() => t(`stats.${props.test.stat}`))
-const heading = computed(() => (props.test.stat === 'luck' ? t('play.testLuck') : t('play.testSkill')))
+const heading = computed(() =>
+  props.test.stat === 'luck' ? t('play.testLuck') : t('play.testSkill'),
+)
 
 function roll() {
   rolling.value = true
@@ -38,16 +40,29 @@ function settled() {
     <header class="challenge__head">
       <h2 class="challenge__title">{{ heading }}</h2>
       <p class="challenge__rule">
-        {{ t('play.testRule', { value: resolved?.target ?? game.save.stats[test.stat], stat: statLabel }) }}
+        {{
+          t('play.testRule', {
+            value: resolved?.target ?? game.save.stats[test.stat],
+            stat: statLabel,
+          })
+        }}
         <template v-if="test.stat === 'luck'"> {{ t('play.luckRule') }}</template>
       </p>
     </header>
 
     <div class="challenge__dice">
       <DiceTray :values="resolved?.dice ?? null" :count="2" @settled="settled" />
-      <div v-if="revealed" class="challenge__verdict" :class="resolved.success ? 'is-success' : 'is-failure'">
-        <span class="verdict-word">{{ resolved.success ? t('play.success') : t('play.failure') }}</span>
-        <span class="verdict-math">{{ resolved.total }} {{ resolved.success ? '≤' : '>' }} {{ resolved.target }}</span>
+      <div
+        v-if="revealed"
+        class="challenge__verdict"
+        :class="resolved.success ? 'is-success' : 'is-failure'"
+      >
+        <span class="verdict-word">{{
+          resolved.success ? t('play.success') : t('play.failure')
+        }}</span>
+        <span class="verdict-math"
+          >{{ resolved.total }} {{ resolved.success ? '≤' : '>' }} {{ resolved.target }}</span
+        >
       </div>
       <button v-else-if="!resolved" type="button" class="gb-btn gb-btn--primary" @click="roll">
         {{ t('play.rollDice') }}

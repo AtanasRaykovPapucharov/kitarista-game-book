@@ -28,8 +28,11 @@ export default {
 
   scales: {
     title: 'Scales till you drop',
-    text: ['You play scales up and down until the metronome in your head starts ticking on its own. Scales are like steps cut into a cliff – one by one, with no shortcut.'],
-    success: 'Something clicks. Your fingers get faster and more precise, and for the first time you feel you command them, not they you.',
+    text: [
+      'You play scales up and down until the metronome in your head starts ticking on its own. Scales are like steps cut into a cliff – one by one, with no shortcut.',
+    ],
+    success:
+      'Something clicks. Your fingers get faster and more precise, and for the first time you feel you command them, not they you.',
     failure: 'Your hands won’t listen today. You give up, annoyed.',
   },
 
@@ -58,9 +61,13 @@ export default {
 
   lessonChords: {
     title: 'Lesson 1: The first chords',
-    text: ['You open the book at the first lesson. Drawings of guitar necks, dots, circles and little crosses – like maps of unknown lands, walked by many travellers before you.'],
-    success: 'Chords are no longer a mystery. Your fingers find them on their own, like old friends in a dark room.',
-    failure: 'The diagrams still muddle you. You’ll look at them again in the practice room – slowly this time.',
+    text: [
+      'You open the book at the first lesson. Drawings of guitar necks, dots, circles and little crosses – like maps of unknown lands, walked by many travellers before you.',
+    ],
+    success:
+      'Chords are no longer a mystery. Your fingers find them on their own, like old friends in a dark room.',
+    failure:
+      'The diagrams still muddle you. You’ll look at them again in the practice room – slowly this time.',
   },
 
   lessonTuning: {
@@ -69,7 +76,8 @@ export default {
       'A guitar goes out of tune when you move it, when it’s cold, sometimes just because. A good guitarist hears when a string has wandered off.',
       'In the margin, in pencil: “An untuned string is a door. Keep it shut.”',
     ],
-    success: 'Your ears grow sharper. You can hear even the smallest drift now – and something else: how, very far away, something listens carefully to you.',
+    success:
+      'Your ears grow sharper. You can hear even the smallest drift now – and something else: how, very far away, something listens carefully to you.',
     failure: 'The notes still sound the same to you. Ears grow slowly – like grass.',
   },
 
@@ -79,7 +87,8 @@ export default {
       'An interval is the distance between two notes. Each distance has a character: the octave sounds like an echo, the fifth like a bell, the third like the start of a song.',
       'The tritone, says the small handwriting in the margin, was once called “the devil in music”. Not because it is evil. Because it opens.',
     ],
-    success: 'You begin to hear the shape of melodies, not just the sounds – like an architect who sees not bricks but vaults.',
+    success:
+      'You begin to hear the shape of melodies, not just the sounds – like an architect who sees not bricks but vaults.',
     failure: 'The intervals still blur together. But now you know what to listen for.',
   },
 
@@ -87,15 +96,21 @@ export default {
     title: 'Lesson 4: Rhythm',
     text: [
       'Rhythm is the heart of every song. Without it, even the most beautiful notes scatter like beads from a broken necklace.',
-      { ifFlag: 'belyan_friend', text: 'Belyan turns up with two wooden spoons and taps on the edge of your desk. “I count, you play.”' },
+      {
+        ifFlag: 'belyan_friend',
+        text: 'Belyan turns up with two wooden spoons and taps on the edge of your desk. “I count, you play.”',
+      },
     ],
-    success: 'You and rhythm are friends at last. And in a rhythm that is wholly yours, the voice has no place.',
+    success:
+      'You and rhythm are friends at last. And in a rhythm that is wholly yours, the voice has no place.',
     failure: 'The rhythm slips away from you. The metronome is patient – it will wait.',
   },
 
   review: {
     title: 'Review',
-    text: ['You leaf through the lessons you already know and play them one after another. Nothing new – and that is exactly what’s nice about it. The familiar is like a hearth on a winter night.'],
+    text: [
+      'You leaf through the lessons you already know and play them one after another. Nothing new – and that is exactly what’s nice about it. The familiar is like a hearth on a winter night.',
+    ],
   },
 
   compose: {
@@ -108,9 +123,13 @@ export default {
 
   napkins: {
     title: 'A song on napkins',
-    text: ['You have no songbook, so you write on napkins, on the back of your homework, on your palm – wherever the words catch up with you.'],
-    success: 'You gather all the scraps – and they fall into place as a real verse, as if they had known their order all along.',
-    failure: 'Mum washes your jeans along with the scraps. The verse is lost – carried off to wherever all unsung songs go.',
+    text: [
+      'You have no songbook, so you write on napkins, on the back of your homework, on your palm – wherever the words catch up with you.',
+    ],
+    success:
+      'You gather all the scraps – and they fall into place as a real verse, as if they had known their order all along.',
+    failure:
+      'Mum washes your jeans along with the scraps. The verse is lost – carried off to wherever all unsung songs go.',
   },
 
   rest: {
@@ -135,7 +154,9 @@ export default {
 
   stringBreaks: {
     title: 'A broken string',
-    text: ['In the middle of your best chord, the second string snaps and whips your fingers. For a moment the silence after it is strangely deep – like a hole in the sound through which something peers.'],
+    text: [
+      'In the middle of your best chord, the second string snaps and whips your fingers. For a moment the silence after it is strangely deep – like a hole in the sound through which something peers.',
+    ],
     choices: {
       spare: 'Fit the spare string from Dad',
       five: 'Play on five strings for the rest of the day (−2 Inspiration)',
@@ -144,7 +165,9 @@ export default {
 
   neighbor: {
     title: 'Mr Petko',
-    text: ['Someone is pounding on the wall. Your neighbour, Mr Petko, works night shifts and is asleep.'],
+    text: [
+      'Someone is pounding on the wall. Your neighbour, Mr Petko, works night shifts and is asleep.',
+    ],
     choices: {
       quiet: 'Play quietly – just your fingers, no pick',
       ignore: 'Keep playing the way you were',
@@ -153,14 +176,19 @@ export default {
 
   neighborQuiet: {
     title: 'Whispering strings',
-    text: ['You put down the pick and touch the strings with your fingertips. The sound turns soft, almost a whisper – so quiet you must lean in to hear it.'],
-    success: 'You discover that playing quietly is a whole new art. Your fingers grow more sensitive, and the music more personal, like a secret shared only with you.',
+    text: [
+      'You put down the pick and touch the strings with your fingertips. The sound turns soft, almost a whisper – so quiet you must lean in to hear it.',
+    ],
+    success:
+      'You discover that playing quietly is a whole new art. Your fingers grow more sensitive, and the music more personal, like a secret shared only with you.',
     failure: 'Without the pick everything sounds hollow. You give up for today.',
   },
 
   neighborDoor: {
     title: 'The doorbell',
-    text: ['The pounding stops. Then the doorbell rings. Mr Petko is on the doorstep – in pyjamas, puffy-eyed, with the face of a man woken from a dream in which he was somewhere very far away.'],
+    text: [
+      'The pounding stops. Then the doorbell rings. Mr Petko is on the doorstep – in pyjamas, puffy-eyed, with the face of a man woken from a dream in which he was somewhere very far away.',
+    ],
     choices: {
       apologize: 'Apologise',
       argue: '“I’m allowed to play during the day!”',
@@ -178,8 +206,10 @@ export default {
   neighborArgue: {
     title: 'Spirit',
     text: ['“I’m allowed to play during the day!” you say, louder than you meant to.'],
-    success: 'Mr Petko blinks. Then he laughs out loud. “You’ve got spirit, [boy|girl|kid]. All right. But quieter.”',
-    failure: 'Mum appears behind you just in time to hear everything. The guitar goes into the cupboard until evening.',
+    success:
+      'Mr Petko blinks. Then he laughs out loud. “You’ve got spirit, [boy|girl|kid]. All right. But quieter.”',
+    failure:
+      'Mum appears behind you just in time to hear everything. The guitar goes into the cupboard until evening.',
   },
 
   grandpa: {
@@ -206,7 +236,9 @@ export default {
 
   dayEnd: {
     title: 'Night',
-    text: ['You set the guitar beside your bed and switch off the light. Outside, the stars shine like frets on an endless neck – and if you look long enough, it seems that someone vast and patient has laid their fingers upon them.'],
+    text: [
+      'You set the guitar beside your bed and switch off the light. Outside, the stars shine like frets on an endless neck – and if you look long enough, it seems that someone vast and patient has laid their fingers upon them.',
+    ],
     choices: {
       next: 'On to the next day',
       saturday: 'Saturday is here – off to the Star String',

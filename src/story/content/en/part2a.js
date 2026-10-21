@@ -16,10 +16,13 @@ export default {
 
   snooze: {
     title: 'Five more minutes',
-    text: ['You pull the blanket over your head. Under it is warm and dark – an ordinary, cosy dark, nothing like the one in your dreams.'],
+    text: [
+      'You pull the blanket over your head. Under it is warm and dark – an ordinary, cosy dark, nothing like the one in your dreams.',
+    ],
     outcomes: {
       late: 'Five minutes become twenty. You run to school with your shoes laced wrong and walk in after the bell, and your form teacher looks at you over her glasses with the look that needs no words.',
-      rested: 'Those five minutes are the sweetest sleep of your life – no dark, no voices, only white and quiet. You get up brand new and still aren’t late.',
+      rested:
+        'Those five minutes are the sweetest sleep of your life – no dark, no voices, only white and quiet. You get up brand new and still aren’t late.',
     },
   },
 
@@ -41,9 +44,13 @@ export default {
 
   ignore: {
     title: 'Chin up',
-    text: ['You lift your chin and walk past him, eyes straight ahead, the way you walk past a dog that might bite.'],
-    success: 'Belyan looks around for more interesting prey and forgets about you before you reach the stairs.',
-    failure: '“Where d’you think you’re going?” A huge hand grabs your backpack and swings you round against the lockers.',
+    text: [
+      'You lift your chin and walk past him, eyes straight ahead, the way you walk past a dog that might bite.',
+    ],
+    success:
+      'Belyan looks around for more interesting prey and forgets about you before you reach the stairs.',
+    failure:
+      '“Where d’you think you’re going?” A huge hand grabs your backpack and swings you round against the lockers.',
   },
 
   belyanAsk: {
@@ -52,7 +59,8 @@ export default {
       'You take a breath and look him straight in the eye. “What do you actually want, Belyan?”',
       'The question catches him off guard. For a moment his hand hangs in the air, and something crosses his face that almost looks like embarrassment – like someone caught doing a thing without knowing why.',
     ],
-    success: 'Belyan glances around to see who is listening. Then he nods towards the stairwell. “Not here.”',
+    success:
+      'Belyan glances around to see who is listening. Then he nods towards the stairwell. “Not here.”',
     failure: '“I’ll ask the questions,” he snorts, and pins you against the lockers.',
   },
 
@@ -72,10 +80,13 @@ export default {
 
   runAway: {
     title: 'Under his arm',
-    text: ['You crouch and duck under his arm, quick and supple, the way wind slips through a gap.'],
+    text: [
+      'You crouch and duck under his arm, quick and supple, the way wind slips through a gap.',
+    ],
     success:
       'You slip away like a fish and race down the corridor. Belyan is too heavy to catch you. You only stop outside the staff room – out of breath, but in one piece.',
-    failure: 'You trip over your own backpack. Before you can get up, Belyan is standing over you, vast as a cloud before a storm.',
+    failure:
+      'You trip over your own backpack. Before you can get up, Belyan is standing over you, vast as a cloud before a storm.',
   },
 
   fistFight: {
@@ -100,7 +111,10 @@ export default {
     title: 'On the floor',
     text: [
       'Belyan knocks you down with a single shove. Your elbow hits the floor and the stars you see are not the nice kind – flickering, wrong, like constellations from a foreign sky.',
-      { ifFlag: 'pick_taken', text: 'When you get up, he is already twirling Grandpa’s pick between his fingers, grinning.' },
+      {
+        ifFlag: 'pick_taken',
+        text: 'When you get up, he is already twirling Grandpa’s pick between his fingers, grinning.',
+      },
       '“Both of you! Principal’s office!” your form teacher thunders from the end of the corridor.',
     ],
   },
@@ -120,7 +134,8 @@ export default {
   principalTalk: {
     title: 'The first word',
     text: ['“Why me?” you ask quietly.'],
-    success: 'Belyan is silent for a long time. Then he sighs, like someone setting down a heavy load. “Because at least you’ve got something to play.”',
+    success:
+      'Belyan is silent for a long time. Then he sighs, like someone setting down a heavy load. “Because at least you’ve got something to play.”',
     failure: '“None of your business,” he snaps, and turns to the wall.',
   },
 
@@ -151,7 +166,10 @@ export default {
     text: [
       'Belyan eyes you suspiciously, as if waiting for a trick. Then, for the first time, he smiles – crooked, but real, like sun breaking through cloud.',
       '“Pots and pans, huh… Deal.”',
-      { ifFlag: 'pick_taken', text: 'He digs in his pocket and hands you Grandpa’s pick. “It’s yours. Sorry.”' },
+      {
+        ifFlag: 'pick_taken',
+        text: 'He digs in his pocket and hands you Grandpa’s pick. “It’s yours. Sorry.”',
+      },
       'The voice in you is silent. It seems it doesn’t like you having friends.',
     ],
   },

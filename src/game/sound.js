@@ -51,7 +51,8 @@ let duck = 1 // < 1 while the narrator speaks, so cues sit under the voice
 /** Lowers (or restores) the cues while the narrator is talking. */
 export function setDuck(on) {
   duck = on ? 0.35 : 1
-  if (bus && ctx) bus.master.gain.setTargetAtTime(MAX_GAIN * volume.value * duck, ctx.currentTime, 0.15)
+  if (bus && ctx)
+    bus.master.gain.setTargetAtTime(MAX_GAIN * volume.value * duck, ctx.currentTime, 0.15)
 }
 
 function impulse(seconds = 2.2) {
@@ -342,7 +343,9 @@ export const cues = {
   achievement() {
     if (!once('achievement', 600)) return
     play((dest, t) => {
-      ;[72, 76, 79, 84, 88].forEach((m, i) => bell(dest, t + i * 0.09, hz(m), { gain: 0.08, decay: 1.8 }))
+      ;[72, 76, 79, 84, 88].forEach((m, i) =>
+        bell(dest, t + i * 0.09, hz(m), { gain: 0.08, decay: 1.8 }),
+      )
       bell(dest, t + 0.5, hz(96), { gain: 0.04, decay: 2.2 })
     })
   },
@@ -437,7 +440,9 @@ export function playSong(verses, { bpm = 84, onStep = () => {}, onEnd = () => {}
         chord(songGain, at, name, { gap: 0.045, gain: 0.26 })
         const voicing = voiceChord(name)
         if (voicing) {
-          voicing.notes.slice(-3).forEach((n, k) => pluck(songGain, at + beat + k * (beat / 3), n.midi, 0.16))
+          voicing.notes
+            .slice(-3)
+            .forEach((n, k) => pluck(songGain, at + beat + k * (beat / 3), n.midi, 0.16))
         }
         t += beat * 2
       })

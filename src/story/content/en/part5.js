@@ -18,15 +18,19 @@ export default {
 
   ambushTalk: {
     title: 'Real drums',
-    text: ['The words come out calmer than you expect. “There are drums in there, Belyan. Real ones. The owner lets people play.”'],
-    success: 'Belyan hesitates. His eyes slide towards the shop window, and the anger in him goes out like a candle when someone opens a window.',
+    text: [
+      'The words come out calmer than you expect. “There are drums in there, Belyan. Real ones. The owner lets people play.”',
+    ],
+    success:
+      'Belyan hesitates. His eyes slide towards the shop window, and the anger in him goes out like a candle when someone opens a window.',
     failure: '“Don’t mess with me,” he growls, and steps forward.',
   },
 
   ambushRun: {
     title: 'The door',
     text: ['You clutch the case to your chest and run.'],
-    success: 'The bell above the door jingles behind you – an old, silvery chime, as if from another century. You’re inside. Belyan won’t come in – there are grown-ups here.',
+    success:
+      'The bell above the door jingles behind you – an old, silvery chime, as if from another century. You’re inside. Belyan won’t come in – there are grown-ups here.',
     failure: 'One of the older boys blocks your way. Nowhere to go.',
   },
 
@@ -59,7 +63,10 @@ export default {
     title: 'A broken string',
     text: [
       'Belyan pushes you aside, opens the case and yanks the strings. One snaps with a pitiful twang that seems to go on ringing long after it has faded. They laugh and walk off.',
-      { ifFlag: 'used_spare', text: 'Sitting on the pavement, you fit the spare string from Dad. Your hands shake, but you tune it up.' },
+      {
+        ifFlag: 'used_spare',
+        text: 'Sitting on the pavement, you fit the spare string from Dad. Your hands shake, but you tune it up.',
+      },
       {
         ifNotFlag: 'used_spare',
         text: 'The shop owner sees your face and, without a word, hands you a new string – on the house.',
@@ -81,8 +88,14 @@ export default {
     text: [
       'The shop smells of lacquer, dust and old books. Instruments from every age hang on the walls – lutes with worn frets, violins with cracks like cobwebs, a glossy black grand piano at the back that no one remembers ever seeing open. The owner – a dry old man with eyes as bright as a bird’s – greets you with a nod, as though he had been expecting you.',
       'The stage is small, the audience about twenty people.',
-      { ifFlag: 'belyan_friend', text: 'Belyan is already behind the old drums in the corner, tapping quietly with the sticks.' },
-      { ifFlag: 'guitar_damaged', text: 'The new string hasn’t stretched yet and is slightly out of tune.' },
+      {
+        ifFlag: 'belyan_friend',
+        text: 'Belyan is already behind the old drums in the corner, tapping quietly with the sticks.',
+      },
+      {
+        ifFlag: 'guitar_damaged',
+        text: 'The new string hasn’t stretched yet and is slightly out of tune.',
+      },
       'Before you plays Kristian – an older boy with a red electric guitar. He plays fast and flashy, then looks at you with a grin: “[Little guy’s|Little lady’s|Kid’s] turn.”',
     ],
     choices: {
@@ -96,9 +109,13 @@ export default {
 
   cover: {
     title: 'A familiar song',
-    text: ['You choose a song you could play in your sleep – old and loved, worn smooth by thousands of hands before yours.'],
-    success: 'You sing, you play, people clap along. Not a revolution, but good. The old man behind the counter nods approvingly.',
-    failure: 'Halfway through you forget a chord. You finish somehow, and the applause is polite – the worst kind of applause.',
+    text: [
+      'You choose a song you could play in your sleep – old and loved, worn smooth by thousands of hands before yours.',
+    ],
+    success:
+      'You sing, you play, people clap along. Not a revolution, but good. The old man behind the counter nods approvingly.',
+    failure:
+      'Halfway through you forget a chord. You finish somehow, and the applause is polite – the worst kind of applause.',
   },
 
   kristianDuel: {

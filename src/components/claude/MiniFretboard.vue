@@ -119,7 +119,9 @@ const label = computed(() =>
   stroke-width: 1.5;
 }
 .num {
-  font: 600 8px Arial, sans-serif;
+  font:
+    600 8px Arial,
+    sans-serif;
   text-anchor: middle;
   fill: #fff;
 }

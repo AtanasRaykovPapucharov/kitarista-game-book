@@ -1,0 +1,33 @@
+# Runs on every push and pull request: if the story, the code or the
+# build is broken, GitHub shows a red ✗ before anything reaches Vercel.
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint (ESLint)
+        run: npx eslint -c ./eslint.config.js "./src*/**/*.{js,cjs,mjs,vue}"
+
+      # every section reachable, no dead ends, all text in both languages,
+      # the "вие" edition up to date, missions and pictures in place
+      - name: Check the story
+        run: npm run check-story -- 5000
+
+      - name: Build
+        run: npm run build

@@ -30,8 +30,13 @@ async function submit() {
     return
   }
   cues.welcome()
-  $q.notify({ message: t('auth.welcome', { name: auth.currentUser.displayName }), color: 'positive' })
-  router.replace(typeof route.query.redirect === 'string' ? route.query.redirect : { name: 'cover' })
+  $q.notify({
+    message: t('auth.welcome', { name: auth.currentUser.displayName }),
+    color: 'positive',
+  })
+  router.replace(
+    typeof route.query.redirect === 'string' ? route.query.redirect : { name: 'cover' },
+  )
 }
 </script>
 
@@ -81,7 +86,9 @@ async function submit() {
 
       <p class="gb-auth__switch">
         {{ t('auth.noAccount') }}
-        <router-link :to="{ name: 'register', query: route.query }" class="gb-link">{{ t('auth.registerAction') }}</router-link>
+        <router-link :to="{ name: 'register', query: route.query }" class="gb-link">{{
+          t('auth.registerAction')
+        }}</router-link>
       </p>
       <p class="gb-note">{{ t('auth.localNotice') }}</p>
     </div>

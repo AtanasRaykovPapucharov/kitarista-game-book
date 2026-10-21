@@ -119,7 +119,11 @@ onBeforeUnmount(() => {
           </h1>
         </header>
 
-        <SectionIllustration v-if="illustration && !illustrationAtEnd" :key="illustration" :name="illustration" />
+        <SectionIllustration
+          v-if="illustration && !illustrationAtEnd"
+          :key="illustration"
+          :name="illustration"
+        />
 
         <div class="gb-story" :class="{ 'gb-story--prologue': key === 'prologue' }">
           <p

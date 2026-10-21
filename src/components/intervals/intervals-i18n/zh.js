@@ -33,7 +33,8 @@ export default {
     minor2: {
       name: '小二度',
       description: '西方音乐中最小的音程，一个半音。非常不协和、紧张。',
-      melodic: '半音级进，常见于古典、爵士和金属 riff（例如带弗里几亚色彩的乐句），制造紧张感和戏剧性。',
+      melodic:
+        '半音级进，常见于古典、爵士和金属 riff（例如带弗里几亚色彩的乐句），制造紧张感和戏剧性。',
       harmonic: '同时弹奏时尖锐刺耳；偶尔用于音簇或紧张和弦，以及恐怖片式的效果。',
     },
     major2: {
@@ -57,7 +58,8 @@ export default {
     perfect4: {
       name: '纯四度',
       description: '五个半音。非常协和，在标准调弦的吉他上常见于相邻两弦之间。',
-      melodic: '常见于号角般的跳进（例如《婚礼进行曲》“Here Comes the Bride”）、四度 riff 以及 sus4 的解决。',
+      melodic:
+        '常见于号角般的跳进（例如《婚礼进行曲》“Here Comes the Bride”）、四度 riff 以及 sus4 的解决。',
       harmonic: '构成开放、模糊的四度和声（既非大调也非小调），是放克和调式爵士和弦排列中的常客。',
     },
     tritone: {
@@ -81,7 +83,8 @@ export default {
     major6: {
       name: '大六度',
       description: '九个半音。明亮协和，是小三度的转位。',
-      melodic: '甜美开阔的跳进，常见于民谣和流行旋律（例如“My Bonnie Lies Over the Ocean”的开头）。',
+      melodic:
+        '甜美开阔的跳进，常见于民谣和流行旋律（例如“My Bonnie Lies Over the Ocean”的开头）。',
       harmonic: '带来温暖的爵士色彩；常用于大六和弦和乡村音乐的双音。',
     },
     minor7: {
@@ -99,13 +102,15 @@ export default {
     octave: {
       name: '纯八度',
       description: '十二个半音。同名音，频率为两倍（或一半），协和程度最高。',
-      melodic: '八度跳进为旋律增添戏剧性和音域（例如放克和摇滚中的八度 riff，或《彩虹之上》“Somewhere Over the Rainbow”）。',
+      melodic:
+        '八度跳进为旋律增添戏剧性和音域（例如放克和摇滚中的八度 riff，或《彩虹之上》“Somewhere Over the Rainbow”）。',
       harmonic: '八度叠加（通过八度效果器或经典的“八度奏法”）使音色更厚实、更突出。',
     },
     minor9: {
       name: '小九度',
       description: '一个八度加小二度，13 个半音。尖锐紧张，是 7♭9 和弦的色彩。',
-      melodic: '宽广而富有戏剧性的跳进。在弗拉门戈中，属和弦上的 ♭9（如 E7♭9）正是弗里几亚终止的声音。',
+      melodic:
+        '宽广而富有戏剧性的跳进。在弗拉门戈中，属和弦上的 ♭9（如 E7♭9）正是弗里几亚终止的声音。',
       harmonic: '同时发声时非常紧张；是属七降九和弦（7♭9）的特征音。',
     },
     major9: {

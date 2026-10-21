@@ -28,11 +28,17 @@ function doRoll() {
 <template>
   <section class="challenge">
     <header class="challenge__head">
-      <h2 class="challenge__title">{{ props.roll.dice > 1 ? t('play.rollDice') : t('play.rollDie') }}</h2>
+      <h2 class="challenge__title">
+        {{ props.roll.dice > 1 ? t('play.rollDice') : t('play.rollDie') }}
+      </h2>
       <p class="challenge__rule">{{ t('play.rollRule') }}</p>
     </header>
     <div class="challenge__dice">
-      <DiceTray :values="resolved?.dice ?? null" :count="props.roll.dice" @settled="rolling = false" />
+      <DiceTray
+        :values="resolved?.dice ?? null"
+        :count="props.roll.dice"
+        @settled="rolling = false"
+      />
       <button v-if="!resolved" type="button" class="gb-btn gb-btn--primary" @click="doRoll">
         {{ props.roll.dice > 1 ? t('play.rollDice') : t('play.rollDie') }}
       </button>

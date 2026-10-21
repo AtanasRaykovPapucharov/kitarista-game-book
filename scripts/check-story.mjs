@@ -13,6 +13,30 @@ import { register } from 'node:module'
 
 register('./story-loader-hooks.mjs', import.meta.url)
 
+/* The same random games every run (dice and choices), so the check never
+   fails by bad luck – e.g. the rarest ending not coming up. Another seed:
+   CHECK_SEED=123 npm run check-story */
+const SEED = Number(process.env.CHECK_SEED) || 8022016
+let state = SEED >>> 0
+const next = () => {
+  state = (state + 0x6d2b79f5) >>> 0
+  let t = state
+  t = Math.imul(t ^ (t >>> 15), t | 1)
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+}
+Math.random = next
+Object.defineProperty(globalThis, 'crypto', {
+  configurable: true,
+  value: {
+    // like the real one: fills the given array in place and returns it
+    getRandomValues(arr) {
+      for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(next() * 2 ** (8 * arr.BYTES_PER_ELEMENT))
+      return arr
+    },
+  },
+})
+
 const { SECTIONS, START, ENDINGS, SECTION_COUNT } = await import('src/story/book.js')
 const { ITEMS } = await import('src/story/items.js')
 const { MOODS, LINES_PER_MOOD } = await import('src/story/song.js')
@@ -136,7 +160,7 @@ for (const [lang, c] of LANGS) {
 
 function report(list, extra = '') {
   const unique = [...new Set(list)]
-  console.log(`Sections: ${SECTION_COUNT} (start: ${START})${extra}`)
+  console.log(`Sections: ${SECTION_COUNT} (start: ${START}), seed ${SEED}${extra}`)
   if (!unique.length) return
   console.log(`\n✗ ${unique.length} problem(s):`)
   for (const p of unique.slice(0, 60)) console.log(`  - ${p}`)

@@ -16,7 +16,9 @@ const names = useCast()
         <p v-for="p in paragraphs" :key="p">{{ t(`rules.${p}`, names) }}</p>
       </div>
       <p class="gb-note">{{ t('rules.source') }}</p>
-      <router-link :to="{ name: 'cover' }" class="gb-btn gb-btn--primary q-mt-lg">{{ t('play.toCover') }}</router-link>
+      <router-link :to="{ name: 'cover' }" class="gb-btn gb-btn--primary q-mt-lg">{{
+        t('play.toCover')
+      }}</router-link>
     </div>
   </q-page>
 </template>

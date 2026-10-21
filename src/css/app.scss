@@ -152,7 +152,6 @@ body {
   color: var(--app-muted) !important;
 }
 
-
 /* =====================================================
    Scrollbars: thin and quiet, clearer while the pointer is over the
    area that scrolls. They stay visible (never fully hidden), so it is
@@ -498,7 +497,9 @@ body {
 /* the paragraph the narrator is reading */
 .gb-story p {
   border-radius: 6px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .gb-story p.is-reading {
@@ -1118,7 +1119,6 @@ body {
   }
 }
 
-
 /* =====================================================
    Visual effects
    Everything that moves stops for people who ask their
@@ -1209,7 +1209,11 @@ body {
   height: 220px;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse at 30% 45%, color-mix(in srgb, var(--gb-accent) 28%, transparent), transparent 65%);
+  background: radial-gradient(
+    ellipse at 30% 45%,
+    color-mix(in srgb, var(--gb-accent) 28%, transparent),
+    transparent 65%
+  );
   animation: gb-aura 6s ease-in-out infinite;
 }
 

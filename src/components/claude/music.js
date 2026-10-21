@@ -221,7 +221,9 @@ export function parseNotes(text) {
   const invalid = []
   if (!text) return { groups, invalid }
 
-  for (const chunk of String(text).split(/[\s,]+/).filter(Boolean)) {
+  for (const chunk of String(text)
+    .split(/[\s,]+/)
+    .filter(Boolean)) {
     const group = []
     for (const token of chunk.split('+').filter(Boolean)) {
       const n = parseNoteToken(token)

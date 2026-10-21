@@ -1172,12 +1172,7 @@ onBeforeUnmount(() => {
                 <q-item v-close-popup clickable @click="copyBarNotes(b)">
                   <q-item-section>Copy notes as a melody</q-item-section>
                 </q-item>
-                <q-item
-                  v-close-popup
-                  clickable
-                  :disable="!copiedNotes"
-                  @click="pasteMelody(b, 0)"
-                >
+                <q-item v-close-popup clickable :disable="!copiedNotes" @click="pasteMelody(b, 0)">
                   <q-item-section>Paste melody here</q-item-section>
                 </q-item>
                 <q-item v-close-popup clickable :disable="b === 0" @click="moveBar(b, -1)">

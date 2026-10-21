@@ -2,12 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import treblePng from 'src/assets/images/treble.png'
 import bassPng from 'src/assets/images/bass.png'
-import {
-  parseLetter,
-  placeOnStrings,
-  resolveStaff,
-  writtenStep,
-} from './notation'
+import { parseLetter, placeOnStrings, resolveStaff, writtenStep } from './notation'
 
 /* =====================================================
    One staff (five lines), wrapping onto more systems when

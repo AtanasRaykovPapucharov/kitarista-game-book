@@ -508,7 +508,15 @@ defineExpose({ focusChord, typeLetter, typeRest, deleteSelectedNote, handleKey }
       </div>
 
       <div class="row items-center no-wrap q-gutter-x-sm q-mt-sm">
-        <q-btn outline dense no-caps color="blue-5" icon="add" label="Add note" @click="addNote()" />
+        <q-btn
+          outline
+          dense
+          no-caps
+          color="blue-5"
+          icon="add"
+          label="Add note"
+          @click="addNote()"
+        />
         <q-btn outline dense no-caps color="blue-5" icon="add" label="Add rest" @click="addRest" />
         <q-btn
           v-if="copiedNotes"
