@@ -19,7 +19,7 @@ export default {
   title: 'While You Listen to the Stars',
   byline: 'A game-book after the story by Atanas Papucharov',
   pitch:
-    'Tome gets a guitar for [his|her|their] birthday – and with it, a voice from the depths of space. Will [he|she|they] become a guitarist? And whose hands will be doing the playing?',
+    'The protagonist receives a guitar for [his|her|their] birthday, and with it, a voice from the depths of space. Will [he|she|they] become a guitarist? And whose hands will actually be playing?',
 
   song: {
     moods: {
@@ -80,41 +80,78 @@ export default {
     guitar: { name: 'Guitar', desc: 'Yours. It smells of fresh lacquer.' },
     pancakes: { name: 'Mum’s pancakes', desc: 'Eat one to restore 4 Inspiration.' },
     pick: { name: 'Bone pick', desc: 'Grandpa’s. +1 to your attack in duels.' },
-    starglass: { name: 'Star-glass', desc: 'A piece of the fallen star. It rings when the dark is near. +1 to attack in a duel.' },
-    seashell: { name: 'Shell from Maglitsa', desc: 'Hold it to your ear to regain 3 Inspiration. Once.' },
+    starglass: {
+      name: 'Star-glass',
+      desc: 'A piece of the fallen star. It rings when the dark is near. +1 to attack in a duel.',
+    },
+    seashell: {
+      name: 'Shell from Maglitsa',
+      desc: 'Hold it to your ear to regain 3 Inspiration. Once.',
+    },
     songbook: { name: 'Songbook', desc: 'A gift from Grandma. Composing comes easier with it.' },
     strings: { name: 'Spare strings', desc: 'Strings break at the worst possible moment.' },
-    feather: { name: 'Grey feather', desc: 'From the little bird under the linden. It guards you from the dark.' },
+    feather: {
+      name: 'Grey feather',
+      desc: 'From the little bird under the linden. It guards you from the dark.',
+    },
     metronome: { name: 'Old metronome', desc: 'From Kristian. +1 to your attack in duels.' },
-    recipe: { name: 'Recipe for luck', desc: 'Read it once to restore your Luck to its starting value.' },
+    recipe: {
+      name: 'Recipe for luck',
+      desc: 'Read it once to restore your Luck to its starting value.',
+    },
   },
 
   endings: {
-    light: { title: 'The Dark Shines', summary: 'You played your own song to the dark, and it turned to light.' },
-    guitarist: { title: 'The Guitarist', summary: 'You beat the dark and played your own song for everyone.' },
-    start: { title: 'A Good Start', summary: 'You played cleanly, but your own song is still waiting to be born.' },
-    puppet: { title: 'Puppet', summary: 'The voice plays with your hands. You watch from the side.' },
-    silence: { title: 'Silence', summary: 'Your inspiration died out and the guitar went under the bed.' },
+    light: {
+      title: 'The Dark Shines',
+      summary: 'You played your own song to the dark, and it turned to light.',
+    },
+    guitarist: {
+      title: 'The Guitarist',
+      summary: 'You beat the dark and played your own song for everyone.',
+    },
+    start: {
+      title: 'A Good Start',
+      summary: 'You played cleanly, but your own song is still waiting to be born.',
+    },
+    puppet: {
+      title: 'Puppet',
+      summary: 'The voice plays with your hands. You watch from the side.',
+    },
+    silence: {
+      title: 'Silence',
+      summary: 'Your inspiration died out and the guitar went under the bed.',
+    },
   },
 
   illustrations: {
     void: 'Endless space with a violet nebula. In the centre, a vast faceless swirl of darker dark; far below, a small blue planet glows.',
-    window: 'A night window with bright stars peering in. Below it, a child sleeps under a blanket.',
+    window:
+      'A night window with bright stars peering in. Below it, a child sleeps under a blanket.',
     guitar: 'A guitar with rays of light streaming from its soundhole towards the starry sky.',
-    corridor: 'A dark school corridor with lockers. Two figures – one big, one smaller – stand facing each other.',
-    observatory: 'An observatory dome and a radio telescope on a mountain ridge beneath the Milky Way. A thin beam rises from the slit in the dome.',
-    linden: 'A linden tree on a hill at dusk. A child kneels beside it while a small light rises into the sky.',
-    silhouette: 'A colossal dark silhouette with sharp, ill-fitting angles above a tiny figure. A thin golden thread leads upward – Mum’s voice.',
-    orpheus: 'A figure with a lyre walks through a tunnel towards bright light. Behind it, in the dark, a shadow waits with two pale points.',
+    corridor:
+      'A dark school corridor with lockers. Two figures – one big, one smaller – stand facing each other.',
+    observatory:
+      'An observatory dome and a radio telescope on a mountain ridge beneath the Milky Way. A thin beam rises from the slit in the dome.',
+    linden:
+      'A linden tree on a hill at dusk. A child kneels beside it while a small light rises into the sky.',
+    silhouette:
+      'A colossal dark silhouette with sharp, ill-fitting angles above a tiny figure. A thin golden thread leads upward – Mum’s voice.',
+    orpheus:
+      'A figure with a lyre walks through a tunnel towards bright light. Behind it, in the dark, a shadow waits with two pale points.',
     shop: 'Old leaning houses on a narrow street. A shop window with a star above the door glows blue-green; a guitar and a drum are inside.',
-    stage: 'A stage under a single spotlight. A guitarist sits on a chair; the heads of the audience are in front.',
+    stage:
+      'A stage under a single spotlight. A guitarist sits on a chair; the heads of the audience are in front.',
     dark: 'A figure stands before a vast circle of darkness with a violet rim. A feather glows in its hand, casting a beam into the dark.',
-    light: 'A guitarist on a hill beneath a sky crossed by five faint lines of light, like a musical staff, with stars sitting on them like notes.',
-    puppet: 'A figure under a spotlight with raised arms. Bright threads rise from its hands, head and feet – like a puppet’s.',
+    light:
+      'A guitarist on a hill beneath a sky crossed by five faint lines of light, like a musical staff, with stars sitting on them like notes.',
+    puppet:
+      'A figure under a spotlight with raised arms. Bright threads rise from its hands, head and feet – like a puppet’s.',
     well: 'An ancient stone well in a meadow at the edge of a pine forest. Grey dust covers the ground around it, and a pillar of light in a nameless colour rises from the water.',
     sea: 'A long stone pier in thick fog. At its end stands a small figure, and the sea before it rises like a vast, breathing hill. A lighthouse beam cuts through the fog.',
     mine: 'The mouth of an old mine in a mountainside at night. Rusty rails run into the dark, and deep inside a lantern glimmers.',
-    silence: 'A dark room. A moonbeam falls on a guitar case under the bed. The strings inside glow faintly.',
+    silence:
+      'A dark room. A moonbeam falls on a guitar case under the bed. The strings inside glow faintly.',
   },
 
   // the story itself, part by part (src/story/content/en/)
