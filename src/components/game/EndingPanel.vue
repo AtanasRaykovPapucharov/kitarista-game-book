@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { useGameStore } from 'src/stores/game-store'
 import { useStory } from 'src/game/useStory'
 import { ENDINGS } from 'src/story/book'
+import { hintsFor } from 'src/game/hints'
 import { cues } from 'src/game/sound'
 import { useQuasar } from 'quasar'
 import SongCard from './SongCard.vue'
@@ -22,6 +23,8 @@ function nameSong(title) {
 
 const id = computed(() => game.save.endingId)
 const meta = computed(() => ENDINGS[id.value])
+// what could lead somewhere brighter next time
+const hints = computed(() => hintsFor(game.save))
 const found = computed(() => Object.keys(game.profile.endings).length)
 
 onMounted(() => cues.ending(meta.value?.tone))
@@ -44,6 +47,14 @@ function again() {
       :heading="id === 'light' || id === 'guitarist' ? t('song.yourSong') : t('song.unfinished')"
       @name="nameSong"
     />
+    <section v-if="hints.length" class="ending__hints" :aria-label="t('hints.title')">
+      <p class="ending__hints-title">
+        <q-icon name="lightbulb" size="18px" /> {{ t('hints.title') }}
+      </p>
+      <ul>
+        <li v-for="h in hints" :key="h">{{ t(`hints.items.${h}`) }}</li>
+      </ul>
+    </section>
     <p class="ending__count">
       {{ t('cover.endingsFound', { found, total: Object.keys(ENDINGS).length }) }}
     </p>
@@ -92,6 +103,29 @@ function again() {
   margin: 0 0 6px;
   font-family: var(--gb-serif);
   font-size: 1.15rem;
+}
+
+.ending__hints {
+  margin: 18px 0 6px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--gb-accent);
+  border-radius: 0 12px 12px 0;
+  background: var(--gb-hover);
+}
+
+.ending__hints-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: var(--gb-accent);
+}
+
+.ending__hints ul {
+  margin: 0;
+  padding-left: 1.2em;
+  line-height: 1.5;
 }
 
 .ending__count {

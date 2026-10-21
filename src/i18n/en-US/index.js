@@ -653,6 +653,19 @@ export default {
       other: 'The microphone didn’t start. Try again.',
     },
   },
+  hints: {
+    title: 'Next time…',
+    items: {
+      darkness: 'The less you let the voice play for you, the weaker the Dark is at the end.',
+      song: 'Your own song – at least three verses – opens roads that a borrowed one doesn’t.',
+      feather: 'Not everything that dies by the roadside is meaningless. Sometimes it protects.',
+      ask: 'In the last dream you don’t have to start with a fight. You can also ask.',
+      missions: 'Missions in the practice room unlock music moves in duels.',
+      well: 'The carvings on the old well are not decoration. Perhaps they show a way.',
+      mom: 'Sometimes the bravest thing you can do is tell the truth.',
+      window: 'The old man from the Star String doesn’t ask for help without a reason.',
+    },
+  },
   about: {
     title: 'About',
     body: 'Kitarista is built with Quasar, Vue 3, Pinia and vue-i18n. The game-book “While You Listen to the Stars” is based on a story by Atanas Papucharov.',
