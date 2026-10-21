@@ -111,7 +111,7 @@ export default {
   },
   hero: {
     title: 'Create your hero',
-    lead: 'Before you open the book, roll the dice to find out what Tome starts with. These values are also the ceiling you can recover to.',
+    lead: 'Before you open the book, roll the dice to find out what {hero} starts with. These values are also the ceiling you can recover to.',
     roll: 'Roll the dice',
     reroll: 'Roll again ({left} left)',
     noRerolls: 'No more rolls – this is what you start with.',
@@ -222,7 +222,7 @@ export default {
   rules: {
     title: 'How to play',
     p1: 'This is a game-book: a story in which you decide what the hero does. The text is split into numbered sections that are not read in order. At the end of each section you choose where to go next – “turn to 27” – so every reading is different.',
-    p2: 'Before you start, you roll for Tome’s three qualities: Skill (1 die + 6), Inspiration (2 dice + 12) and Luck (1 die + 6). Starting values are also the maximum you can recover to – unless the book says a quality rises.',
+    p2: 'Before you start, you roll for {hero}’s three qualities: Skill (1 die + 6), Inspiration (2 dice + 12) and Luck (1 die + 6). Starting values are also the maximum you can recover to – unless the book says a quality rises.',
     p3: 'Tests: when the book asks you to test your Skill or Luck, roll two dice. If the total is less than or equal to the quality – success. Every Luck test lowers your Luck by 1, so save it for the moments that matter.',
     p4: 'Duels: each round you and your opponent roll two dice and add your Skill. The higher attack wins the round – the loser loses 2 points (the opponent Nerve, you Inspiration). After each round you may test your Luck to boost a win or soften a loss. The pick and the metronome give +1 to your attack.',
     p5: 'Darkness is the fourth quality – how much of you belongs to the voice. It starts at 0 and grows when you let the voice decide for you. High Darkness makes the shadows stronger and closes some doors.',
@@ -542,7 +542,7 @@ export default {
       witness: { title: 'Last respects', desc: 'Don’t walk past the dying bird.' },
       no_look_back: { title: 'Don’t look back', desc: 'In the first dream, fly towards the light without looking back.' },
       sent_home: { title: 'Sent home', desc: 'Show the colour from the Thracian well the way back to the stars.' },
-      eurydice: { title: 'Eurydice', desc: 'Lead Viktoria out of the sea’s song without looking back.' },
+      eurydice: { title: 'Without looking back', desc: 'Lead {friend} out of the sea’s song without looking back.' },
       true_voice: { title: 'The true voice', desc: 'Find Mite in the mine among the Echo’s voices.' },
       all_missions: { title: 'Practice-room pupil', desc: 'Complete all six missions from the book.' },
       dark_talk: { title: 'A talk with the dark', desc: 'Ask the Dark what it wants.' },

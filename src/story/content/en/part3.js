@@ -36,7 +36,7 @@ export default {
     title: 'Host',
     text: [
       'You get home and start playing. Your thoughts evaporate and you float on the swaying sound waves, while the room gradually disappears – the walls, the bed, the window – until only the strings remain, and the dark behind them.',
-      '“Hey, Tome.” “Hello, imaginary friend.” “What do you dream of? I can teach you how to make your dreams come true.”',
+      '“Hey, {hero}.” “Hello, imaginary friend.” “What do you dream of? I can teach you how to make your dreams come true.”',
       'You really are lucky – you nearly always get what you want. Maybe because you never want it at any cost. The more passionately you desire something, the further it drifts away. But the voice promises something else: wishes that come true the moment you think them – and a price nobody mentions.',
     ],
     choices: {
@@ -49,7 +49,7 @@ export default {
     title: 'From the depths',
     text: [
       '“Because I come from the depths of space,” the voice answers, and the words fall into your mind heavily, like stones into a bottomless well. “I was born of a trembling in the nothing, before the first star lit its fire. Knowledge is part of my origin.”',
-      '“For aeons I drifted in the dark, unable to hear. Infinity is silent, Tome. You cannot imagine how silent. Then you touched the strings and I heard. For the first time.”',
+      '“For aeons I drifted in the dark, unable to hear. Infinity is silent, {hero}. You cannot imagine how silent. Then you touched the strings and I heard. For the first time.”',
       '“Call me the Listener. You are my host.”',
       '“Yeah, right. Seems my imagination is wilder than I thought.” You laugh. The voice doesn’t. And through the window, in the middle of a summer night, a breath of cold drifts in, the kind that only comes from very far away.',
     ],
@@ -61,7 +61,7 @@ export default {
     success:
       'The melody comes slowly – yours, a little crooked and completely real. The voice falls silent. For the first time the quiet in the room is yours alone, and it is warm, not bottomless.',
     failure:
-      'Your fingers tangle and the voice laughs – patiently, like a grown-up watching a child struggle to lift a stone: “Without me you’ll be strumming till you’re old, Tome.”',
+      'Your fingers tangle and the voice laughs – patiently, like a grown-up watching a child struggle to lift a stone: “Without me you’ll be strumming till you’re old, {hero}.”',
   },
 
   nightmare: {

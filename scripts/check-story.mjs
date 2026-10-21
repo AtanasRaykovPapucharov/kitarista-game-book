@@ -89,6 +89,25 @@ for (const [lang, c] of LANGS) {
   }
 }
 
+const strings = (o, acc = []) => {
+  if (typeof o === 'string') acc.push(o)
+  else if (o && typeof o === 'object') for (const v of Object.values(o)) strings(v, acc)
+  return acc
+}
+
+/* ---------- names and the friend's word forms ---------- */
+for (const [lang, c] of LANGS) {
+  for (const t of strings(c)) {
+    for (const m of t.matchAll(/‹([^‹›]*)›/g)) {
+      if (m[1].split('|').length !== 2) problems.push(`${lang}: "${m[0]}" should have two forms ‹for her|for him›`)
+    }
+    if (/‹[^›]*$|^[^‹]*›/.test(t.replace(/‹[^‹›]*›/g, ''))) problems.push(`${lang}: unbalanced ‹ › in "${t.slice(0, 50)}…"`)
+    for (const m of t.matchAll(/\{(\w+)\}/g)) {
+      if (!['hero', 'friend', 'day'].includes(m[1])) problems.push(`${lang}: unknown placeholder {${m[1]}} in "${t.slice(0, 50)}…"`)
+    }
+  }
+}
+
 /* ---------- illustrations ---------- */
 {
   const fs = await import('node:fs')
@@ -105,11 +124,6 @@ for (const [lang, c] of LANGS) {
 
 /* ---------- word forms [m|f|n] ---------- */
 const FORM = /\[([^[\]|]*(?:\|[^[\]|]*)+)\]/g
-const strings = (o, acc = []) => {
-  if (typeof o === 'string') acc.push(o)
-  else if (o && typeof o === 'object') for (const v of Object.values(o)) strings(v, acc)
-  return acc
-}
 for (const [lang, c] of LANGS) {
   for (const s of strings(c)) {
     for (const m of s.matchAll(FORM)) {

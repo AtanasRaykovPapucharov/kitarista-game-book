@@ -1,4 +1,5 @@
 <script setup>
+import { useCast } from 'src/game/useCast'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from 'src/stores/game-store'
@@ -16,6 +17,8 @@ const groups = computed(() =>
   ACHIEVEMENT_GROUPS.map((g) => ({ key: g, items: ACHIEVEMENTS.filter((a) => a.group === g) })),
 )
 const date = (iso) => new Date(iso).toLocaleDateString(locale.value)
+// names for texts that mention the protagonist or the friend
+const names = useCast()
 </script>
 
 <template>
@@ -57,7 +60,7 @@ const date = (iso) => new Date(iso).toLocaleDateString(locale.value)
               {{
                 a.secret && !have[a.id]
                   ? t('achievements.secretHint')
-                  : t(`achievements.list.${a.id}.desc`)
+                  : t(`achievements.list.${a.id}.desc`, names)
               }}
             </span>
             <span v-if="have[a.id]" class="achievement__date">

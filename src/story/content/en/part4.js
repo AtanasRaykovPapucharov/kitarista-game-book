@@ -4,7 +4,7 @@ export default {
   announcement: {
     title: 'Two posters',
     text: [
-      'There are two posters on the school door. The first: “Open stage at the Star String music shop – Saturday.” The second: “Annual concert – end of the month.” Viktoria’s last day.',
+      'There are two posters on the school door. The first: “Open stage at the Star String music shop – Saturday.” The second: “Annual concert – end of the month.” {friend}’s last day.',
       'The name of the shop makes you stop. “Star String.” The voice in you quietly repeats the words, like someone recognising their own name written on a stranger’s wall.',
       'You have three days until Saturday. Three days to practise – and to face whatever fate serves up.',
     ],
@@ -187,7 +187,7 @@ export default {
     text: [
       'Grandpa sits on the edge of your bed and is silent for a long time, looking at the guitar.',
       '“Did you know you’re made of stardust? Billions of stars died so that life could be born. Our ancestors, the Thracians, sang to the stars when they saw off their dead – and they rejoiced, because they believed the soul was going home.”',
-      '“And the greatest of them was Orpheus. He played so beautifully that the stones wept. When his beloved died, he went down into the dark beneath the world and charmed it with his song. The dark gave her back – on one condition: he must not look back until they reached the light.” Grandpa sighs. “He looked back. The dark is patient, Tome. It always waits for you to turn around.”',
+      '“And the greatest of them was Orpheus. He played so beautifully that the stones wept. When his beloved died, he went down into the dark beneath the world and charmed it with his song. The dark gave her back – on one condition: he must not look back until they reached the light.” Grandpa sighs. “He looked back. The dark is patient, {hero}. It always waits for you to turn around.”',
       '“Listen to your ancestors.” Grandpa pats your knee and leaves, and his words stay in the room like a warm, heavy stone.',
     ],
   },

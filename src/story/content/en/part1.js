@@ -16,7 +16,7 @@ export default {
   eve: {
     title: 'The night before the birthday',
     text: [
-      'You are Tome – one of those [boys|girls|kids] who seem as if they will never grow up. And yet anyone perceptive enough notices a hidden wisdom in you, as though someone much older looks out from behind your eyes. Maybe an old soul lives in your body.',
+      'You are {hero} – one of those [boys|girls|kids] who seem as if they will never grow up. And yet anyone perceptive enough notices a hidden wisdom in you, as though someone much older looks out from behind your eyes. Maybe an old soul lives in your body.',
       'You lie in bed, drifting off, impatient for tomorrow. Tomorrow is your birthday. All the relatives will gather and you know it: at last you will have your own guitar. You have no friend. The guitar will be your friend. Your comfort when you are alone.',
       'The music is in your heart. You feel it in your belly – bubbling, waiting to be born. Sometimes it seems not entirely yours: as though it comes from very far away, looking for someone to sound through.',
       'Outside, the stars burn unusually bright, as if they have drawn close to the window to peer in. From the living room comes the rustle of wrapping paper.',
@@ -36,7 +36,7 @@ export default {
     success:
       'Nobody hears you. Through the gap you see a hard black case leaning against the sofa, glossy as water on a moonless night. You go back to bed, but sleep is slow to come – and when it does, it is dark and fast. Something far away has sensed your impatience and turned towards it, the way a flower turns towards the sun.',
     failure:
-      'You step on the cat’s tail. Meow! A lamp clicks on and the shadows shrink back into their corners. “Tome!” Mum is standing in the doorway, hands on her hips. “You’ll see tomorrow. Bed!” You feel silly. Impatience really does make you weak.',
+      'You step on the cat’s tail. Meow! A lamp clicks on and the shadows shrink back into their corners. “{hero}!” Mum is standing in the doorway, hands on her hips. “You’ll see tomorrow. Bed!” You feel silly. Impatience really does make you weak.',
   },
 
   dream: {
@@ -73,7 +73,7 @@ export default {
   birthday: {
     title: 'The gift of gifts',
     text: [
-      '“Tome, get up! The pancakes are getting cold!”',
+      '“{hero}, get up! The pancakes are getting cold!”',
       '“I love pancakes. Pancakes… rays… sunrays. Yes, little sun, you own my day.” The morning is so ordinary and bright that the shadows of the night seem like someone else’s invention.',
       'The living room is full. Grandma pinches your cheek: “Grandma’s [boy|girl|darling], how big you’ve grown!” Grandpa shakes your hand like a grown-up’s: “Grow up big, my [boy|girl|dear].”',
       '“And finally – the gift of gifts! Guess what Dad Vladko and I got you?”',

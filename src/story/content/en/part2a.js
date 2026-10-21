@@ -4,7 +4,7 @@ export default {
   school: {
     title: 'Inhumanly early',
     text: [
-      '“Tome, get up! You’ll be late for school!”',
+      '“{hero}, get up! You’ll be late for school!”',
       '“It’s inhuman to get up this early. We’re children, for God’s sake. We’re growing.”',
       'The guitar leans against the chair where you left it last night, and in the grey morning light it looks like something that is watching you. The voice is silent. Perhaps it sleeps. Perhaps beings like it never sleep – they only wait.',
     ],

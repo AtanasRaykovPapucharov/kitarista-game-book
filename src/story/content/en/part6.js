@@ -4,7 +4,7 @@ export default {
   recipe: {
     title: 'A recipe for luck',
     text: [
-      'The next morning the voice wakes you before the alarm: “Tome, wake up. Today you will write down the recipe for luck. How to make your wishes come true. I will tell it to you.”',
+      'The next morning the voice wakes you before the alarm: “{hero}, wake up. Today you will write down the recipe for luck. How to make your wishes come true. I will tell it to you.”',
       'Your hand reaches for the pen on its own. You write: First – a wish from the heart. Second – unbending intent. Third – humble patience.',
       'The words are true. You feel it with the part of you that knows things without having learned them. And then the voice lowers its tone, soft as velvet on a coffin lid: “And fourth – open the door for me.”',
     ],
@@ -36,7 +36,7 @@ export default {
       'Your mother comes into your room while you are at school. The bed isn’t made, of course. “Why make it?” she thinks. “Mum will take care of it, won’t she?”',
       'Her eye falls on a sheet of paper: “Recipe for luck”. She reads it once, then again, and stands at the window for a long time, looking at the sky as though searching it for something she saw long ago.',
       { ifFlag: 'fought', text: 'The school has already called about the fight. Mum says nothing about it – for now.' },
-      'In the evening, at dinner, she asks quietly: “Who taught you this, Tome?”',
+      'In the evening, at dinner, she asks quietly: “Who taught you this, {hero}?”',
     ],
     choices: {
       tell: 'Tell her about the voice',
@@ -65,7 +65,7 @@ export default {
     title: 'The deal',
     text: [
       'The night before the concert. You can’t sleep. The voice is stronger than ever – no longer a whisper, but something like a tide rising from within.',
-      '“Tomorrow I will play,” it says. “You’ll be the best. You’ll have everything: applause, fame, Viktoria. For aeons I waited to hear music. Let me make it. Just open the door for me. Only tonight.”',
+      '“Tomorrow I will play,” it says. “You’ll be the best. You’ll have everything: applause, fame, {friend}. For aeons I waited to hear music. Let me make it. Just open the door for me. Only tonight.”',
       'Somewhere at the back of your mind, Grandpa is telling the story of Orpheus. The dark is patient. It always waits for you to turn around.',
     ],
     choices: {
@@ -137,8 +137,8 @@ export default {
       'You wake at sunrise – quiet and light, as if someone had washed your soul. The voice is somewhere deep down, quiet and small, like an echo in a distant cave.',
       'That evening the hall is full. Grandma, Grandpa, Mum and Dad Vladko are in the front row. In the last row, half hidden in shadow, sits the guest professor with his tired eyes.',
       { ifFlag: 'belyan_friend', text: 'By the wall, Belyan is drumming his fingers on his knee. He gives you a thumbs-up.' },
-      { ifFlag: 'viktoria_comes', text: 'Viktoria sits in the last row, headphones round her neck. She waves.' },
-      { ifNotFlag: 'viktoria_comes', text: 'You look for Viktoria, but she isn’t there. Maybe that’s how it should be.' },
+      { ifFlag: 'viktoria_comes', text: '{friend} sits in the last row, headphones round ‹her|his› neck. ‹She waves|He waves›.' },
+      { ifNotFlag: 'viktoria_comes', text: 'You look for {friend}, but ‹she isn’t|he isn’t› there. Maybe that’s how it should be.' },
       'You sit down on the chair. The voice is silent – or it is no longer a voice, just the silence between the notes.',
     ],
     choices: {
@@ -164,8 +164,8 @@ export default {
     title: 'The Guitarist',
     text: [
       'You play your own song. The first note is hesitant, the second firm, the third yours.',
-      { ifFlag: 'viktoria_comes', text: 'In the last row, Viktoria has taken off her headphones.' },
-      { ifFlag: 'viktoria_saved', text: 'She is holding the shell from Maglitsa. When you finish, she puts it to her ear and smiles – as if the sea had heard too.' },
+      { ifFlag: 'viktoria_comes', text: 'In the last row, {friend} has taken off ‹her|his› headphones.' },
+      { ifFlag: 'viktoria_saved', text: '‹She is|He is› holding the shell from Maglitsa. When you finish, ‹she puts|he puts› it to ‹her|his› ear and smiles – as if the sea had heard too.' },
       'When you finish, for a moment there is total silence – that full, living silence in which a whole hall holds its breath. Then the hall erupts.',
       'The voice is somewhere far away, defeated but not destroyed – the dark never dies, it only waits. But tonight the song is stronger than it.',
       'That night you dream of stars. You aren’t rushing through the dark – you stand on a hill and listen to them. You are a guitarist.',

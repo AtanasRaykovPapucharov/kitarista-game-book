@@ -45,14 +45,14 @@ export default {
     text: [
       'Inside, the air is cool and heavy and smells of wet stone and metal. The gallery narrows, then branches – once, twice, ten times. Some of the side tunnels are too round, too smooth, like holes not dug by people but gnawed.',
       'The lantern flame shrinks. And then the voices begin.',
-      'To the left – a child crying. To the right – Mite, calling his dog. Ahead, perfectly clear, your mother’s voice: “Tome? Tome, I’m here. Come.” Your blood freezes. Mum is at home, three hundred kilometres away.',
+      'To the left – a child crying. To the right – Mite, calling his dog. Ahead, perfectly clear, your mother’s voice: “{hero}? {hero}, I’m here. Come.” Your blood freezes. Mum is at home, three hundred kilometres away.',
       'The voices are everywhere. They come out of the stone.',
     ],
     choices: {
       mom: 'Go towards Mum’s voice',
       listen: 'Stop, close your eyes and search for the warm voice',
       glass: 'Take out the star-glass',
-      shout: 'Shout: “Mite! It’s me, Tome!”',
+      shout: 'Shout: “Mite! It’s me, {hero}!”',
     },
   },
 
@@ -60,7 +60,7 @@ export default {
     title: 'The name',
     text: [
       'You shout. Your voice echoes through the galleries – once, twice, ten times.',
-      'And then, far away, something answers. With your voice. With your words. “Mite! It’s me, Tome!” Exactly like you. Only one heartbeat late.',
+      'And then, far away, something answers. With your voice. With your words. “Mite! It’s me, {hero}!” Exactly like you. Only one heartbeat late.',
       'Now it knows your voice.',
     ],
   },
@@ -87,9 +87,9 @@ export default {
   falseMom: {
     title: 'The echo',
     text: [
-      'Mum’s voice leads you deeper and deeper. “Just a little further, Tome. Just a little further.” And you understand, without knowing how: it is late. By one heartbeat.',
+      'Mum’s voice leads you deeper and deeper. “Just a little further, {hero}. Just a little further.” And you understand, without knowing how: it is late. By one heartbeat.',
       'The gallery ends in a round hollow full of dust. Your lantern lights only its edge. Beyond, in the dark, something large turns over – you can’t see it, you only hear the stone creak beneath it.',
-      'And then it speaks in a thousand voices at once – yours, Mum’s, Grandpa’s, Belyan’s, Viktoria’s. Every voice you have ever heard.',
+      'And then it speaks in a thousand voices at once – yours, Mum’s, Grandpa’s, Belyan’s, {friend}’s. Every voice you have ever heard.',
       'If you lose three rounds, you will be lost in the dark.',
     ],
   },

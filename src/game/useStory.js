@@ -2,11 +2,13 @@ import { computed } from 'vue'
 import { useSettingsStore } from 'src/stores/settings-store'
 import { useAuthStore } from 'src/stores/auth-store'
 import { storyContent } from 'src/story/content'
+import { applyCast, castFor } from 'src/story/cast'
 
 /* =====================================================
    Story text for the current language, with the small
    amount of logic paragraphs need:
      [masculine|feminine|neutral|plural] → the form of address the reader chose
+     {hero} {friend} ‹her|him› → names and the friend's word forms (story/cast.js)
      {counter} placeholders → values from the save
      { ifFlag | ifNotFlag | ifItem, text } → shown when true
 ===================================================== */
@@ -46,12 +48,14 @@ export function useStory() {
   const content = computed(() => storyContent(settings.locale, auth.grammar))
   const gender = computed(() => auth.grammar)
 
-  const fmt = (text, save) => interpolate(applyGender(text ?? '', gender.value), save)
+  const cast = computed(() => castFor(settings.locale, auth.grammar))
+  const fmt = (text, save) => interpolate(applyCast(applyGender(text ?? '', gender.value), cast.value), save)
   const sectionText = (key) => content.value.sections[key] ?? {}
 
   return {
     content,
     gender,
+    cast,
     fmt,
     sectionText,
     bookTitle: () => content.value.title,

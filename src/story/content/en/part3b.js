@@ -118,7 +118,7 @@ export default {
     title: 'What is it?',
     text: [
       '“What is that thing?” you ask silently.',
-      'The voice answers slowly, as if searching for words in a language not made for such things. “A colour. A small, hungry thing from the gulfs between the galaxies. It travelled inside the star like a seed. It doesn’t listen, Tome. It doesn’t sing. It only drinks – light, warmth, life. It will drink the meadow, then the village, then it will grow big enough to go back up. And leave nothing behind but grey dust.”',
+      'The voice answers slowly, as if searching for words in a language not made for such things. “A colour. A small, hungry thing from the gulfs between the galaxies. It travelled inside the star like a seed. It doesn’t listen, {hero}. It doesn’t sing. It only drinks – light, warmth, life. It will drink the meadow, then the village, then it will grow big enough to go back up. And leave nothing behind but grey dust.”',
       '“Or it could leave now,” it adds quietly, “if someone showed it the way.”',
       'For a moment it is silent. Then it says something it has never said before: “I was lost once too. Not you. Me.”',
     ],

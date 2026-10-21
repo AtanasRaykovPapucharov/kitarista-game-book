@@ -1,4 +1,5 @@
 <script setup>
+import { useCast } from 'src/game/useCast'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -40,13 +41,15 @@ function begin() {
   game.start(hero.value)
   router.push({ name: 'play' })
 }
+// names for texts that mention the protagonist or the friend
+const names = useCast()
 </script>
 
 <template>
   <q-page class="gb gb-hero">
     <div class="gb-narrow">
       <h1 class="gb-page-title">{{ t('hero.title') }}</h1>
-      <p class="gb-lead">{{ t('hero.lead') }}</p>
+      <p class="gb-lead">{{ t('hero.lead', names) }}</p>
 
       <dl class="gb-hero__rows">
         <div v-for="row in ROWS" :key="row.stat" class="gb-hero__row">
