@@ -8,6 +8,7 @@ import part5 from './en/part5.js'
 import part5z from './en/part5z.js'
 import part5b from './en/part5b.js'
 import part6 from './en/part6.js'
+import epilogue from './en/epilogue.js'
 import part6b from './en/part6b.js'
 
 /* The game-book text in English.
@@ -159,7 +160,8 @@ export default {
   },
 
   // the story itself, part by part (src/story/content/en/)
-  sections: {
+  // the endings close with an epilogue made of the threads the reader touched
+  sections: withEpilogue({
     ...part1,
     ...part2a,
     ...part2b,
@@ -171,5 +173,12 @@ export default {
     ...part5b,
     ...part6b,
     ...part6,
-  },
+  }),
+}
+
+function withEpilogue(sections) {
+  const add = (key, extra) => (sections[key] = { ...sections[key], text: [...sections[key].text, ...extra] })
+  for (const key of ['lightEnd', 'guitaristEnd', 'goodStartEnd']) add(key, epilogue.good)
+  add('puppetEnd', epilogue.dark)
+  return sections
 }
