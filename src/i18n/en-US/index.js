@@ -103,7 +103,8 @@ export default {
       genderRequired: 'Choose a gender – the story addresses you by it.',
       genderNameRequired: 'Enter a gender name (up to 30 characters).',
       addressRequired: 'Choose a preferred address.',
-      usernameFormat: 'Usernames need 3–20 characters: Latin letters, digits, dot, dash or underscore.',
+      usernameFormat:
+        'Usernames need 3–20 characters: Latin letters, digits, dot, dash or underscore.',
       passwordShort: 'Passwords need at least 6 characters.',
       passwordMismatch: 'The passwords don’t match.',
       usernameTaken: 'That username is taken. Choose another one or log in.',
@@ -169,7 +170,8 @@ export default {
   },
   duel: {
     musicMove: 'Music move',
-    musicHelp: 'Music move: answer a question about what you learned in the practice room. Right: +3 to this round’s attack, wrong: −1.',
+    musicHelp:
+      'Music move: answer a question about what you learned in the practice room. Right: +3 to this round’s attack, wrong: −1.',
     musicLocked: 'Complete missions in the practice room to unlock music moves in duels.',
     musicHit: 'The music move was right: +3.',
     musicMiss: 'The music move was wrong: −1.',
@@ -186,7 +188,8 @@ export default {
     roundLost: 'You lose the round and 2 Inspiration.',
     roundTie: 'A tie. Nobody flinches.',
     useLuck: 'Test your Luck',
-    luckHelp: 'If lucky: a won round deals 2 more, a lost round costs 1 less. If unlucky – the opposite.',
+    luckHelp:
+      'If lucky: a won round deals 2 more, a lost round costs 1 less. If unlucky – the opposite.',
     luckGood: 'Luck is on your side.',
     luckBad: 'Luck deserts you.',
     lostRounds: 'Rounds lost: {lost} of {max}',
@@ -206,11 +209,13 @@ export default {
     saveGender: 'Save',
     unlockedOn: 'Found on {date}',
     backupTitle: 'Backup',
-    backupLead: 'Your profile lives only in this browser. Download a file with your adventure, endings and songs to move them to another device or keep them safe. Your password is not included.',
+    backupLead:
+      'Your profile lives only in this browser. Download a file with your adventure, endings and songs to move them to another device or keep them safe. Your password is not included.',
     export: 'Download my data',
     import: 'Restore from file',
     importTitle: 'Restore this backup?',
-    importBody: 'Endings and songs from the file will be added to yours. If the file has an adventure in progress, it replaces the current one.',
+    importBody:
+      'Endings and songs from the file will be added to yours. If the file has an adventure in progress, it replaces the current one.',
     importAction: 'Restore',
     imported: 'Your data has been restored.',
     importFailed: 'This file isn’t a Kitarista backup.',
@@ -218,7 +223,8 @@ export default {
     logout: 'Log out',
     deleteAccount: 'Delete profile',
     deleteTitle: 'Delete the profile?',
-    deleteBody: 'The profile, the adventure and the endings you found will be removed from this browser for good.',
+    deleteBody:
+      'The profile, the adventure and the endings you found will be removed from this browser for good.',
   },
   rules: {
     title: 'How to play',
@@ -229,9 +235,11 @@ export default {
     p5: 'Darkness is the fourth quality – how much of you belongs to the voice. It starts at 0 and grows when you let the voice decide for you. High Darkness makes the shadows stronger and closes some doors.',
     p6: 'Use items from the adventure sheet: pancakes restore 4 Inspiration, the recipe for luck restores all your Luck (once). If your Inspiration drops to 0, the adventure ends. The book has five endings. Try to find them all.',
     p7: 'Your song: each time the book grants you a verse, you write it yourself – choose a mood, a line of lyrics and the chords. At the end you name the song, can play it, and it stays in your profile. In the practice week there is also a guitar lesson book – chords, tuning by ear, intervals and rhythm – with exercises from the practice room.',
-    source: 'Game-books took off in the early 1980s with the Fighting Fantasy series by Steve Jackson and Ian Livingstone, and reached Bulgaria in the 1990s. The rules here follow their model.',
+    source:
+      'Game-books took off in the early 1980s with the Fighting Fantasy series by Steve Jackson and Ian Livingstone, and reached Bulgaria in the 1990s. The rules here follow their model.',
   },
   creators: {
+    name: 'Atanas Papucharov',
     title: 'About the creators',
     unnamed: 'the author',
     lead: 'Kitarista and the game-book “While You Listen to the Stars” were made by {name}.',
@@ -257,7 +265,10 @@ export default {
       buymeacoffee: { name: 'Buy Me a Coffee', hint: 'Buy a coffee with a card.' },
       revolut: { name: 'Revolut', hint: 'A quick transfer via revolut.me.' },
       paypal: { name: 'PayPal', hint: 'A transfer via paypal.me.' },
-      lightning: { name: 'Bitcoin Lightning (sats)', hint: 'Instant small amounts in sats to a Lightning address.' },
+      lightning: {
+        name: 'Bitcoin Lightning (sats)',
+        hint: 'Instant small amounts in sats to a Lightning address.',
+      },
       btc: { name: 'Bitcoin', hint: 'An address on the Bitcoin network.' },
       eth: { name: 'Ethereum', hint: 'An address on Ethereum (ETH and ERC-20 tokens).' },
       usdt: { name: 'USDT (TRC-20)', hint: 'Tron network (TRC-20) only.' },
@@ -280,19 +291,22 @@ export default {
     tools: { chords: 'Chords', tuner: 'Tuner', intervals: 'Intervals', compas: 'Compás Sheet' },
     chords: {
       title: 'Lesson: chords',
-      intro: 'The diagram shows the neck from the front: the vertical lines are the strings (the thick one on the left), the horizontal ones are frets, dots are where your fingers go, “o” is an open string and “x” a string you don’t play.',
+      intro:
+        'The diagram shows the neck from the front: the vertical lines are the strings (the thick one on the left), the horizontal ones are frets, dots are where your fingers go, “o” is an open string and “x” a string you don’t play.',
       ask: 'Which chord is this?',
     },
     tuning: {
       title: 'Lesson: tuning by ear',
-      intro: 'You’ll hear the reference note first, then the string. Listen closely – is the string higher or lower? The difference gets smaller with every question.',
+      intro:
+        'You’ll hear the reference note first, then the string. Listen closely – is the string higher or lower? The difference gets smaller with every question.',
       ask: 'The string is…',
       higher: 'Higher',
       lower: 'Lower',
     },
     intervals: {
       title: 'Lesson: intervals',
-      intro: 'You’ll hear two notes one after the other, then together. What is the distance between them?',
+      intro:
+        'You’ll hear two notes one after the other, then together. What is the distance between them?',
       ask: 'Which interval is it?',
       where: 'Here are the two notes on the neck:',
       names: { i4: 'Major third', i7: 'Fifth', i12: 'Octave' },
@@ -300,7 +314,8 @@ export default {
     },
     rhythm: {
       title: 'Lesson: rhythm',
-      intro: 'The metronome counts four beats. Then it plays four more – tap the pad exactly with them.',
+      intro:
+        'The metronome counts four beats. Then it plays four more – tap the pad exactly with them.',
       start: 'Start the metronome',
       again: 'Once more',
       countIn: 'Listen… 1, 2, 3, 4',
@@ -312,7 +327,8 @@ export default {
   },
   song: {
     composeTitle: 'New verse',
-    composeLead: 'You have earned a verse for your song. Choose a mood, a line of lyrics and the chords.',
+    composeLead:
+      'You have earned a verse for your song. Choose a mood, a line of lyrics and the chords.',
     verseN: 'verse {n}',
     mood: 'Mood',
     line: 'Line of lyrics',
@@ -348,7 +364,8 @@ export default {
     speed: 'Speed',
     choicesIntro: 'What will you do?',
     soundMuted: 'The sound is muted.',
-    noVoice: 'This device has no {lang} voice. Edge, iPhone, Mac and Android usually have good voices.',
+    noVoice:
+      'This device has no {lang} voice. Edge, iPhone, Mac and Android usually have good voices.',
     lang: { bg: 'Bulgarian', en: 'English' },
   },
   tones: {
@@ -375,7 +392,8 @@ export default {
     moreNotes: 'Mark at least three different notes to see modes and scales.',
     noScale: 'These notes don’t fit any of the known scales.',
     playScale: 'Play {name}',
-    modeNote: 'The modes of the major scale share the same notes – what tells them apart is which note feels like home. Here home is the lowest marked note ({note}). Press a mode to hear it.',
+    modeNote:
+      'The modes of the major scale share the same notes – what tells them apart is which note feels like home. Here home is the lowest marked note ({note}). Press a mode to hear it.',
     intervals: {
       s0: 'Unison',
       s1: 'Minor second',
@@ -497,7 +515,14 @@ export default {
     builtNote: 'Build a face from the parts on the right, or press “Surprise me”.',
     photoNote: 'The photo is shrunk to a small square and stays only in this browser.',
     colorN: 'Colour {n}',
-    groups: { skin: 'Skin', hair: 'Hair', eyes: 'Eyes', face: 'Face', accessory: 'Accessory', clothes: 'Clothes and background' },
+    groups: {
+      skin: 'Skin',
+      hair: 'Hair',
+      eyes: 'Eyes',
+      face: 'Face',
+      accessory: 'Accessory',
+      clothes: 'Clothes and background',
+    },
     parts: {
       skin: 'Skin',
       hair: 'Hairstyle',
@@ -511,11 +536,25 @@ export default {
       background: 'Background',
     },
     options: {
-      hair: { short: 'Short', wave: 'Wavy', long: 'Long', curly: 'Curly', bun: 'Bun', bald: 'Bald' },
+      hair: {
+        short: 'Short',
+        wave: 'Wavy',
+        long: 'Long',
+        curly: 'Curly',
+        bun: 'Bun',
+        bald: 'Bald',
+      },
       eyes: { calm: 'Calm', bright: 'Bright', focus: 'Focused', wink: 'Wink' },
       nose: { soft: 'Soft', round: 'Round', sharp: 'Sharp' },
       mouth: { smile: 'Smile', grin: 'Big grin', line: 'Serious', open: 'Surprised' },
-      accessory: { none: 'None', headphones: 'Headphones', cap: 'Cap', beanie: 'Beanie', glasses: 'Glasses', stars: 'Stars' },
+      accessory: {
+        none: 'None',
+        headphones: 'Headphones',
+        cap: 'Cap',
+        beanie: 'Beanie',
+        glasses: 'Glasses',
+        stars: 'Stars',
+      },
     },
   },
   achievements: {
@@ -528,37 +567,87 @@ export default {
     unlockedOn: 'Unlocked on {date}',
     unlockedLabel: 'Unlocked',
     lockedLabel: 'Locked',
-    groups: { path: 'The guitarist’s path', song: 'Your song', story: 'The story', practice: 'Practice room' },
+    groups: {
+      path: 'The guitarist’s path',
+      song: 'Your song',
+      story: 'The story',
+      practice: 'Practice room',
+    },
     list: {
       first_strum: { title: 'The first sound', desc: 'Touch the strings of your new guitar.' },
       own_ear: { title: 'By ear', desc: 'Find the right note by ear, without the voice’s hint.' },
-      all_lessons: { title: 'The whole lesson book', desc: 'Pass all four lessons: chords, tuning, intervals and rhythm.' },
+      all_lessons: {
+        title: 'The whole lesson book',
+        desc: 'Pass all four lessons: chords, tuning, intervals and rhythm.',
+      },
       duel_won: { title: 'Guitar duel', desc: 'Win the duel with Kristian at the Star String.' },
-      open_stage: { title: 'Open stage', desc: 'Play your own song to an audience at the Star String.' },
+      open_stage: {
+        title: 'Open stage',
+        desc: 'Play your own song to an audience at the Star String.',
+      },
       rhythm_section: { title: 'Rhythm section', desc: 'Make friends with Belyan.' },
       duet: { title: 'Duet', desc: 'Play together with Belyan on stage.' },
       first_verse: { title: 'First verse', desc: 'Write the first verse of your song.' },
-      three_verses: { title: 'Three verses', desc: 'Write at least three verses in one adventure.' },
+      three_verses: {
+        title: 'Three verses',
+        desc: 'Write at least three verses in one adventure.',
+      },
       song_named: { title: 'A song with a name', desc: 'Name your song at the end of the book.' },
       witness: { title: 'Last respects', desc: 'Don’t walk past the dying bird.' },
-      no_look_back: { title: 'Don’t look back', desc: 'In the first dream, fly towards the light without looking back.' },
-      sent_home: { title: 'Sent home', desc: 'Show the colour from the Thracian well the way back to the stars.' },
-      eurydice: { title: 'Without looking back', desc: 'Lead {friend} out of the sea’s song without looking back.' },
-      true_voice: { title: 'The true voice', desc: 'Find Mite in the mine among the Echo’s voices.' },
-      all_missions: { title: 'Practice-room pupil', desc: 'Complete all seven missions from the book.' },
-      real_guitar: { title: 'On a real guitar', desc: 'Play three exercises from “Play with me” on a real guitar.' },
-      real_all: { title: 'The teacher heard you', desc: 'Play all six exercises from “Play with me”.' },
-      window_keeper: { title: 'Keeper of the window', desc: 'Hold the window above the wall shut with Old Tsanko until dawn.' },
+      no_look_back: {
+        title: 'Don’t look back',
+        desc: 'In the first dream, fly towards the light without looking back.',
+      },
+      sent_home: {
+        title: 'Sent home',
+        desc: 'Show the colour from the Thracian well the way back to the stars.',
+      },
+      eurydice: {
+        title: 'Without looking back',
+        desc: 'Lead {friend} out of the sea’s song without looking back.',
+      },
+      true_voice: {
+        title: 'The true voice',
+        desc: 'Find Mite in the mine among the Echo’s voices.',
+      },
+      all_missions: {
+        title: 'Practice-room pupil',
+        desc: 'Complete all seven missions from the book.',
+      },
+      real_guitar: {
+        title: 'On a real guitar',
+        desc: 'Play three exercises from “Play with me” on a real guitar.',
+      },
+      real_all: {
+        title: 'The teacher heard you',
+        desc: 'Play all six exercises from “Play with me”.',
+      },
+      window_keeper: {
+        title: 'Keeper of the window',
+        desc: 'Hold the window above the wall shut with Old Tsanko until dawn.',
+      },
       dark_talk: { title: 'A talk with the dark', desc: 'Ask the Dark what it wants.' },
-      clean_strings: { title: 'Clean strings', desc: 'Reach an ending without a single point of Darkness.' },
-      ending_guitarist: { title: 'Your song for everyone', desc: 'Reach the ending where you play your own song at the concert.' },
+      clean_strings: {
+        title: 'Clean strings',
+        desc: 'Reach an ending without a single point of Darkness.',
+      },
+      ending_guitarist: {
+        title: 'Your song for everyone',
+        desc: 'Reach the ending where you play your own song at the concert.',
+      },
       ending_light: { title: 'The Dark Shines', desc: 'Reach the brightest ending.' },
       ending_puppet: { title: 'Puppet', desc: 'Let the voice play instead of you.' },
       all_endings: { title: 'Every path', desc: 'Find all five endings.' },
-      tone_chord: { title: 'What are you playing?', desc: 'In Tones, mark notes that make a chord.' },
+      tone_chord: {
+        title: 'What are you playing?',
+        desc: 'In Tones, mark notes that make a chord.',
+      },
       tone_mode: { title: 'The seven modes', desc: 'In Tones, mark exactly the notes of a mode.' },
       tuner: { title: 'Clean tuning', desc: 'Tune all six strings with the tuner.' },
-      listener: { title: 'A bedtime story', desc: 'Let the narrator read you a section of the book.' },
+      listener: {
+        title: 'A bedtime story',
+        desc: 'Let the narrator read you a section of the book.',
+      },
       new_face: { title: 'A new face', desc: 'Create your own avatar.' },
     },
   },
@@ -580,7 +669,12 @@ export default {
     rewardIs: 'Reward: {reward}.',
     unlocks: 'Unlocks a music move in duels: {topic}.',
     tools: { tones: 'Open Tones', tuner: 'Open Tuner' },
-    topics: { chords: 'chords', intervals: 'intervals', scales: 'scales and modes', tuning: 'tuning by ear' },
+    topics: {
+      chords: 'chords',
+      intervals: 'intervals',
+      scales: 'scales and modes',
+      tuning: 'tuning by ear',
+    },
     reward: {
       chord_c: '+1 Inspiration (and maximum)',
       tune: '+1 Luck (and maximum)',
@@ -647,7 +741,8 @@ export default {
     again: 'Once more',
     privacy: 'The sound is analysed only here, in your browser. Nothing is recorded or sent.',
     errors: {
-      denied: 'I can’t use the microphone. Allow it from the icon next to the page address and try again.',
+      denied:
+        'I can’t use the microphone. Allow it from the icon next to the page address and try again.',
       nomic: 'I can’t find a microphone. Plug one in and try again.',
       unsupported: 'This browser can’t listen to a microphone.',
       other: 'The microphone didn’t start. Try again.',

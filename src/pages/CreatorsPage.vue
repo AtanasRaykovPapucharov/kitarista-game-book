@@ -3,14 +3,13 @@ import { useI18n } from 'vue-i18n'
 import { creator } from 'src/config/links'
 
 const { t } = useI18n()
-const name = creator.name || t('creators.unnamed')
 </script>
 
 <template>
   <q-page class="gb gb-creators">
     <div class="gb-narrow">
       <h1 class="gb-page-title">{{ t('creators.title') }}</h1>
-      <p class="gb-lead">{{ t('creators.lead', { name }) }}</p>
+      <p class="gb-lead">{{ t('creators.lead', { name: t('creators.name') }) }}</p>
 
       <div class="gb-story">
         <p>{{ t('creators.story') }}</p>
