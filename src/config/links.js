@@ -68,3 +68,22 @@ const ALL_METHODS = [
 ]
 
 export const supportMethods = ALL_METHODS.filter((m) => m.value)
+
+/* ---------- more ways to help (all optional, from .env) ---------- */
+
+// QCLI_SUPPORTERS="Мария, Иван; Петър" – names for the thank-you wall
+export const supporters = clean(import.meta.env.QCLI_SUPPORTERS)
+  .split(/[;,]/)
+  .map((n) => n.trim())
+  .filter(Boolean)
+
+// QCLI_LESSONS_URL – where people can book real guitar lessons with the author
+export const lessonsUrl = clean(import.meta.env.QCLI_LESSONS_URL)
+
+// QCLI_FEEDBACK_URL – a form or an issues page; falls back to the creator's e-mail
+export const feedbackUrl =
+  clean(import.meta.env.QCLI_FEEDBACK_URL) ||
+  (creator.email ? `mailto:${creator.email}?subject=Kitarista` : '')
+
+// the method a "support" tier opens: the first one that is a plain link
+export const primaryMethod = supportMethods.find((m) => m.kind === 'link') ?? null

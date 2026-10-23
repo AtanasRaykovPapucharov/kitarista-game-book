@@ -161,6 +161,9 @@ export const useAuthStore = defineStore('auth', {
     startSession(userId) {
       this.userId = userId
       writeJson(KEYS.session, { userId, at: new Date().toISOString() })
+      // stay signed in until "Exit": ask the browser not to clear this site's
+      // data when space runs low (profiles, adventures and songs live here)
+      navigator.storage?.persist?.().catch(() => {})
     },
 
     logout() {

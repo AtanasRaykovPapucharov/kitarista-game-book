@@ -945,6 +945,114 @@ body {
   font-size: 1rem;
 }
 
+/* ---------- support page: what it pays for, tiers, free ways, thank-you wall ---------- */
+.gb-support__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 10px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.gb-support__card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--gb-rule);
+  border-radius: 14px;
+}
+
+.gb-support__card--tier {
+  border-color: color-mix(in srgb, var(--gb-accent) 45%, var(--gb-rule));
+}
+
+.gb-support__icon {
+  color: var(--gb-accent);
+}
+
+.gb-support__name {
+  font-family: var(--gb-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.gb-support__amount {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--gb-accent);
+  font-variant-numeric: lining-nums;
+}
+
+.gb-support__text {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--gb-muted);
+}
+
+.gb-support__go {
+  align-self: flex-start;
+  margin-top: 6px;
+  text-decoration: none;
+}
+
+.gb-support__lessons {
+  display: flex;
+  gap: 14px;
+  margin: 22px 0;
+  padding: 16px 18px;
+  border: 1.5px solid var(--gb-accent);
+  border-radius: 14px;
+  background: var(--gb-hover);
+}
+
+.gb-support__lessons .gb-subtitle {
+  margin-top: 0;
+}
+
+.gb-support__lessons p {
+  margin: 0 0 10px;
+}
+
+.gb-support__free {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gb-support__free li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.gb-support__free span {
+  font-size: 0.92rem;
+  color: var(--gb-muted);
+}
+
+.gb-support__free a {
+  text-decoration: none;
+}
+
+.gb-support__names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gb-support__person {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--gb-hover);
+  font-family: var(--gb-serif);
+}
+
 .gb-methods {
   list-style: none;
   margin: 8px 0 24px;

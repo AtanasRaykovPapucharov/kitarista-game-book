@@ -91,6 +91,7 @@ async function submit() {
         }}</router-link>
       </p>
       <p class="gb-note">{{ t('auth.localNotice') }}</p>
+      <p class="gb-note">{{ t('auth.staySignedIn') }}</p>
     </div>
   </q-page>
 </template>

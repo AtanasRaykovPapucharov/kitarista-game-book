@@ -58,6 +58,7 @@ export default {
     lastPlayed: 'Last played: {date}',
   },
   auth: {
+    staySignedIn: 'You stay signed in on this device until you press “Exit”.',
     loginTitle: 'Log in',
     registerTitle: 'New profile',
     loginLead: 'Log in to continue your adventure.',
@@ -235,6 +236,8 @@ export default {
     p5: 'Darkness is the fourth quality – how much of you belongs to the voice. It starts at 0 and grows when you let the voice decide for you. High Darkness makes the shadows stronger and closes some doors.',
     p6: 'Use items from the adventure sheet: pancakes restore 4 Inspiration, the recipe for luck restores all your Luck (once). If your Inspiration drops to 0, the adventure ends. The book has five endings. Try to find them all.',
     p7: 'Your song: each time the book grants you a verse, you write it yourself – choose a mood, a line of lyrics and the chords. At the end you name the song, can play it, and it stays in your profile. In the practice week there is also a guitar lesson book – chords, tuning by ear, intervals and rhythm – with exercises from the practice room.',
+    p8: 'Missions: now and then the book gives you a task in the practice room – mark a chord, an interval or a scale in Tones, or tune your guitar with the Tuner. A completed mission gives a reward and unlocks a music move in duels: instead of only rolling the dice, you answer a question about what you learned. Right: +3 to that round’s attack, wrong: −1.',
+    p9: '“Play with me”: most missions can also be done on your real guitar. The app shows the note and where it is on the neck, listens through the microphone and moves on as soon as it hears it. The sound is analysed only in your browser – nothing is recorded.',
     source:
       'Game-books took off in the early 1980s with the Fighting Fantasy series by Steve Jackson and Ian Livingstone, and reached Bulgaria in the 1990s. The rules here follow their model.',
   },
@@ -261,6 +264,72 @@ export default {
     copyFailed: 'Copying failed. Select the address and copy it by hand.',
     openWallet: 'Open in wallet',
     thanks: 'Thank you for every bit of support – and for every reading.',
+    fundsTitle: 'What you support',
+    funds: {
+      chapters: {
+        title: 'New chapters',
+        text: 'Every Lovecraft chapter is weeks of writing in two languages – plus one more “вие” edition.',
+      },
+      art: {
+        title: 'Pictures and sound',
+        text: 'The pictures, sounds and melodies in the book are made for it alone.',
+      },
+      coach: {
+        title: '“Play with me”',
+        text: 'The teacher that listens to your real guitar grows with new exercises.',
+      },
+      hosting: {
+        title: 'The site',
+        text: 'Hosting, a domain and time, so it stays free and without ads.',
+      },
+    },
+    tiersTitle: 'How much?',
+    tiers: {
+      string: {
+        title: 'One string',
+        amount: '≈ €3',
+        text: 'What a new string costs – and just as important when one snaps.',
+      },
+      pick: {
+        title: 'A new pick',
+        amount: '≈ €5',
+        text: 'Like Grandpa’s pick: small, but it stays.',
+      },
+      section: {
+        title: 'A new section',
+        amount: '≈ €10',
+        text: 'One new page of the story, in two languages.',
+      },
+      picture: {
+        title: 'A whole picture',
+        amount: '≈ €25',
+        text: 'One new illustration in the book.',
+      },
+    },
+    tiersGo: 'Support',
+    tiersNote: 'The amounts are only a guide. Every bit of support – and every reading – matters.',
+    methodsTitle: 'How',
+    lessons: {
+      title: 'Live guitar lessons',
+      text: 'If the book got you going, you can sign up for real lessons with the author.',
+      go: 'Sign up',
+    },
+    freeTitle: 'Without money',
+    share: {
+      button: 'Share the book',
+      hint: 'Send it to someone who plays – or wants to start.',
+      title: 'Kitarista – While You Listen to the Stars',
+      text: 'A guitar game-book with dice, missions and a song of your own.',
+      copied: 'The link is copied.',
+    },
+    teacher: {
+      button: 'Tell a music teacher',
+      hint: 'The book is free and works well in a music lesson.',
+      subject: 'A guitar game-book for your students',
+      body: 'Hello! I came across a free guitar game-book in Bulgarian and English – with lessons, missions and exercises that listen to a real guitar: {url}',
+    },
+    feedback: { button: 'Write feedback', hint: 'Say what you liked and what could be better.' },
+    wallTitle: 'Thank you to',
     methods: {
       buymeacoffee: { name: 'Buy Me a Coffee', hint: 'Buy a coffee with a card.' },
       revolut: { name: 'Revolut', hint: 'A quick transfer via revolut.me.' },
@@ -310,6 +379,10 @@ export default {
       ask: 'Which interval is it?',
       where: 'Here are the two notes on the neck:',
       names: { i4: 'Major third', i7: 'Fifth', i12: 'Octave' },
+      endingSupport: {
+        supportLine: 'The book is free and has no ads. If you enjoyed it,',
+        supportLink: 'you can support it',
+      },
       hints: { i4: 'like the start of a song', i7: 'like a bell', i12: 'like an echo' },
     },
     rhythm: {

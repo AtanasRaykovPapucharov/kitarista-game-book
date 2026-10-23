@@ -55,6 +55,11 @@ function again() {
         <li v-for="h in hints" :key="h">{{ t(`hints.items.${h}`) }}</li>
       </ul>
     </section>
+    <p class="ending__support">
+      {{ t('endingSupport.supportLine') }}
+      <router-link to="/support" class="gb-link">{{ t('endingSupport.supportLink') }}</router-link
+      >.
+    </p>
     <p class="ending__count">
       {{ t('cover.endingsFound', { found, total: Object.keys(ENDINGS).length }) }}
     </p>
@@ -126,6 +131,12 @@ function again() {
   margin: 0;
   padding-left: 1.2em;
   line-height: 1.5;
+}
+
+.ending__support {
+  margin: 14px 0 4px;
+  font-size: 0.92rem;
+  color: var(--gb-muted);
 }
 
 .ending__count {

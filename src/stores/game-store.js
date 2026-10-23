@@ -257,6 +257,11 @@ export const useGameStore = defineStore('game', {
           .slice(0, MAX_SONGS),
       }
       this.profile.achievements = { ...(incoming.achievements ?? {}), ...this.profile.achievements }
+      // exercises played on the real guitar are part of the backup too
+      this.profile.realPlayed = {
+        ...(incoming.realPlayed ?? {}),
+        ...(this.profile.realPlayed ?? {}),
+      }
       if (engine.isValidSave(data.save)) this.save = data.save
       this.checkAchievements({ quiet: true })
       this.persist()

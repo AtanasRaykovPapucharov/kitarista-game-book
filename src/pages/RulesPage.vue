@@ -3,7 +3,7 @@ import { useCast } from 'src/game/useCast'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const paragraphs = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7']
+const paragraphs = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9']
 // names for texts that mention the protagonist or the friend
 const names = useCast()
 </script>
