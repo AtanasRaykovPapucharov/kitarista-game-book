@@ -27,13 +27,28 @@ export const AVATAR_OPTIONS = {
   eyeColor: ['#1b1b1b', '#5b3a29', '#1f5f8b', '#2e7d32', '#7e57c2'],
   nose: ['soft', 'round', 'sharp'],
   mouth: ['smile', 'grin', 'line', 'open'],
-  accessory: ['none', 'headphones', 'cap', 'beanie', 'glasses', 'stars'],
+  brows: ['soft', 'straight', 'thick', 'raised', 'worried', 'none'],
+  browColor: ['#121212', '#2f2118', '#6f4e37', '#b36b24', '#c0c0c8', '#7b5cd6'],
+  // four separate groups, so a hat and glasses can be worn together
+  headwear: ['none', 'cap', 'capBack', 'beanie', 'bandana', 'headband', 'hat', 'beret', 'flower'],
+  eyewear: ['none', 'glasses', 'round', 'shades'],
+  ears: ['none', 'headphones', 'studs', 'hoops', 'oneHoop'],
+  extras: ['none', 'stars', 'freckles', 'plectrum', 'scarf'],
   shirt: ['#1f2347', '#2fa6c1', '#5b4a9e', '#b23a4e', '#2f7a52', '#e8e6f4'],
   background: ['#141731', '#1f2347', '#2a2458', '#3b3170', '#0a6c80', '#5b4a9e'],
 }
 
 export const AVATAR_PARTS = Object.keys(AVATAR_OPTIONS)
-const COLOR_PARTS = new Set(['skin', 'hairColor', 'eyeColor', 'shirt', 'background'])
+/* Avatars saved before the accessories were split: one value, now spread
+   over the new groups so an old face still looks the same. */
+const OLD_ACCESSORY = {
+  headphones: { ears: 'headphones' },
+  cap: { headwear: 'cap' },
+  beanie: { headwear: 'beanie' },
+  glasses: { eyewear: 'glasses' },
+  stars: { extras: 'stars' },
+}
+const COLOR_PARTS = new Set(['skin', 'hairColor', 'browColor', 'eyeColor', 'shirt', 'background'])
 export const isColorPart = (part) => COLOR_PARTS.has(part)
 
 /* ---------- configs ---------- */
@@ -68,6 +83,8 @@ export function randomConfig() {
 /** Keeps only known values; anything else falls back to the seeded default. */
 export function sanitizeConfig(config, seed) {
   const base = seededConfig(seed)
+  const old = OLD_ACCESSORY[config?.accessory] ?? {}
+  config = { ...config, ...old }
   const out = {}
   for (const part of AVATAR_PARTS) {
     out[part] = AVATAR_OPTIONS[part].includes(config?.[part]) ? config[part] : base[part]
@@ -120,6 +137,16 @@ export function avatarSvg(cfg) {
     wink: `<circle cx="84" cy="98" r="5" fill="${c.eyeColor}"/><path d="M107 99c5-5 12-5 17 0" stroke="${c.eyeColor}" stroke-width="4.5" stroke-linecap="round" fill="none"/>`,
   }[c.eyes]
 
+  const browInk = c.browColor
+  const brows = {
+    soft: `<path d="M74 84c7-5 16-5 22 0M104 84c6-5 15-5 22 0" stroke="${browInk}" stroke-width="5" stroke-linecap="round" fill="none"/>`,
+    straight: `<path d="M74 84h22M104 84h22" stroke="${browInk}" stroke-width="5" stroke-linecap="round"/>`,
+    thick: `<path d="M73 84c8-6 17-6 24 0M103 84c7-6 16-6 24 0" stroke="${browInk}" stroke-width="9" stroke-linecap="round" fill="none"/>`,
+    raised: `<path d="M74 86c7-8 16-8 22-2M104 84c6-5 15-5 22 0" stroke="${browInk}" stroke-width="5" stroke-linecap="round" fill="none"/>`,
+    worried: `<path d="M74 80c7 3 16 5 22 7M104 87c6-2 15-4 22-7" stroke="${browInk}" stroke-width="5" stroke-linecap="round" fill="none"/>`,
+    none: '',
+  }[c.brows]
+
   const nose = {
     soft: '<path d="M101 104c-4 9-2 15 5 16" stroke="#9b6043" stroke-width="4" stroke-linecap="round" fill="none" opacity=".7"/>',
     round: '<ellipse cx="101" cy="116" rx="6" ry="4" fill="#000" opacity=".16"/>',
@@ -137,18 +164,59 @@ export function avatarSvg(cfg) {
 
   const ears = `<circle cx="48" cy="108" r="11" fill="${c.skin}"/><circle cx="152" cy="108" r="11" fill="${c.skin}"/>`
 
-  const accessory = {
+  // accessories: four groups that can be worn together
+  const headwear = {
+    none: '',
+    cap: '<path d="M55 70c10-24 79-24 90 0v12H55z" fill="#2fa6c1"/><path d="M138 77h32c-8 10-19 14-32 12z" fill="#1f7a8e"/>',
+    capBack:
+      '<path d="M55 70c10-24 79-24 90 0v12H55z" fill="#b23a4e"/><path d="M62 77H30c8 10 19 14 32 12z" fill="#8d2b3c"/><circle cx="100" cy="46" r="5" fill="#8d2b3c"/>',
+    beanie:
+      '<path d="M46 86c0-36 24-56 54-56s54 20 54 56z" fill="#5b4a9e"/><rect x="42" y="78" width="116" height="16" rx="8" fill="#7b68c8"/><circle cx="100" cy="28" r="9" fill="#e8e6f4"/>',
+    bandana:
+      '<path d="M44 84c2-30 26-48 56-48s54 18 56 48c-36-14-76-14-112 0z" fill="#b23a4e"/><g fill="#e8e6f4" opacity=".85"><circle cx="70" cy="66" r="3"/><circle cx="92" cy="58" r="3"/><circle cx="114" cy="58" r="3"/><circle cx="136" cy="66" r="3"/></g><path d="M44 80l-18 10 22 6z" fill="#8d2b3c"/>',
+    headband:
+      '<path d="M45 80c14-10 96-10 110 0v12c-14-10-96-10-110 0z" fill="#2f7a52"/><path d="M45 86h110" stroke="#e8e6f4" stroke-width="3" opacity=".6"/>',
+    hat: '<path d="M62 64c0-34 14-50 38-50s38 16 38 50z" fill="#3b2a1c"/><ellipse cx="100" cy="66" rx="78" ry="14" fill="#2f2118"/><path d="M60 56h80v10H60z" fill="#b36b24"/>',
+    beret:
+      '<path d="M48 76c0-28 23-44 52-44s52 16 52 44c-34 10-70 10-104 0z" fill="#7b5cd6"/><circle cx="128" cy="36" r="7" fill="#5b4a9e"/>',
+    flower:
+      '<g transform="translate(146 62)"><g fill="#e8788f"><circle cx="0" cy="-9" r="7"/><circle cx="9" cy="0" r="7"/><circle cx="0" cy="9" r="7"/><circle cx="-9" cy="0" r="7"/></g><circle cx="0" cy="0" r="5" fill="#ffe082"/></g>',
+  }[c.headwear]
+
+  const eyewear = {
+    none: '',
+    glasses:
+      '<circle cx="84" cy="100" r="13" fill="none" stroke="#111" stroke-width="4"/><circle cx="116" cy="100" r="13" fill="none" stroke="#111" stroke-width="4"/><path d="M97 100h6" stroke="#111" stroke-width="4"/>',
+    round:
+      '<circle cx="84" cy="100" r="12" fill="#fff" fill-opacity=".12" stroke="#b36b24" stroke-width="3"/><circle cx="116" cy="100" r="12" fill="#fff" fill-opacity=".12" stroke="#b36b24" stroke-width="3"/><path d="M96 100h8M72 97l-14-5M128 97l14-5" stroke="#b36b24" stroke-width="3"/>',
+    shades:
+      '<path d="M68 92h28v16c0 6-28 8-28-4z" fill="#1b1b2e"/><path d="M104 92h28v12c0 12-28 10-28 4z" fill="#1b1b2e"/><path d="M96 96h8" stroke="#1b1b2e" stroke-width="4"/>',
+  }[c.eyewear]
+
+  const earwear = {
     none: '',
     headphones:
       '<path d="M46 112c-4-48 22-74 54-74s58 26 54 74" stroke="#1b1b2e" stroke-width="9" fill="none" stroke-linecap="round"/><rect x="34" y="96" width="20" height="32" rx="9" fill="#2fa6c1"/><rect x="146" y="96" width="20" height="32" rx="9" fill="#2fa6c1"/>',
-    cap: '<path d="M55 70c10-24 79-24 90 0v12H55z" fill="#2fa6c1"/><path d="M138 77h32c-8 10-19 14-32 12z" fill="#1f7a8e"/>',
-    beanie:
-      '<path d="M46 86c0-36 24-56 54-56s54 20 54 56z" fill="#5b4a9e"/><rect x="42" y="78" width="116" height="16" rx="8" fill="#7b68c8"/><circle cx="100" cy="28" r="9" fill="#e8e6f4"/>',
-    glasses:
-      '<circle cx="84" cy="100" r="13" fill="none" stroke="#111" stroke-width="4"/><circle cx="116" cy="100" r="13" fill="none" stroke="#111" stroke-width="4"/><path d="M97 100h6" stroke="#111" stroke-width="4"/>',
+    studs:
+      '<circle cx="43" cy="116" r="4.5" fill="#ffe082"/><circle cx="157" cy="116" r="4.5" fill="#ffe082"/>',
+    hoops:
+      '<circle cx="43" cy="124" r="9" fill="none" stroke="#ffe082" stroke-width="3"/><circle cx="157" cy="124" r="9" fill="none" stroke="#ffe082" stroke-width="3"/>',
+    oneHoop: '<circle cx="157" cy="124" r="10" fill="none" stroke="#c0c0c8" stroke-width="3"/>',
+  }[c.ears]
+
+  const extras = {
+    none: '',
     stars:
       '<g fill="#ffe082"><path d="M34 44l3 8 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1z"/><path d="M160 30l2.4 6 6.4.8-4.8 4 1.6 6.4-5.6-3.2-5.6 3.2 1.6-6.4-4.8-4 6.4-.8z"/><path d="M168 74l2 5 5 .6-4 3 1.3 5-4.3-2.6-4.3 2.6 1.3-5-4-3 5-.6z"/></g>',
-  }[c.accessory]
+    freckles:
+      '<g fill="#9b6043" opacity=".55"><circle cx="74" cy="116" r="2.2"/><circle cx="82" cy="122" r="2"/><circle cx="68" cy="124" r="1.8"/><circle cx="126" cy="116" r="2.2"/><circle cx="118" cy="122" r="2"/><circle cx="132" cy="124" r="1.8"/></g>',
+    plectrum:
+      '<g transform="translate(150 150) rotate(18)"><path d="M0 0c9 0 16 6 16 13 0 9-8 17-16 22-8-5-16-13-16-22C-16 6-9 0 0 0z" fill="#ffe082"/></g>',
+    scarf:
+      '<path d="M62 158c24 10 52 10 76 0 6 8 8 14 8 22-30 10-62 10-92 0 0-8 2-14 8-22z" fill="#b23a4e"/><path d="M138 162l20 30-14 4-12-26z" fill="#8d2b3c"/>',
+  }[c.extras]
+
+  const accessory = headwear + eyewear + earwear + extras
 
   // shoulders, and a guitar strap across them
   const body = `<path d="M34 200c4-30 30-44 66-44s62 14 66 44z" fill="${c.shirt}"/><path d="M64 162l60 38" stroke="#1b1b2e" stroke-width="9" stroke-linecap="round" opacity=".85"/><circle cx="66" cy="163" r="4" fill="#c0c0c8"/>`
@@ -162,6 +230,7 @@ export function avatarSvg(cfg) {
     ears +
     `<circle cx="100" cy="110" r="55" fill="${c.skin}"/>` +
     hair +
+    brows +
     eyes +
     nose +
     mouth +

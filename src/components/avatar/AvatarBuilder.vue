@@ -27,8 +27,9 @@ const GROUPS = [
   { key: 'skin', parts: ['skin'] },
   { key: 'hair', parts: ['hair', 'hairColor'] },
   { key: 'eyes', parts: ['eyes', 'eyeColor'] },
-  { key: 'face', parts: ['nose', 'mouth'] },
-  { key: 'accessory', parts: ['accessory'] },
+  { key: 'face', parts: ['brows', 'browColor', 'nose', 'mouth'] },
+  // four groups, so a hat and glasses can be worn at once
+  { key: 'accessory', parts: ['headwear', 'eyewear', 'ears', 'extras'] },
   { key: 'clothes', parts: ['shirt', 'background'] },
 ]
 
