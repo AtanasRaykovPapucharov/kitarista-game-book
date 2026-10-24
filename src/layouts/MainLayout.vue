@@ -234,11 +234,29 @@ function closeLeftDrawer() {
         </header>
 
         <q-list padding class="drawer-list">
-          <q-item-label header class="drawer-group">{{ t('nav.gameBook') }}</q-item-label>
-          <q-item v-ripple clickable :to="playItem.to" class="drawer-play">
-            <q-item-section avatar><q-icon :name="playItem.icon" /></q-item-section>
-            <q-item-section>{{ t(playItem.label) }}</q-item-section>
-          </q-item>
+          <q-item-label header class="drawer-group">
+            {{ t('nav.gameBook') }}
+            <q-item
+              v-ripple
+              clickable
+              :to="playItem.to"
+              class="drawer-play"
+              :style="{
+                fontSize: '14px',
+                position: 'absolute',
+                top: !$q.screen.lt.sm ? '-2px' : '50px',
+                right: '0px',
+              }"
+            >
+              <q-item-section avatar>
+                <q-icon :name="playItem.icon" size="xs" />
+              </q-item-section>
+              <q-item-section>
+                {{ t(playItem.label) }}
+              </q-item-section>
+            </q-item>
+          </q-item-label>
+
           <q-item v-for="item in bookItems" :key="item.to" clickable :to="item.to" exact>
             <q-item-section avatar>
               <q-icon :name="item.icon" />
