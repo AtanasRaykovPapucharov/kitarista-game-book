@@ -49,6 +49,7 @@ export const ACHIEVEMENTS = [
     icon: 'bookmark_added',
     rule: (s, p) => (p?.songs?.length ?? 0) >= 1,
   },
+  { id: 'composer', group: 'song', icon: 'edit_note', rule: (s) => !!s?.composition },
 
   // ---------- the story ----------
   { id: 'witness', group: 'story', icon: 'flutter_dash', rule: (s) => flag(s, 'witness') },
@@ -113,7 +114,7 @@ export const ACHIEVEMENTS = [
     id: 'all_missions',
     group: 'practice',
     icon: 'military_tech',
-    rule: (s) => Object.values(s?.missions ?? {}).filter((m) => m === 'done').length >= 7,
+    rule: (s) => Object.values(s?.missions ?? {}).filter((m) => m === 'done').length >= 8,
   },
   { id: 'listener', group: 'practice', icon: 'record_voice_over', event: true },
   { id: 'new_face', group: 'practice', icon: 'face', event: true },

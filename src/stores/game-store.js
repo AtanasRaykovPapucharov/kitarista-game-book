@@ -162,6 +162,17 @@ export const useGameStore = defineStore('game', {
       this.missionEvent({ type: 'played', exercise: id })
     },
 
+    /** A melody written in the Composer, kept with this adventure. */
+    keepComposition(composition) {
+      if (!this.save) return
+      this.save = { ...this.save, composition: { ...composition, at: new Date().toISOString() } }
+      this.persist()
+      this.missionEvent({
+        type: 'composed',
+        notes: composition.melody.filter((d) => d != null).length,
+      })
+    },
+
     dismissMissionNews() {
       if (!this.save?.missionNews?.length) return
       this.save = { ...this.save, missionNews: [] }

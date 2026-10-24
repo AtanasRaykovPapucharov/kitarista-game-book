@@ -57,6 +57,13 @@ export const MISSIONS = {
     reward: [{ stat: 'luck', raise: 1 }],
     check: (e) => e.type === 'scale' && e.key === 'phrygianDominant' && e.root === 4,
   },
+  compose: {
+    topic: 'scales',
+    tool: '/composer',
+    icon: 'edit_note',
+    reward: [{ stat: 'inspiration', raise: 1 }],
+    check: (e) => e.type === 'composed' && e.notes >= 8,
+  },
 }
 
 export const MISSION_IDS = Object.keys(MISSIONS)

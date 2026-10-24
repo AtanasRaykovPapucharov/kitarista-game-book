@@ -92,6 +92,14 @@ body {
   margin: 2px 6px;
 }
 
+/* the first item in "Book-game": continue or start an adventure */
+.q-drawer .drawer-play {
+  font-family: var(--gb-serif);
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--gb-accent);
+}
+
 .q-drawer .q-item--active {
   background-color: var(--app-surface-soft);
   color: var(--gb-accent);

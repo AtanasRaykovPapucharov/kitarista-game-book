@@ -1,6 +1,9 @@
 export default {
   appName: 'Kitarista',
   nav: {
+    composer: 'Composer',
+    continue: 'Continue',
+    start: 'Start',
     coach: 'Play with me',
     menu: 'Menu',
     gameBook: 'Game-book',
@@ -699,6 +702,10 @@ export default {
         title: 'Keeper of the window',
         desc: 'Hold the window above the wall shut with Old Tsanko until dawn.',
       },
+      composer: {
+        title: 'Composer',
+        desc: 'Write a melody in the Composer and keep it in the adventure.',
+      },
       dark_talk: { title: 'A talk with the dark', desc: 'Ask the Dark what it wants.' },
       clean_strings: {
         title: 'Clean strings',
@@ -738,10 +745,15 @@ export default {
     ok: 'Got it',
     playReal: 'Play it on the guitar',
     coachTask: 'Play the notes one by one on your real guitar – I’ll hear you.',
+    later: 'The book will give you this one',
+    onlyReal: 'Played on the guitar – still to do in the book',
+    boardNote:
+      'Missions appear on their own as you read. But you can practise them from here at any time.',
+    progress: '{n} of {total} missions complete',
     backToBook: 'Back to the book',
     rewardIs: 'Reward: {reward}.',
     unlocks: 'Unlocks a music move in duels: {topic}.',
-    tools: { tones: 'Open Tones', tuner: 'Open Tuner' },
+    tools: { tones: 'Open Tones', tuner: 'Open Tuner', composer: 'Open the Composer' },
     topics: {
       chords: 'chords',
       intervals: 'intervals',
@@ -756,6 +768,7 @@ export default {
       pentatonic: '+1 Inspiration (and maximum)',
       dorian: '+1 Luck (and maximum)',
       zann: '+1 Luck (and maximum)',
+      compose: '+1 Inspiration (and maximum)',
     },
     list: {
       chord_c: {
@@ -785,6 +798,10 @@ export default {
       zann: {
         title: 'Old Tsanko’s song',
         task: 'The old man’s melody is in the Phrygian dominant mode. In Tones, mark its seven notes from E: E, F, G♯, A, B, C and D, with E as the lowest. Or play it on the real guitar.',
+      },
+      compose: {
+        title: 'Your own melody',
+        task: 'Open the Composer, choose a key and a scale, lay out the chords and draw a melody of at least 8 notes. Then hear it and keep it in the adventure.',
       },
     },
   },
@@ -833,6 +850,28 @@ export default {
       mom: 'Sometimes the bravest thing you can do is tell the truth.',
       window: 'The old man from the Star String doesn’t ask for help without a reason.',
     },
+  },
+  composer: {
+    title: 'Composer',
+    lead: 'Everything from the practice room comes together here: pick a key and a scale (Tones), see the steps between the notes (Intervals), lay out chords and draw a melody – then hear it and write it down.',
+    key: 'Key',
+    scale: 'Scale',
+    tempo: 'Tempo (BPM)',
+    stepsAre: 'Steps between the notes:',
+    chords: 'Chords – one per bar',
+    melody: 'Melody',
+    melodyHint:
+      'Each column is an eighth note. Click a square to place a note – click again to remove it. An empty column is a rest.',
+    cell: '{note}, step {step}',
+    play: 'Hear the song',
+    stop: 'Stop',
+    surprise: 'Surprise me',
+    clear: 'Clear',
+    copy: 'Copy for the Note sheet',
+    keep: 'Keep in the adventure',
+    copied: 'Copied. Open the Note sheet and paste it there.',
+    nocopy: 'The browser blocks the clipboard. Copy the notes below by hand.',
+    kept: 'The melody is kept in your adventure.',
   },
   about: {
     title: 'About',

@@ -58,6 +58,7 @@ const routes = [
         component: () => import('@/pages/GuitarFlamencoPage.vue'),
       },
       { path: 'tuner', name: 'tuner', component: () => import('@/pages/GuitarTunerPage.vue') },
+      { path: 'composer', name: 'composer', component: () => import('@/pages/ComposerPage.vue') },
       { path: 'coach', name: 'coach', component: () => import('@/pages/GuitarCoachPage.vue') },
       { path: 'about', name: 'about', component: () => import('@/pages/AboutPage.vue') },
       { path: 'notes', name: 'notes', component: () => import('@/pages/NotesSheetPage.vue') },

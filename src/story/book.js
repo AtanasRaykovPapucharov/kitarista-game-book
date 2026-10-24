@@ -899,7 +899,21 @@ export const SECTIONS = {
     next: 'mineExit',
   },
   lostInDark: { effects: [add('inspiration', -3)], next: 'mineExit' },
-  mineExit: { next: 'concertEve' },
+  mineExit: { next: 'ownMelody' },
+
+  /* ---------- the night before: your own melody ---------- */
+  ownMelody: {
+    mission: 'compose',
+    choices: [
+      { id: 'write', to: 'melodyFound' },
+      { id: 'borrow', to: 'melodyBorrowed' },
+    ],
+  },
+  melodyFound: {
+    effects: [flag('own_melody'), add('inspiration', 2)],
+    next: 'concertEve',
+  },
+  melodyBorrowed: { effects: [add('darkness', 1)], next: 'concertEve' },
 
   /* ---------- Part VII: the dark ---------- */
   concertEve: {
@@ -961,6 +975,7 @@ export const SECTIONS = {
         { flag: 'listener_helped', add: -1 },
         { flag: 'viktoria_saved', add: -1 },
         { flag: 'zann_saved', add: -1 },
+        { flag: 'own_melody', add: -1 },
       ],
       playerMods: [
         { flag: 'ancestors', add: 1 },

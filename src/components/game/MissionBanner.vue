@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from 'src/stores/game-store'
+import { ref } from 'vue'
 import { MISSIONS } from 'src/story/missions'
 import { EXERCISES } from 'src/story/exercises'
 
@@ -11,6 +12,8 @@ import { EXERCISES } from 'src/story/exercises'
 const { t } = useI18n()
 const route = useRoute()
 const game = useGameStore()
+// the reader can put the banner away; it comes back on the next visit
+const hidden = ref(false)
 
 const playing = computed(() => game.save?.status === 'playing')
 const done = computed(() => (playing.value ? game.missionNews.filter((id) => MISSIONS[id]) : []))
@@ -30,7 +33,7 @@ const statOf = (id) => MISSIONS[id].reward[0].stat
 </script>
 
 <template>
-  <div v-if="done.length || active.length" class="mission-banner-wrap">
+  <div v-if="!hidden && (done.length || active.length)" class="mission-banner-wrap">
     <section
       v-for="id in done"
       :key="`done-${id}`"
@@ -54,18 +57,36 @@ const statOf = (id) => MISSIONS[id].reward[0].stat
       <router-link to="/play" class="gb-btn gb-btn--primary mission-banner__back">
         <q-icon name="auto_stories" size="18px" class="q-mr-xs" />{{ t('missions.back') }}
       </router-link>
+      <button
+        type="button"
+        class="mission-banner__x"
+        :aria-label="t('common.close')"
+        @click="hidden = true"
+      >
+        <q-icon name="close" size="20px" />
+      </button>
     </section>
 
     <section v-for="id in active" :key="`active-${id}`" class="mission-banner">
       <q-icon :name="MISSIONS[id].icon" size="26px" class="mission-banner__icon" />
       <div class="mission-banner__text">
         <strong>{{ t('missions.fromBook', { title: t(`missions.list.${id}.title`) }) }}</strong>
-        <span>{{ route.path === '/coach' ? t('missions.coachTask') : t(`missions.list.${id}.task`) }}</span>
+        <span>{{
+          route.path === '/coach' ? t('missions.coachTask') : t(`missions.list.${id}.task`)
+        }}</span>
         <span class="mission-banner__hint">{{ t('missions.inProgress') }}</span>
       </div>
       <router-link to="/play" class="gb-btn mission-banner__back">
         <q-icon name="auto_stories" size="18px" class="q-mr-xs" />{{ t('missions.back') }}
       </router-link>
+      <button
+        type="button"
+        class="mission-banner__x"
+        :aria-label="t('common.close')"
+        @click="hidden = true"
+      >
+        <q-icon name="close" size="20px" />
+      </button>
     </section>
   </div>
 </template>
@@ -124,5 +145,21 @@ const statOf = (id) => MISSIONS[id].reward[0].stat
 .mission-banner__back {
   flex: none;
   text-decoration: none;
+}
+
+.mission-banner__x {
+  flex: none;
+  padding: 4px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.mission-banner__x:hover,
+.mission-banner__x:focus-visible {
+  opacity: 1;
 }
 </style>

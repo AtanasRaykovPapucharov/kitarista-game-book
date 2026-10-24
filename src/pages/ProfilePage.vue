@@ -12,6 +12,7 @@ import SongCard from 'src/components/game/SongCard.vue'
 import UserAvatar from 'src/components/avatar/UserAvatar.vue'
 import AvatarBuilder from 'src/components/avatar/AvatarBuilder.vue'
 import AchievementList from 'src/components/game/AchievementList.vue'
+import MissionBoard from 'src/components/game/MissionBoard.vue'
 
 const { t, locale } = useI18n()
 const $q = useQuasar()
@@ -196,6 +197,9 @@ function remove() {
           {{ t('common.cancel') }}
         </button>
       </div>
+
+      <h2 class="gb-subtitle">{{ t('missions.title') }}</h2>
+      <MissionBoard />
 
       <h2 class="gb-subtitle">{{ t('achievements.title') }}</h2>
       <AchievementList />

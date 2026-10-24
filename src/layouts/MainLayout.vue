@@ -5,6 +5,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings-store'
 import { useAuthStore } from '@/stores/auth-store'
+import { useGameStore } from '@/stores/game-store'
 import { soundOn, toggleSound, volume, setVolume, cues } from '@/game/sound'
 import NarratorControls from '@/components/NarratorControls.vue'
 import UserAvatar from '@/components/avatar/UserAvatar.vue'
@@ -15,6 +16,7 @@ const { t } = useI18n()
 const $q = useQuasar()
 const settings = useSettingsStore()
 const auth = useAuthStore()
+const game = useGameStore()
 const router = useRouter()
 const drawerWidth = 300
 
@@ -33,6 +35,13 @@ const currentLocaleLabel = computed(
   () => localeOptions.find((l) => l.value === settings.locale)?.label ?? settings.locale,
 )
 
+// the first item in "Book-game": continue an adventure, or start one
+const playItem = computed(() =>
+  game.save && game.save.status === 'playing'
+    ? { to: '/play', label: 'nav.continue', icon: 'play_arrow' }
+    : { to: auth.isLoggedIn ? '/hero' : '/login', label: 'nav.start', icon: 'play_arrow' },
+)
+
 const bookItems = [
   { to: '/', label: 'nav.book', icon: 'auto_stories' },
   { to: '/rules', label: 'nav.rules', icon: 'casino' },
@@ -47,6 +56,7 @@ const navItems = [
   { to: '/notes', label: 'nav.notes', icon: 'library_music' },
   { to: '/compas', label: 'nav.compas', icon: 'explore' },
   { to: '/tuner', label: 'nav.tuner', icon: 'tune' },
+  { to: '/composer', label: 'nav.composer', icon: 'edit_note' },
   { to: '/coach', label: 'nav.coach', icon: 'mic' },
 
   // { to: '/flamenco', label: 'nav.flamenco', icon: 'fa fa-guitar' },
@@ -225,6 +235,10 @@ function closeLeftDrawer() {
 
         <q-list padding class="drawer-list">
           <q-item-label header class="drawer-group">{{ t('nav.gameBook') }}</q-item-label>
+          <q-item v-ripple clickable :to="playItem.to" class="drawer-play">
+            <q-item-section avatar><q-icon :name="playItem.icon" /></q-item-section>
+            <q-item-section>{{ t(playItem.label) }}</q-item-section>
+          </q-item>
           <q-item v-for="item in bookItems" :key="item.to" clickable :to="item.to" exact>
             <q-item-section avatar>
               <q-icon :name="item.icon" />
