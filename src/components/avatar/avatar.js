@@ -60,12 +60,29 @@ function hash(text) {
 }
 
 /** The same name always gives the same face – a default for everyone. */
+/* The face everyone starts with: a plain one, with nothing worn, so the
+   reader builds it up themselves. Only the colours that have no "none"
+   (skin, hair, eyes, eyebrows) follow the name, so faces still differ. */
+const STARTING = {
+  hair: 'bald',
+  brows: 'none',
+  headwear: 'none',
+  eyewear: 'none',
+  ears: 'none',
+  extras: 'none',
+  eyes: 'bright',
+  nose: 'sharp',
+  mouth: 'line',
+  shirt: AVATAR_OPTIONS.shirt[1],
+  background: AVATAR_OPTIONS.background[2],
+}
+
 export function seededConfig(seed) {
   let h = hash(seed || 'kitarista')
   const config = {}
   for (const part of AVATAR_PARTS) {
     const list = AVATAR_OPTIONS[part]
-    config[part] = list[h % list.length]
+    config[part] = STARTING[part] ?? list[h % list.length]
     h = Math.imul(h ^ (h >>> 13), 2654435761) >>> 0
   }
   return config
