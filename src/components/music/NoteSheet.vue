@@ -1,4 +1,5 @@
 <script setup>
+import { useGameStore } from 'src/stores/game-store'
 import { TouchSwipe, useQuasar } from 'quasar'
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, toRaw, watch } from 'vue'
 import GuitarGriff from 'src/components/GuitarGriff.vue'
@@ -25,6 +26,7 @@ import {
   stepItem,
   toAbsolute,
   withAcc,
+  takePending,
 } from './notation'
 import { useStaffPlayer } from './useStaffPlayer'
 
@@ -53,6 +55,7 @@ const showNeck = ref(false) // fretboard can be folded away to give the staff mo
 const vTouchSwipe = TouchSwipe // local directive: swipe right to close
 const isMobile = computed(() => $q.screen.lt.sm)
 const settingsOpen = ref(false)
+
 const settingsPanel = ref(null)
 const settingsButton = ref(null)
 
@@ -174,6 +177,13 @@ function loadLocal() {
 const initial = props.modelValue ?? loadLocal()
 const sheetName = ref(initial?.name || 'Untitled sheet')
 const addOperState = reactive(normalizeSheet(initial))
+
+// the book can ask for a melody to be written down here
+const game = useGameStore()
+watch(
+  () => addOperState.staves.reduce((n, st) => n + st.notes.filter((x) => !x.rest).length, 0),
+  (notes) => game.missionEvent({ type: 'sheet', notes }),
+)
 
 const selectedNote = ref(null) // { staff, chordIndex, letterIndex }
 const activeStaff = ref(0) // staff that new notes and rests go to
@@ -809,6 +819,19 @@ function copySelected() {
 }
 
 // copied notes keep their sound: accidentals are added for this staff's key
+// a melody sent from the Composer lands on the sheet by itself
+onMounted(() => {
+  if (!takePending() || !copiedNotes.value?.length) return
+  nextTick(() => {
+    pasteNotes()
+    $q.notify({
+      type: 'positive',
+      message: 'The melody from the Composer has been pasted.',
+      position: 'top',
+    })
+  })
+})
+
 function pasteNotes() {
   const items = copiedNotes.value
   if (!items?.length) return

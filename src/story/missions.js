@@ -64,6 +64,30 @@ export const MISSIONS = {
     reward: [{ stat: 'inspiration', raise: 1 }],
     check: (e) => e.type === 'composed' && e.notes >= 8,
   },
+  // "Chords": find the chord Grandpa hums – the one with the sad third
+  chord_em: {
+    topic: 'chords',
+    tool: '/chords',
+    icon: 'grid_on',
+    reward: [{ stat: 'skill', raise: 1 }],
+    check: (e) => e.type === 'chordTool' && e.name === 'E-m',
+  },
+  // "Compás sheet": the rhythm of the storm, a 12-beat bulería
+  compas12: {
+    topic: 'rhythm',
+    tool: '/compas',
+    icon: 'graphic_eq',
+    reward: [{ stat: 'luck', raise: 1 }],
+    check: (e) => e.type === 'compas' && e.beats >= 12 && e.filled >= 4,
+  },
+  // "Note sheet": write your melody down, so it outlives the night
+  writeDown: {
+    topic: 'reading',
+    tool: '/notes',
+    icon: 'library_music',
+    reward: [{ stat: 'inspiration', raise: 1 }],
+    check: (e) => e.type === 'sheet' && e.notes >= 8,
+  },
 }
 
 export const MISSION_IDS = Object.keys(MISSIONS)

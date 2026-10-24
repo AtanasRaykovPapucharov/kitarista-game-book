@@ -1,17 +1,20 @@
 <script setup>
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { useGameStore } from 'src/stores/game-store'
 import ChordDiagram from 'src/components/claude/ChordDiagram.vue'
 import MiniFretboard from 'src/components/claude/MiniFretboard.vue'
 import { NOTE_NAMES, SCALES } from './toneAnalysis'
 import { playNote, playChord } from 'src/game/sound'
+import { copyNotes, markPending } from './notation'
 
 /* The Composer: a key and a scale (Tones), the steps between its notes
    (Intervals), a chord progression and a melody – and the song can be
    written down (Note sheet) or kept as your own. */
 const { t } = useI18n()
 const game = useGameStore()
+const router = useRouter()
 
 const USEFUL = [
   'ionian',
@@ -149,6 +152,32 @@ onBeforeUnmount(stop)
 
 const written = computed(() => melody.value.filter((d) => d != null).length)
 
+/* ---------- sending the melody to the Note sheet ----------
+   The note editors share a clipboard (notation.js). Writing to it means
+   "Postavi" in the Note sheet and the Compás sheet pastes this melody. */
+const LETTER = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
+/** One grid step → an item the note editors understand (an eighth, or a rest). */
+function toItem(degree) {
+  if (degree == null) return { rest: true, note: [], octave: 1, type: 8 }
+  const midi = midis.value[degree]
+  const name = LETTER[midi % 12]
+  const sounding = Math.floor(midi / 12) - 1 // C4 = octave 4
+  // the sheet writes octave 1 around C4, 2 above it, 'm' below
+  const octave = sounding >= 5 ? 2 : sounding <= 3 ? 'm' : 1
+  return { note: [name.replace('#', '#')], octave, type: 8 }
+}
+
+function sendToSheet() {
+  if (!copyNotes(melody.value.map(toItem))) {
+    saved.value = 'nothing'
+    return
+  }
+  // the sheet pastes it by itself when it opens
+  markPending()
+  saved.value = 'sent'
+  router.push('/notes')
+}
+
 /** The melody as text, ready to paste into the Note sheet. */
 const asText = computed(() =>
   melody.value
@@ -198,7 +227,8 @@ const positions = computed(() =>
 
 <template>
   <section class="composer">
-    <!-- 1. the key and the scale: what Tones taught -->
+    <h3 class="composer__step"><span>1</span> {{ t('composer.step1') }}</h3>
+    <p class="composer__hint">{{ t('composer.step1hint') }}</p>
     <div class="composer__row">
       <label class="composer__field">
         <span>{{ t('composer.key') }}</span>
@@ -246,8 +276,8 @@ const positions = computed(() =>
     </p>
     <div class="composer__board"><MiniFretboard :positions="positions" /></div>
 
-    <!-- 2. the chords -->
-    <h3 class="composer__title">{{ t('composer.chords') }}</h3>
+    <h3 class="composer__step"><span>2</span> {{ t('composer.chords') }}</h3>
+    <p class="composer__hint">{{ t('composer.chordsHint') }}</p>
     <div class="composer__prog">
       <div v-for="(c, i) in prog" :key="i" class="composer__bar">
         <select v-model="prog[i]" class="composer__select" @change="playChord(prog[i])">
@@ -257,8 +287,7 @@ const positions = computed(() =>
       </div>
     </div>
 
-    <!-- 3. the melody -->
-    <h3 class="composer__title">{{ t('composer.melody') }}</h3>
+    <h3 class="composer__step"><span>3</span> {{ t('composer.melody') }}</h3>
     <p class="composer__hint">{{ t('composer.melodyHint') }}</p>
     <div class="composer__grid" role="group" :aria-label="t('composer.melody')">
       <div class="composer__labels">
@@ -298,14 +327,32 @@ const positions = computed(() =>
       <button type="button" class="gb-btn" :disabled="!written" @click="clear">
         {{ t('composer.clear') }}
       </button>
+    </div>
+
+    <h3 class="composer__step"><span>4</span> {{ t('composer.step4') }}</h3>
+    <div class="composer__actions">
+      <button
+        v-if="game.save"
+        type="button"
+        class="gb-btn gb-btn--primary"
+        :disabled="!written"
+        @click="keep"
+      >
+        <q-icon name="bookmark_add" size="16px" class="q-mr-xs" />{{ t('composer.keep') }}
+      </button>
+      <button type="button" class="gb-btn" :disabled="!written" @click="sendToSheet">
+        <q-icon name="library_music" size="16px" class="q-mr-xs" />{{ t('composer.toSheet') }}
+      </button>
       <button type="button" class="gb-btn" :disabled="!written" @click="copyText">
         <q-icon name="content_copy" size="16px" class="q-mr-xs" />{{ t('composer.copy') }}
       </button>
-      <button v-if="game.save" type="button" class="gb-btn" :disabled="!written" @click="keep">
-        <q-icon name="bookmark_add" size="16px" class="q-mr-xs" />{{ t('composer.keep') }}
-      </button>
     </div>
-    <p v-if="saved" class="composer__saved" role="status">{{ t(`composer.${saved}`) }}</p>
+    <p v-if="saved" class="composer__saved" role="status">
+      {{ t(`composer.${saved}`) }}
+      <router-link v-if="saved === 'sent'" to="/notes" class="gb-link">{{
+        t('composer.openSheet')
+      }}</router-link>
+    </p>
     <p class="composer__text">{{ asText }}</p>
   </section>
 </template>
@@ -384,6 +431,27 @@ const positions = computed(() =>
 .composer__board :deep(svg) {
   width: 100%;
   height: auto;
+}
+
+.composer__step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  font-family: var(--gb-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.composer__step span {
+  display: grid;
+  place-items: center;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  background: var(--gb-accent);
+  color: var(--gb-paper);
+  font-size: 0.8em;
 }
 
 .composer__title {

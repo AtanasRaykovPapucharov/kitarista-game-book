@@ -349,7 +349,11 @@ export const SECTIONS = {
       { id: 'well', to: 'well' },
     ],
   },
-  keepers: { effects: [flag('knows_keepers'), add('inspiration', 1)], next: 'village' },
+  keepers: {
+    mission: 'chord_em',
+    effects: [flag('knows_keepers'), add('inspiration', 1)],
+    next: 'village',
+  },
   observatory: {
     effects: [flag('saw_spectrum'), flag('professor_hint'), add('luck', 1)],
     next: 'village',
@@ -378,7 +382,7 @@ export const SECTIONS = {
       { id: 'out', to: 'stormDuel' },
     ],
   },
-  byStove: { effects: [add('inspiration', 2)], next: 'dawnWell' },
+  byStove: { mission: 'compas12', effects: [add('inspiration', 2)], next: 'dawnWell' },
   listenerFear: {
     choices: [
       { id: 'together', to: 'pact' },
@@ -910,6 +914,7 @@ export const SECTIONS = {
     ],
   },
   melodyFound: {
+    mission: 'writeDown',
     effects: [flag('own_melody'), add('inspiration', 2)],
     next: 'concertEve',
   },

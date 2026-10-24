@@ -535,6 +535,28 @@ if (typeof window !== 'undefined') {
   })
 }
 
+/**
+ * Set when notes are sent from another tool (the Composer) and should land
+ * on the sheet by themselves. The sheet clears it once it has pasted them.
+ */
+const PENDING_KEY = 'music-notes-pending'
+export const markPending = () => {
+  try {
+    localStorage.setItem(PENDING_KEY, '1')
+  } catch {
+    /* storage blocked: the reader can still press Paste */
+  }
+}
+export function takePending() {
+  try {
+    const had = localStorage.getItem(PENDING_KEY) === '1'
+    localStorage.removeItem(PENDING_KEY)
+    return had
+  } catch {
+    return false
+  }
+}
+
 export function copyNotes(items) {
   const clean = (items || []).map(fitItem)
   if (!clean.length) return false

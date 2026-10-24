@@ -753,12 +753,21 @@ export default {
     backToBook: 'Back to the book',
     rewardIs: 'Reward: {reward}.',
     unlocks: 'Unlocks a music move in duels: {topic}.',
-    tools: { tones: 'Open Tones', tuner: 'Open Tuner', composer: 'Open the Composer' },
+    tools: {
+      tones: 'Open Tones',
+      tuner: 'Open Tuner',
+      composer: 'Open the Composer',
+      chords: 'Open Chords',
+      compas: 'Open the Compás sheet',
+      notes: 'Open the Note sheet',
+    },
     topics: {
       chords: 'chords',
       intervals: 'intervals',
       scales: 'scales and modes',
       tuning: 'tuning by ear',
+      rhythm: 'rhythm and compás',
+      reading: 'reading music',
     },
     reward: {
       chord_c: '+1 Inspiration (and maximum)',
@@ -768,9 +777,24 @@ export default {
       pentatonic: '+1 Inspiration (and maximum)',
       dorian: '+1 Luck (and maximum)',
       zann: '+1 Luck (and maximum)',
+      chord_em: '+1 Skill',
+      compas12: '+1 Luck (and maximum)',
+      writeDown: '+1 Inspiration (and maximum)',
       compose: '+1 Inspiration (and maximum)',
     },
     list: {
+      chord_em: {
+        title: 'Grandpa’s chord',
+        task: 'The dark chord the keepers’ song starts with is E minor. Open Chords, choose E and tick “minor”.',
+      },
+      compas12: {
+        title: 'The rhythm of the storm',
+        task: 'Open the Compás sheet and write down the rhythm of the storm: in a 12-beat compás (a bulería), click a beat and write a chord on it – Am, for example. Do it on at least 4 beats.',
+      },
+      writeDown: {
+        title: 'The melody written down',
+        task: 'Open the Note sheet and write your melody – at least 8 notes. Quickest way: in the Composer press “Write it in the Note sheet” – your melody appears by itself.',
+      },
       chord_c: {
         title: 'The C major chord',
         task: 'Dad says: “Every guitarist’s first chord is C.” In Tones, mark the notes of C major on the fretboard – C, E and G – for example in the open shape x32010.',
@@ -853,7 +877,17 @@ export default {
   },
   composer: {
     title: 'Composer',
-    lead: 'Everything from the practice room comes together here: pick a key and a scale (Tones), see the steps between the notes (Intervals), lay out chords and draw a melody – then hear it and write it down.',
+    lead: 'Four steps to a song of your own. Everything you need is here – and the finished melody can go into the Note sheet.',
+    step1: 'Choose a key and a scale',
+    step1hint:
+      'A scale is the set of notes that sound good together. If you don’t know which, start with the minor pentatonic – it’s hard to go wrong with.',
+    chordsHint:
+      'The accompaniment: one chord per bar. Only chords from the chosen key are offered. Click one to hear it.',
+    step4: 'Keep the song',
+    toSheet: 'Write it in the Note sheet',
+    sent: 'The melody has been sent to the Note sheet.',
+    openSheet: 'Open the Note sheet',
+    nothing: 'Nothing to send – write a few notes first.',
     key: 'Key',
     scale: 'Scale',
     tempo: 'Tempo (BPM)',
@@ -867,9 +901,9 @@ export default {
     stop: 'Stop',
     surprise: 'Surprise me',
     clear: 'Clear',
-    copy: 'Copy for the Note sheet',
+    copy: 'Copy as text',
     keep: 'Keep in the adventure',
-    copied: 'Copied. Open the Note sheet and paste it there.',
+    copied: 'The notes are copied as text – for a note to yourself or another program.',
     nocopy: 'The browser blocks the clipboard. Copy the notes below by hand.',
     kept: 'The melody is kept in your adventure.',
   },

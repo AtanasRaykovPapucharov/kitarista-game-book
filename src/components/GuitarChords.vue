@@ -1,4 +1,5 @@
 <script setup>
+import { useGameStore } from 'src/stores/game-store'
 import { ref, computed, watch } from 'vue'
 import chords from 'src/helpers/chords'
 import ChordCanvas from './ChordCanvas.vue'
@@ -229,6 +230,10 @@ const chordVariations = computed(() => {
 
   return variations
 })
+
+// the book can ask for a chord to be found here
+const game = useGameStore()
+watch(chordName, (name) => game.missionEvent({ type: 'chordTool', name }), { immediate: true })
 
 const emitSelectedChord = () => {
   emit('select', buildChordToneNames(chordName.value))

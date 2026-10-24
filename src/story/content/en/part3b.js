@@ -32,6 +32,7 @@ export default {
       'Grandpa sits on the bench under the vine and looks for a long time towards the edge of the village, where the forest begins.',
       '“The well is older than the village. Older than the church, older than the Roman roads. The Thracians dug it. They say they didn’t dig it for water.”',
       '“My grandmother used to say our family were its keepers. Every year, on the longest night, they went to it and sang to the stars – not a prayer, but a song that ‘shows the way’. To whom, and where, she didn’t know. The song is lost. Only the saying is left: ‘What falls from the sky goes back to the sky – if someone sings it the way.’”',
+      'Grandpa takes your guitar and slowly plays a chord – dark, sad, with a great emptiness in the middle. “The keepers’ song starts with this one. Find it yourself. You’ll know it by the sound.”',
       'He looks at you with peculiar attention. “You hear more than others, don’t you? So did your mother. So did your grandmother. That’s how it is in our family.”',
     ],
   },
@@ -110,6 +111,7 @@ export default {
     text: [
       'You sit by the stove. Grandpa quietly begins an old Rhodope song – drawn out, with high, winding notes that sound like an echo in a deep gorge. Then another. You pick up the tune on your guitar.',
       'The storm rages, but the room is warm. There is something in the songs that keeps the night outside – like a thick wall built by many generations.',
+      'Then Grandpa leaves the songs and starts tapping his palm on his knee – twelve beats, accented on twelve, three, six, eight and ten. “That’s how we count in the Rhodopes when the storm won’t stop,” he says. “Write it down.”',
       'Towards midnight the storm dies down. You fall asleep on the bench. But when you step into the yard in the morning, you see that the grey circle around the well has grown.',
     ],
   },

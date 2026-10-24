@@ -1,4 +1,5 @@
 <script setup>
+import { useGameStore } from 'src/stores/game-store'
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { COMPAS_MAP } from '../constants'
@@ -178,6 +179,24 @@ function loadLocal() {
 
 const sheet = reactive(normalizeSheet(props.modelValue ?? loadLocal()))
 
+// the book can ask for a rhythm to be laid out here
+const game = useGameStore()
+watch(
+  () => {
+    const bar = sheet.bars?.[0]
+    if (!bar) return null
+    const cells = bar.cells ?? []
+    return {
+      beats: sheet.pattern?.length ?? 0,
+      accents: (sheet.pattern ?? []).filter((b) => b.accent).map((b) => String(b.label)),
+      // a beat counts as written on when it carries a chord, notes or a word
+      filled: cells.filter((c) => c && (c.chord || c.staff?.length || c.text)).length,
+    }
+  },
+  (v) => v && game.missionEvent({ type: 'compas', ...v }),
+  { deep: true },
+)
+
 function replaceSheet(next) {
   Object.assign(sheet, normalizeSheet(next))
 }
@@ -187,6 +206,7 @@ function replaceSheet(next) {
 ===================================================== */
 
 const loopBar = ref(null)
+
 const audio = useCompasAudio(sheet, { loopBar })
 const { isPlaying, position } = audio
 

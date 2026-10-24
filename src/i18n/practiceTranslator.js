@@ -160,6 +160,7 @@ const BG = {
   'Copy notes as a melody': 'Копирай нотите като мелодия',
   'Copy the note (or the staff) / paste after it':
     'Копирай нотата (или петолинието) / постави след нея',
+  'The melody from the Composer has been pasted.': 'Мелодията от „Композитор“ е поставена.',
   'Paste melody': 'Постави мелодия',
   'Paste melody here': 'Постави мелодията тук',
   'Paste copied notes (Ctrl V)': 'Постави копираните ноти (Ctrl V)',

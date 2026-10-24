@@ -87,6 +87,7 @@ export default {
     text: [
       'You find it around three in the morning. Six notes up, then one down – where you don’t expect it – and silence. Exactly as much silence as it needs.',
       'You play it three times in a row and each time a shiver runs up your arms. This is it. It isn’t the most complicated melody in the world. But it is yours – from the first note to the rest at the end.',
+      'The melody exists, but it lives only in your fingers. And fingers forget. You have to write it down – on a real staff, so it is still there tomorrow, and in a year.',
       'You write it in the notebook, in numbers and arrows, the way you can. Underneath you write the date.',
       '“I don’t know this one,” says the voice inside you. And there is something in the words you have never heard before: respect.',
     ],
