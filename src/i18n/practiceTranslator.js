@@ -79,7 +79,7 @@ const BG = {
   Aeolian: 'Еолийски',
   Locrian: 'Локрийски',
 
-  Relative: 'Паралелни',
+  Relative: 'Натурални',
   Harmonic: 'Хармоничи',
   'Double Harmonic': 'Двойно Хармонични',
   Melodic: 'Мелодични',
