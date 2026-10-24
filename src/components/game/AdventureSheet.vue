@@ -53,7 +53,14 @@ const items = computed(() =>
     .filter(([, n]) => n > 0)
     .map(([id, n]) => ({ id, n, def: ITEMS[id] ?? {} })),
 )
-const trail = computed(() => (save.value?.trail ?? []).slice(-14).map(sectionNumber))
+// the trail: every chapter number links back to that chapter, read-only
+const trail = computed(() =>
+  (save.value?.trail ?? []).slice(-14).map((key, i, all) => ({
+    key,
+    n: sectionNumber(key),
+    now: i === all.length - 1,
+  })),
+)
 const song = computed(() => save.value?.counters?.song ?? 0)
 const { lyric } = useSongText()
 const missions = computed(() =>
@@ -177,7 +184,22 @@ function abandon() {
 
         <section class="sheet__block">
           <h3 class="sheet__sub sheet__sub--first">{{ t('play.trail') }}</h3>
-          <p class="sheet__trail">{{ trail.join(', ') }}</p>
+          <p class="sheet__trail">
+            <template v-for="(step, i) in trail" :key="i">
+              <span v-if="step.now" class="sheet__trail-now" :title="t('play.youAreHere')">{{
+                step.n
+              }}</span>
+              <router-link
+                v-else
+                :to="{ path: '/play', query: { read: step.key } }"
+                class="sheet__trail-link"
+                :title="t('play.readAgain', { n: step.n })"
+              >
+                {{ step.n }}
+              </router-link>
+              <template v-if="i < trail.length - 1">, </template>
+            </template>
+          </p>
 
           <button v-if="save.status === 'playing'" type="button" class="gb-link" @click="abandon">
             {{ t('play.abandon') }}
@@ -314,6 +336,21 @@ function abandon() {
 }
 
 .sheet__empty,
+.sheet__trail-link {
+  color: var(--gb-accent);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+.sheet__trail-link:hover,
+.sheet__trail-link:focus-visible {
+  border-bottom-style: solid;
+}
+
+.sheet__trail-now {
+  font-weight: 700;
+}
+
 .sheet__trail {
   margin: 0;
   color: var(--gb-muted);

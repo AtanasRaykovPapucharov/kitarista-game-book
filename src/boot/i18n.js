@@ -1,6 +1,6 @@
 import { defineBoot } from '#q-app'
 import { createI18n } from 'vue-i18n'
-import { unref, watch } from 'vue'
+import { unref } from 'vue'
 import { setPracticeLanguage } from './../i18n/practiceTranslator'
 import messages from '@/i18n'
 
@@ -38,5 +38,6 @@ export function saveLocale(locale) {
 export default defineBoot(({ app }) => {
   app.use(i18n)
   // the practice-room tools are written in English: translate them on the page while in Bulgarian
-  watch(() => unref(i18n.global.locale), setPracticeLanguage, { immediate: true })
+  // (later changes come from the settings store, which is the only place the language changes)
+  setPracticeLanguage(unref(i18n.global.locale))
 })

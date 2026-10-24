@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useGameStore } from 'src/stores/game-store'
 import { useStory } from 'src/game/useStory'
 import TestPanel from 'src/components/game/TestPanel.vue'
@@ -21,6 +21,7 @@ import SectionIllustration from 'src/components/game/SectionIllustration.vue'
 import MissionCard from 'src/components/game/MissionCard.vue'
 import MissionResult from 'src/components/game/MissionResult.vue'
 import { SECTION_ILLUSTRATIONS, ILLUSTRATIONS_AT_END } from 'src/story/illustrations'
+import { SECTIONS, sectionNumber } from 'src/story/book'
 import { ENDINGS, DARKNESS_MAX } from 'src/story/book'
 import { useSettingsStore } from 'src/stores/settings-store'
 import { cues } from 'src/game/sound'
@@ -28,6 +29,7 @@ import { cues } from 'src/game/sound'
 const { t } = useI18n()
 const $q = useQuasar()
 const router = useRouter()
+const route = useRoute()
 const game = useGameStore()
 const { title, paragraphs, choiceText } = useStory()
 const settings = useSettingsStore()
@@ -58,8 +60,20 @@ const pageClass = computed(() => ({
 const readingParagraph = computed(() => readingIndex.value - 1)
 
 const save = computed(() => game.save)
-const key = computed(() => save.value?.section)
-const section = computed(() => game.section ?? {})
+
+/* Looking back: /play?read=<section> shows a chapter already read.
+   Nothing can be changed there – the buttons below are disabled. */
+const revisiting = computed(() => {
+  const k = route.query.read
+  return typeof k === 'string' && k !== save.value?.section && save.value?.trail?.includes(k)
+    ? k
+    : null
+})
+const key = computed(() => revisiting.value ?? save.value?.section)
+const section = computed(() =>
+  revisiting.value ? (SECTIONS[revisiting.value] ?? {}) : (game.section ?? {}),
+)
+const backToNow = () => router.replace({ path: '/play' })
 const hasChallenge = computed(
   () => !!(section.value.test || section.value.roll || section.value.duel || section.value.lesson),
 )
@@ -119,6 +133,13 @@ onBeforeUnmount(() => {
           </h1>
         </header>
 
+        <p v-if="revisiting" class="gb-revisit" role="status">
+          {{ t('play.revisiting', { n: sectionNumber(revisiting) }) }}
+          <button type="button" class="gb-link" @click="backToNow">
+            {{ t('play.backToNow') }}
+          </button>
+        </p>
+
         <SectionIllustration
           v-if="illustration && !illustrationAtEnd"
           :key="illustration"
@@ -136,33 +157,35 @@ onBeforeUnmount(() => {
         </div>
 
         <StatChanges
-          v-if="!hasChallenge"
+          v-if="!hasChallenge && !revisiting"
           :changes="save.lastChanges ?? []"
           class="gb-entry-changes"
         />
 
-        <TestPanel v-if="section.test" :test="section.test" />
-        <RollPanel v-else-if="section.roll" :roll="section.roll" />
-        <DuelPanel v-else-if="section.duel" />
-        <LessonPanel v-else-if="section.lesson" :lesson="section.lesson" />
+        <div :inert="revisiting ? true : undefined" :class="{ 'gb-readonly': revisiting }">
+          <TestPanel v-if="section.test" :test="section.test" />
+          <RollPanel v-else-if="section.roll" :roll="section.roll" />
+          <DuelPanel v-else-if="section.duel" />
+          <LessonPanel v-else-if="section.lesson" :lesson="section.lesson" />
 
-        <MissionCard v-if="section.mission" :id="section.mission" />
+          <MissionCard v-if="section.mission" :id="section.mission" />
 
-        <SongComposer v-if="game.songPending" />
-        <SongCard v-else-if="section.showSong && game.song.verses.length" :song="game.song" />
+          <SongComposer v-if="game.songPending" />
+          <SongCard v-else-if="section.showSong && game.song.verses.length" :song="game.song" />
 
-        <ChoiceList
-          v-if="game.choices.length"
-          :section="key"
-          :choices="game.choices"
-          @choose="game.choose"
-        />
-        <TurnToButton
-          v-else-if="section.next && !hasChallenge"
-          :to="section.next"
-          class="gb-next"
-          @go="game.continueOn()"
-        />
+          <ChoiceList
+            v-if="game.choices.length"
+            :section="key"
+            :choices="game.choices"
+            @choose="game.choose"
+          />
+          <TurnToButton
+            v-else-if="section.next && !hasChallenge"
+            :to="section.next"
+            class="gb-next"
+            @go="game.continueOn()"
+          />
+        </div>
 
         <EndingPanel v-if="section.ending" />
 

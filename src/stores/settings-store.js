@@ -3,6 +3,7 @@ import { Quasar } from 'quasar'
 import quasarLangEn from 'quasar/lang/en-US.js'
 import quasarLangBg from 'quasar/lang/bg.js'
 import { i18n, saveLocale, SUPPORTED_LOCALES } from '@/boot/i18n'
+import { setPracticeLanguage } from '@/i18n/practiceTranslator'
 
 // Quasar's own language packs (labels inside built-in components)
 const quasarLangPacks = {
@@ -27,6 +28,8 @@ export const useSettingsStore = defineStore('settings', {
       saveLocale(locale)
       if (typeof document !== 'undefined') document.documentElement.lang = locale
       if (quasarLangPacks[locale]) Quasar.lang.set(quasarLangPacks[locale])
+      // the practice-room tools are English in the code; translate them on the page
+      setPracticeLanguage(locale)
     },
   },
 })

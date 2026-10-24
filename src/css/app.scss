@@ -131,6 +131,25 @@ body.body--dark .q-page-container .q-card--dark {
   box-shadow: none;
 }
 
+/* looking back at a chapter already read */
+.gb-revisit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--gb-accent);
+  border-radius: 0 12px 12px 0;
+  background: var(--gb-hover);
+  font-size: 0.95rem;
+}
+
+.gb-readonly {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+
 .q-separator {
   background-color: var(--app-separator);
 }
