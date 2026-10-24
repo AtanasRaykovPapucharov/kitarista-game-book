@@ -794,6 +794,8 @@ export default {
     boardNote:
       'Missions appear on their own as you read. But you can practise them from here at any time.',
     progress: '{n} of {total} missions complete',
+    prev: 'Previous mission',
+    next: 'Next mission',
     backToBook: 'Back to the book',
     rewardIs: 'Reward: {reward}.',
     unlocks: 'Unlocks a music move in duels: {topic}.',

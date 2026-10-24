@@ -50,7 +50,7 @@ const date = (iso) => new Date(iso).toLocaleDateString(locale.value)
             >
           </p>
           <p v-if="r.state !== 'done'" class="mboard__links">
-            <router-link :to="r.m.tool" class="gb-btn gb-btn--small">
+            <router-link :to="{ path: r.m.tool, query: { m: r.id } }" class="gb-btn gb-btn--small">
               {{ t(`missions.tools.${r.m.tool.slice(1)}`) }}
             </router-link>
             <router-link

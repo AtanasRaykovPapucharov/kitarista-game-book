@@ -1,9 +1,8 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useGameStore } from 'src/stores/game-store'
-import { ref } from 'vue'
 import { MISSIONS } from 'src/story/missions'
 import { EXERCISES } from 'src/story/exercises'
 
@@ -29,11 +28,29 @@ const active = computed(() =>
         .map(([id]) => id)
     : [],
 )
+// Several missions can wait on the same tool. Showing them all would fill the
+// screen, so one is shown at a time with a switcher.
+const at = ref(0)
+// a link can name the mission it is for (?m=…); show that one first
+watch(
+  [active, () => route.query.m],
+  ([list, wanted]) => {
+    const i = list.indexOf(wanted)
+    if (i >= 0) at.value = i
+    else if (at.value >= list.length) at.value = 0
+  },
+  { immediate: true },
+)
+const shown = computed(() => active.value[Math.min(at.value, active.value.length - 1)])
+const step = (d) => {
+  at.value = (at.value + d + active.value.length) % active.value.length
+}
+
 const statOf = (id) => MISSIONS[id].reward[0].stat
 </script>
 
 <template>
-  <div v-if="!hidden && (done.length || active.length)" class="mission-banner-wrap">
+  <div v-if="!hidden && (done.length || shown)" class="mission-banner-wrap">
     <section
       v-for="id in done"
       :key="`done-${id}`"
@@ -67,14 +84,23 @@ const statOf = (id) => MISSIONS[id].reward[0].stat
       </button>
     </section>
 
-    <section v-for="id in active" :key="`active-${id}`" class="mission-banner">
-      <q-icon :name="MISSIONS[id].icon" size="26px" class="mission-banner__icon" />
+    <section v-if="shown" class="mission-banner">
+      <q-icon :name="MISSIONS[shown].icon" size="26px" class="mission-banner__icon" />
       <div class="mission-banner__text">
-        <strong>{{ t('missions.fromBook', { title: t(`missions.list.${id}.title`) }) }}</strong>
+        <strong>{{ t('missions.fromBook', { title: t(`missions.list.${shown}.title`) }) }}</strong>
         <span>{{
-          route.path === '/coach' ? t('missions.coachTask') : t(`missions.list.${id}.task`)
+          route.path === '/coach' ? t('missions.coachTask') : t(`missions.list.${shown}.task`)
         }}</span>
         <span class="mission-banner__hint">{{ t('missions.inProgress') }}</span>
+      </div>
+      <div v-if="active.length > 1" class="mission-banner__nav">
+        <button type="button" :aria-label="t('missions.prev')" @click="step(-1)">
+          <q-icon name="chevron_left" size="20px" />
+        </button>
+        <span>{{ at + 1 }} / {{ active.length }}</span>
+        <button type="button" :aria-label="t('missions.next')" @click="step(1)">
+          <q-icon name="chevron_right" size="20px" />
+        </button>
       </div>
       <router-link to="/play" class="gb-btn mission-banner__back">
         <q-icon name="auto_stories" size="18px" class="q-mr-xs" />{{ t('missions.back') }}
@@ -145,6 +171,31 @@ const statOf = (id) => MISSIONS[id].reward[0].stat
 .mission-banner__back {
   flex: none;
   text-decoration: none;
+}
+
+.mission-banner__nav {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  font-variant-numeric: lining-nums;
+}
+
+.mission-banner__nav button {
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.mission-banner__nav button:hover,
+.mission-banner__nav button:focus-visible {
+  opacity: 1;
 }
 
 .mission-banner__x {

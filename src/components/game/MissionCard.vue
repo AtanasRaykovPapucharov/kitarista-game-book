@@ -28,7 +28,10 @@ const done = computed(() => game.save?.missions?.[props.id] === 'done')
         {{ t('missions.unlocks', { topic: t(`missions.topics.${m.topic}`) }) }}
       </p>
       <div v-if="!done" class="mission__actions">
-        <router-link :to="m.tool" class="gb-btn gb-btn--small mission__go">
+        <router-link
+          :to="{ path: m.tool, query: { m: id } }"
+          class="gb-btn gb-btn--small mission__go"
+        >
           <q-icon name="open_in_new" size="16px" class="q-mr-xs" />{{
             t(`missions.tools.${m.tool.slice(1)}`)
           }}
