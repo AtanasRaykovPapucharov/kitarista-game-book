@@ -35,6 +35,13 @@ function startOver() {
     router.push({ name: 'hero' })
   })
 }
+/* The original story as a PDF: src/assets/Докато_слушаш_звездите.pdf.
+   The file is optional – without it the line is plain text. */
+const pdfs = import.meta.glob('../assets/*.pdf', { eager: true, query: '?url', import: 'default' })
+const storyPdf = Object.entries(pdfs).find(([path]) => /звездите/i.test(path))?.[1] ?? ''
+const parts = computed(
+  () => content.value.bylineParts ?? { before: content.value.byline, link: '', after: '' },
+)
 </script>
 
 <template>
@@ -43,7 +50,18 @@ function startOver() {
     <div class="gb-cover__inner">
       <p class="gb-cover__kind">{{ t('cover.kind') }}</p>
       <h1 class="gb-cover__title">{{ content.title }}</h1>
-      <p class="gb-cover__byline">{{ content.byline }}</p>
+      <p class="gb-cover__byline">
+        {{ parts.before
+        }}<a
+          v-if="storyPdf"
+          :href="storyPdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gb-cover__source"
+          >{{ parts.link }}</a
+        ><template v-else>{{ parts.link }}</template
+        >{{ parts.after }}
+      </p>
       <p class="gb-cover__pitch">{{ pitch() }}</p>
       <p class="gb-cover__meta">{{ t('cover.sections', { count: SECTION_COUNT }) }}</p>
 

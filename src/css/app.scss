@@ -413,6 +413,18 @@ body.body--dark .q-page-container .q-card--dark {
   text-wrap: balance;
 }
 
+.gb-cover__source {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 55%, transparent);
+  text-underline-offset: 3px;
+}
+
+.gb-cover__source:hover,
+.gb-cover__source:focus-visible {
+  color: var(--gb-accent);
+  text-decoration-color: currentColor;
+}
+
 .gb-cover__byline {
   margin: 18px 0 0;
   font-family: var(--gb-serif);

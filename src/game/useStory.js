@@ -49,7 +49,8 @@ export function useStory() {
   const gender = computed(() => auth.grammar)
 
   const cast = computed(() => castFor(settings.locale, auth.grammar))
-  const fmt = (text, save) => interpolate(applyCast(applyGender(text ?? '', gender.value), cast.value), save)
+  const fmt = (text, save) =>
+    interpolate(applyCast(applyGender(text ?? '', gender.value), cast.value), save)
   const sectionText = (key) => content.value.sections[key] ?? {}
 
   return {
@@ -60,6 +61,8 @@ export function useStory() {
     sectionText,
     bookTitle: () => content.value.title,
     byline: () => content.value.byline,
+    bylineParts: () =>
+      content.value.bylineParts ?? { before: content.value.byline, link: '', after: '' },
     pitch: () => fmt(content.value.pitch),
     title: (key, save) => fmt(sectionText(key).title, save),
     paragraphs: (key, save) =>

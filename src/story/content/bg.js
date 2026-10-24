@@ -20,6 +20,8 @@ import part6b from './bg/part6b.js'
 export default {
   title: 'Докато слушаш звездите',
   byline: 'Книга-игра по разказа на Атанас Папучаров',
+  // the cover shows this as three parts, so the middle one can open the story as a PDF
+  bylineParts: { before: 'Книга-игра по ', link: 'разказа на Атанас Папучаров', after: '' },
   pitch:
     'Героят получава китара за рождения си ден – и заедно с нея един глас, който идва от дълбините на космоса. [Ще стане ли китарист?|Ще стане ли китаристка?|Ще намери ли своята музика?] И чии ще са ръцете, които свирят?',
 
@@ -91,7 +93,10 @@ export default {
       name: 'Рапан от Мъглица',
       desc: 'Сложи го до ухото си, за да си върнеш 3 Вдъхновение. Еднократно.',
     },
-    zannsheets: { name: 'Нотите на бай Цанко', desc: 'Свири от тях, когато ти е тежко: +4 Вдъхновение. Еднократно.' },
+    zannsheets: {
+      name: 'Нотите на бай Цанко',
+      desc: 'Свири от тях, когато ти е тежко: +4 Вдъхновение. Еднократно.',
+    },
     songbook: { name: 'Тетрадка за песни', desc: 'Подарък от баба. С нея композираш по-лесно.' },
     strings: { name: 'Резервни струни', desc: 'Струните се късат в най-неподходящия момент.' },
     feather: { name: 'Сиво перо', desc: 'От птичето под липата. Пази те от мрака.' },
@@ -164,7 +169,8 @@ export default {
 }
 
 function withEpilogue(sections) {
-  const add = (key, extra) => (sections[key] = { ...sections[key], text: [...sections[key].text, ...extra] })
+  const add = (key, extra) =>
+    (sections[key] = { ...sections[key], text: [...sections[key].text, ...extra] })
   for (const key of ['lightEnd', 'guitaristEnd', 'goodStartEnd']) add(key, epilogue.good)
   add('puppetEnd', epilogue.dark)
   return sections

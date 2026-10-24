@@ -20,6 +20,8 @@ import part6b from './en/part6b.js'
 export default {
   title: 'While You Listen to the Stars',
   byline: 'A game-book after the story by Atanas Papucharov',
+  // the cover shows this as three parts, so the middle one can open the story as a PDF
+  bylineParts: { before: 'A game-book after ', link: 'the story by Atanas Papucharov', after: '' },
   pitch:
     'The protagonist receives a guitar for [his|her|their] birthday, and with it, a voice from the depths of space. Will [he|she|they] become a guitarist? And whose hands will actually be playing?',
 
@@ -91,7 +93,10 @@ export default {
       name: 'Shell from Maglitsa',
       desc: 'Hold it to your ear to regain 3 Inspiration. Once.',
     },
-    zannsheets: { name: 'Old Tsanko’s scores', desc: 'Play from them when things are hard: +4 Inspiration. Once.' },
+    zannsheets: {
+      name: 'Old Tsanko’s scores',
+      desc: 'Play from them when things are hard: +4 Inspiration. Once.',
+    },
     songbook: { name: 'Songbook', desc: 'A gift from Grandma. Composing comes easier with it.' },
     strings: { name: 'Spare strings', desc: 'Strings break at the worst possible moment.' },
     feather: {
@@ -177,7 +182,8 @@ export default {
 }
 
 function withEpilogue(sections) {
-  const add = (key, extra) => (sections[key] = { ...sections[key], text: [...sections[key].text, ...extra] })
+  const add = (key, extra) =>
+    (sections[key] = { ...sections[key], text: [...sections[key].text, ...extra] })
   for (const key of ['lightEnd', 'guitaristEnd', 'goodStartEnd']) add(key, epilogue.good)
   add('puppetEnd', epilogue.dark)
   return sections
