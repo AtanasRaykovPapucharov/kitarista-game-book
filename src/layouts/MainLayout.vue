@@ -49,6 +49,7 @@ const bookItems = [
 ]
 
 const navItems = [
+  { to: '/composer', label: 'nav.composer', icon: 'edit_note' },
   { to: '/tones', label: 'nav.tones', icon: 'music_note' },
   { to: '/intervals', label: 'nav.intervals', icon: 'timeline' },
   { to: '/chords', label: 'nav.chords', icon: 'image_aspect_ratio' },
@@ -56,7 +57,6 @@ const navItems = [
   { to: '/notes', label: 'nav.notes', icon: 'library_music' },
   { to: '/compas', label: 'nav.compas', icon: 'explore' },
   { to: '/tuner', label: 'nav.tuner', icon: 'tune' },
-  { to: '/composer', label: 'nav.composer', icon: 'edit_note' },
   { to: '/coach', label: 'nav.coach', icon: 'mic' },
 
   // { to: '/flamenco', label: 'nav.flamenco', icon: 'fa fa-guitar' },
