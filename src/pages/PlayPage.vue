@@ -74,6 +74,11 @@ const section = computed(() =>
   revisiting.value ? (SECTIONS[revisiting.value] ?? {}) : (game.section ?? {}),
 )
 const backToNow = () => router.replace({ path: '/play' })
+const shownNumber = computed(() => sectionNumber(key.value))
+// when looking back, the buttons belong to that chapter, not to the current one
+const shownChoices = computed(() =>
+  revisiting.value ? (section.value.choices ?? []) : game.choices,
+)
 const hasChallenge = computed(
   () => !!(section.value.test || section.value.roll || section.value.duel || section.value.lesson),
 )
@@ -124,11 +129,9 @@ onBeforeUnmount(() => {
       <article :key="save.visit" class="gb-reading">
         <MissionResult />
         <header class="gb-section-head">
-          <p class="gb-section-num" aria-hidden="true">{{ game.sectionNumber }}</p>
+          <p class="gb-section-num" aria-hidden="true">{{ shownNumber }}</p>
           <h1 ref="titleEl" class="gb-section-title" tabindex="-1">
-            <span class="sr-only"
-              >{{ t('play.sectionLabel', { number: game.sectionNumber }) }}.
-            </span>
+            <span class="sr-only">{{ t('play.sectionLabel', { number: shownNumber }) }}. </span>
             {{ title(key, save) }}
           </h1>
         </header>
@@ -163,20 +166,23 @@ onBeforeUnmount(() => {
         />
 
         <div :inert="revisiting ? true : undefined" :class="{ 'gb-readonly': revisiting }">
-          <TestPanel v-if="section.test" :test="section.test" />
-          <RollPanel v-else-if="section.roll" :roll="section.roll" />
-          <DuelPanel v-else-if="section.duel" />
-          <LessonPanel v-else-if="section.lesson" :lesson="section.lesson" />
+          <TestPanel v-if="section.test && !revisiting" :test="section.test" />
+          <RollPanel v-else-if="section.roll && !revisiting" :roll="section.roll" />
+          <DuelPanel v-else-if="section.duel && !revisiting" />
+          <LessonPanel v-else-if="section.lesson && !revisiting" :lesson="section.lesson" />
 
-          <MissionCard v-if="section.mission" :id="section.mission" />
+          <MissionCard v-if="section.mission && !revisiting" :id="section.mission" />
 
-          <SongComposer v-if="game.songPending" />
-          <SongCard v-else-if="section.showSong && game.song.verses.length" :song="game.song" />
+          <SongComposer v-if="game.songPending && !revisiting" />
+          <SongCard
+            v-else-if="section.showSong && !revisiting && game.song.verses.length"
+            :song="game.song"
+          />
 
           <ChoiceList
-            v-if="game.choices.length"
+            v-if="shownChoices.length"
             :section="key"
-            :choices="game.choices"
+            :choices="shownChoices"
             @choose="game.choose"
           />
           <TurnToButton
@@ -187,7 +193,7 @@ onBeforeUnmount(() => {
           />
         </div>
 
-        <EndingPanel v-if="section.ending" />
+        <EndingPanel v-if="section.ending && !revisiting" />
 
         <SectionIllustration
           v-if="illustration && illustrationAtEnd"
