@@ -583,9 +583,11 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<!-- Theme tokens: remove the two body blocks if they already live in src/css/app.scss -->
+<!-- The tuner's own light palette is scoped to it (and its teleported menu), so visiting
+     the tuner no longer recolours the whole app; in dark mode it uses the app's colours. -->
 <style lang="scss">
-body.body--light {
+body.body--light .gt,
+body.body--light .gt-menu {
   --app-page: #f1f7ff;
   --app-page-end: #e7f7f3;
   --app-surface: #ffffff;
@@ -600,23 +602,6 @@ body.body--light {
   --app-strong-surface: #146c78;
   --app-strong-text: #f4ffff;
   --app-separator: #bbdce5;
-}
-
-body.body--dark {
-  --app-page: #0c1a31;
-  --app-page-end: #102a3a;
-  --app-surface: #152945;
-  --app-surface-soft: #1b3856;
-  --app-surface-raised: #254968;
-  --app-score-surface: #d8f4f3;
-  --app-text: #e5f5ff;
-  --app-muted: #a6c8df;
-  --app-border: #345975;
-  --app-header-start: #173b68;
-  --app-header-end: #126b73;
-  --app-strong-surface: #1c526c;
-  --app-strong-text: #efffff;
-  --app-separator: #345975;
 }
 
 body.body--dark .gt {

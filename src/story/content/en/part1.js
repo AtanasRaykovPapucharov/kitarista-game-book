@@ -16,7 +16,7 @@ export default {
   eve: {
     title: 'The night before the birthday',
     text: [
-      'You are {hero} – one of those [boys|girls|kids] who seem as if they will never grow up. And yet anyone perceptive enough notices a hidden wisdom in you, as though someone much older looks out from behind your eyes. Maybe an old soul lives in your body.',
+      '{hero} – one of those [boys|girls|kids] who seem as if they will never grow up. And yet anyone perceptive enough notices a hidden wisdom in you, as though someone much older looks out from behind your eyes. Maybe an old soul lives in your body.',
       'You lie in bed, drifting off, impatient for tomorrow. Tomorrow is your birthday. All the relatives will gather and you know it: at last you will have your own guitar. You have no friend. The guitar will be your friend. Your comfort when you are alone.',
       'The music is in your heart. You feel it in your belly – bubbling, waiting to be born. Sometimes it seems not entirely yours: as though it comes from very far away, looking for someone to sound through.',
       'Outside, the stars burn unusually bright, as if they have drawn close to the window to peer in. From the living room comes the rustle of wrapping paper.',
@@ -112,7 +112,8 @@ export default {
       'Dad Vladko sits on the edge of the bed and picks up the guitar with the careful tenderness grown-ups use for babies. “Every great guitarist started with three or four chords. Watch my fingers.”',
       'While he talks, the voice in you is silent. It hasn’t gone – it is simply silent, like someone standing in the next room, listening through the wall.',
     ],
-    success: 'Dad smiles. “Well, you don’t need me any more. Your fingers remember more than I showed them – as if they knew already.”',
+    success:
+      'Dad smiles. “Well, you don’t need me any more. Your fingers remember more than I showed them – as if they knew already.”',
     failure:
       '“Never mind,” says Dad. “Fingers remember more slowly than heads. Again tomorrow.” He ruffles your hair, and the voice in you clicks its tongue softly, like a teacher who already knows how the lesson will end.',
   },

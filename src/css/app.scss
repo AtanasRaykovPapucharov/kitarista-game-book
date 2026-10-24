@@ -104,6 +104,25 @@ body {
   color: var(--app-text);
 }
 
+/* Dark mode: every page has the book's background (as in "How to play") –
+   the practice-room panels too; a thin border keeps them apart. */
+body.body--dark .q-page-container {
+  --app-surface-soft: var(--gb-paper);
+  --app-page: var(--gb-paper);
+  --app-page-end: var(--gb-paper);
+}
+
+body.body--dark
+  .q-page-container
+  :is(.q-card--dark, .q-tab-panels, .q-list--dark, .q-expansion-item--dark) {
+  background-color: var(--gb-paper);
+}
+
+body.body--dark .q-page-container .q-card--dark {
+  border: 1px solid var(--gb-rule);
+  box-shadow: none;
+}
+
 .q-separator {
   background-color: var(--app-separator);
 }
@@ -424,7 +443,7 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 38rem);
   justify-content: center;
-  gap: 56px;
+  gap: 26px;
 }
 
 /* Wide screens: the reading column keeps a book's measure, the adventure
