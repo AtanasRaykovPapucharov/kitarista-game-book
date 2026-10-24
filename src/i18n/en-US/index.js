@@ -922,8 +922,17 @@ export default {
     },
   },
   composer: {
+    bar: 'Bar {n}',
+    addBar: 'Add a bar',
+    copyBar: 'Duplicate the bar',
+    removeBar: 'Remove the bar',
+    hear: 'Hear the chord',
+    loop: 'Loop',
+    click: 'Metronome',
+    round: 'Round {n}',
+    undo: 'Undo',
     title: 'Composer',
-    lead: 'Four steps to a song of your own. Everything you need is here – and the finished melody can go into the Note sheet.',
+    lead: 'Everything you need is here – and the finished melody can go into the Note sheet. Four steps to a song of your own.',
     step1: 'Choose a key and a scale',
     step1hint:
       'A scale is the set of notes that sound good together. If you don’t know which, start with the minor pentatonic – it’s hard to go wrong with.',

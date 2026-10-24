@@ -1,12 +1,12 @@
 <script setup>
-import { computed, ref, watch, onBeforeUnmount } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useGameStore } from 'src/stores/game-store'
 import ChordDiagram from 'src/components/claude/ChordDiagram.vue'
 import MiniFretboard from 'src/components/claude/MiniFretboard.vue'
 import { NOTE_NAMES, SCALES } from './toneAnalysis'
-import { playNote, playChord } from 'src/game/sound'
+import { cues, playChord, playNote } from 'src/game/sound'
 import { copyNotes, markPending } from './notation'
 
 /* The Composer: a key and a scale (Tones), the steps between its notes
@@ -32,14 +32,21 @@ const scales = SCALES.filter((s) => USEFUL.includes(s.key)).sort(
   (a, b) => USEFUL.indexOf(a.key) - USEFUL.indexOf(b.key),
 )
 const TRIADS = ['', 'm', 'dim', 'aug']
-const STEPS = 16
-const BARS = 4
+const PER_BAR = 4 // eighth notes in a bar
+const MIN_BARS = 1
+const MAX_BARS = 8
+const SAVE_KEY = 'kitarista-composer'
 
 const root = ref(9) // A
 const scaleKey = ref('minorPentatonic')
 const bpm = ref(90)
 const prog = ref(['Am', 'F', 'C', 'G'])
-const melody = ref(Array(STEPS).fill(null)) // index into the scale, or null for a rest
+const melody = ref(Array(4 * PER_BAR).fill(null)) // index into the scale, or null for a rest
+const loop = ref(false)
+const clicks = ref(false)
+const round = ref(0)
+const bars = computed(() => prog.value.length)
+const stepCount = computed(() => bars.value * PER_BAR)
 const playing = ref(false)
 const at = ref(-1)
 const saved = ref(false)
@@ -95,7 +102,50 @@ watch(
   { immediate: true },
 )
 
+/* ---------- bars ---------- */
+const history = ref([]) // snapshots, for Undo
+const snapshot = () => {
+  history.value.push(JSON.stringify({ prog: prog.value, melody: melody.value }))
+  if (history.value.length > 30) history.value.shift()
+}
+function undo() {
+  const last = history.value.pop()
+  if (!last) return
+  const v = JSON.parse(last)
+  prog.value = v.prog
+  melody.value = v.melody
+  saved.value = false
+}
+
+function addBar() {
+  if (bars.value >= MAX_BARS) return
+  snapshot()
+  prog.value = [...prog.value, prog.value.at(-1) ?? chordChoices.value[0]]
+  melody.value = [...melody.value, ...Array(PER_BAR).fill(null)]
+  saved.value = false
+}
+function copyBar(i) {
+  if (bars.value >= MAX_BARS) return
+  snapshot()
+  const from = i * PER_BAR
+  prog.value = [...prog.value.slice(0, i + 1), prog.value[i], ...prog.value.slice(i + 1)]
+  melody.value = [
+    ...melody.value.slice(0, from + PER_BAR),
+    ...melody.value.slice(from, from + PER_BAR),
+    ...melody.value.slice(from + PER_BAR),
+  ]
+  saved.value = false
+}
+function removeBar(i) {
+  if (bars.value <= MIN_BARS) return
+  snapshot()
+  prog.value = prog.value.filter((_, k) => k !== i)
+  melody.value = [...melody.value.slice(0, i * PER_BAR), ...melody.value.slice((i + 1) * PER_BAR)]
+  saved.value = false
+}
+
 function setStep(i, degree) {
+  snapshot()
   melody.value = melody.value.map((v, k) => (k === i ? (v === degree ? null : degree) : v))
   if (degree != null && melody.value[i] != null) playNote(midis.value[degree])
   saved.value = false
@@ -104,18 +154,20 @@ function setStep(i, degree) {
 function surprise() {
   const n = midis.value.length
   let d = Math.floor(Math.random() * 3)
-  melody.value = Array.from({ length: STEPS }, (_, i) => {
+  snapshot()
+  melody.value = Array.from({ length: stepCount.value }, (_, i) => {
     if (i % 4 === 3 && Math.random() < 0.4) return null // breathe at the end of a bar
     d = Math.max(0, Math.min(n - 1, d + Math.floor(Math.random() * 5) - 2))
     return d
   })
   melody.value[0] = 0
-  melody.value[STEPS - 1] = Math.random() < 0.6 ? 0 : melody.value[STEPS - 1]
+  melody.value[stepCount.value - 1] = Math.random() < 0.6 ? 0 : melody.value[stepCount.value - 1]
   saved.value = false
 }
 
 const clear = () => {
-  melody.value = Array(STEPS).fill(null)
+  snapshot()
+  melody.value = Array(stepCount.value).fill(null)
   saved.value = false
 }
 
@@ -125,19 +177,20 @@ function stop() {
   timers = []
   playing.value = false
   at.value = -1
+  round.value = 0
 }
 
-function play() {
-  if (playing.value) return stop()
-  playing.value = true
-  const beat = 60 / bpm.value // one step = an eighth
+/** One pass of the song; schedules the next one when looping. */
+function pass() {
+  const beat = 60 / bpm.value
   const step = beat / 2
-  for (let i = 0; i < STEPS; i++) {
+  for (let i = 0; i < stepCount.value; i++) {
     timers.push(
       setTimeout(
         () => {
           at.value = i
-          if (i % 4 === 0) playChord(prog.value[(i / 4) % BARS], { delay: 0 })
+          if (i % PER_BAR === 0) playChord(prog.value[i / PER_BAR], { delay: 0 })
+          if (clicks.value && i % 2 === 0) cues.tick(i / 2)
           const d = melody.value[i]
           if (d != null) playNote(midis.value[d])
         },
@@ -145,12 +198,73 @@ function play() {
       ),
     )
   }
-  timers.push(setTimeout(stop, STEPS * step * 1000 + 600))
+  const end = stepCount.value * step * 1000
+  timers.push(
+    setTimeout(() => {
+      if (!playing.value) return
+      if (loop.value) {
+        round.value += 1
+        timers = []
+        pass()
+      } else {
+        stop()
+      }
+    }, end),
+  )
+}
+
+function play() {
+  if (playing.value) return stop()
+  playing.value = true
+  round.value = 1
+  pass()
 }
 
 onBeforeUnmount(stop)
 
 const written = computed(() => melody.value.filter((d) => d != null).length)
+
+/* The work is kept in this browser, so nothing is lost on the way to
+   the Note sheet and back. */
+watch(
+  [root, scaleKey, bpm, prog, melody, loop, clicks],
+  () => {
+    try {
+      localStorage.setItem(
+        SAVE_KEY,
+        JSON.stringify({
+          root: root.value,
+          scale: scaleKey.value,
+          bpm: bpm.value,
+          prog: prog.value,
+          melody: melody.value,
+          loop: loop.value,
+          clicks: clicks.value,
+        }),
+      )
+    } catch {
+      /* storage blocked – the Composer still works, it just won't remember */
+    }
+  },
+  { deep: true },
+)
+
+onMounted(() => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null')
+    if (!raw?.prog?.length || !Array.isArray(raw.melody)) return
+    root.value = Number.isInteger(raw.root) ? raw.root : root.value
+    if (scales.some((x) => x.key === raw.scale)) scaleKey.value = raw.scale
+    bpm.value = Math.min(180, Math.max(50, Number(raw.bpm) || bpm.value))
+    prog.value = raw.prog.slice(0, MAX_BARS)
+    melody.value = raw.melody.slice(0, prog.value.length * PER_BAR)
+    while (melody.value.length < prog.value.length * PER_BAR) melody.value.push(null)
+    loop.value = !!raw.loop
+    clicks.value = !!raw.clicks
+  } catch {
+    /* nothing kept, or it was unreadable – start fresh */
+  }
+})
 
 /* ---------- sending the melody to the Note sheet ----------
    The note editors share a clipboard (notation.js). Writing to it means
@@ -279,12 +393,50 @@ const positions = computed(() =>
     <h3 class="composer__step"><span>2</span> {{ t('composer.chords') }}</h3>
     <p class="composer__hint">{{ t('composer.chordsHint') }}</p>
     <div class="composer__prog">
-      <div v-for="(c, i) in prog" :key="i" class="composer__bar">
+      <div
+        v-for="(c, i) in prog"
+        :key="i"
+        class="composer__bar"
+        :class="{ 'is-now': at >= 0 && Math.floor(at / 4) === i }"
+      >
+        <p class="composer__bar-num">{{ t('composer.bar', { n: i + 1 }) }}</p>
         <select v-model="prog[i]" class="composer__select" @change="playChord(prog[i])">
           <option v-for="o in chordChoices" :key="o" :value="o">{{ o }}</option>
         </select>
         <ChordDiagram :chord="c" />
+        <div class="composer__bar-tools">
+          <button
+            type="button"
+            :title="t('composer.hear')"
+            :aria-label="t('composer.hear')"
+            @click="playChord(c)"
+          >
+            <q-icon name="volume_up" size="16px" />
+          </button>
+          <button
+            type="button"
+            :title="t('composer.copyBar')"
+            :aria-label="t('composer.copyBar')"
+            :disabled="bars >= MAX_BARS"
+            @click="copyBar(i)"
+          >
+            <q-icon name="content_copy" size="16px" />
+          </button>
+          <button
+            type="button"
+            :title="t('composer.removeBar')"
+            :aria-label="t('composer.removeBar')"
+            :disabled="bars <= MIN_BARS"
+            @click="removeBar(i)"
+          >
+            <q-icon name="delete" size="16px" />
+          </button>
+        </div>
       </div>
+      <button type="button" class="composer__add" :disabled="bars >= MAX_BARS" @click="addBar">
+        <q-icon name="add" size="22px" />
+        <span>{{ t('composer.addBar') }}</span>
+      </button>
     </div>
 
     <h3 class="composer__step"><span>3</span> {{ t('composer.melody') }}</h3>
@@ -297,7 +449,7 @@ const positions = computed(() =>
       </div>
       <div class="composer__cells">
         <div
-          v-for="i in STEPS"
+          v-for="i in stepCount"
           :key="i"
           class="composer__col"
           :class="{ 'is-now': at === i - 1, 'is-bar': (i - 1) % 4 === 0 }"
@@ -321,8 +473,24 @@ const positions = computed(() =>
         <q-icon :name="playing ? 'stop' : 'play_arrow'" size="18px" class="q-mr-xs" />
         {{ playing ? t('composer.stop') : t('composer.play') }}
       </button>
+      <label class="composer__toggle">
+        <input v-model="loop" type="checkbox" />
+        <q-icon name="repeat" size="18px" />
+        {{ t('composer.loop') }}
+      </label>
+      <label class="composer__toggle">
+        <input v-model="clicks" type="checkbox" />
+        <q-icon name="av_timer" size="18px" />
+        {{ t('composer.click') }}
+      </label>
+      <span v-if="playing && loop" class="composer__round">{{
+        t('composer.round', { n: round })
+      }}</span>
       <button type="button" class="gb-btn" @click="surprise">
         <q-icon name="casino" size="16px" class="q-mr-xs" />{{ t('composer.surprise') }}
+      </button>
+      <button type="button" class="gb-btn" :disabled="!history.length" @click="undo">
+        <q-icon name="undo" size="16px" class="q-mr-xs" />{{ t('composer.undo') }}
       </button>
       <button type="button" class="gb-btn" :disabled="!written" @click="clear">
         {{ t('composer.clear') }}
@@ -445,13 +613,22 @@ const positions = computed(() =>
 
 .composer__step span {
   display: grid;
+  flex: none;
   place-items: center;
-  width: 1.7em;
-  height: 1.7em;
+  width: 1.8em;
+  height: 1.8em;
   border-radius: 50%;
   background: var(--gb-accent);
   color: var(--gb-paper);
-  font-size: 0.8em;
+  /* the book's serif has old-style figures that hang below the baseline,
+     so the digit sat at the bottom of the circle */
+  font-family: var(--gb-sans);
+  font-variant-numeric: lining-nums;
+  font-size: 0.78em;
+  font-weight: 700;
+  /* centre the digit itself: a line box leaves room for descenders below it */
+  line-height: 0;
+  padding-top: 0.04em;
 }
 
 .composer__title {
@@ -473,6 +650,89 @@ const positions = computed(() =>
   flex-direction: column;
   gap: 6px;
   align-items: center;
+  padding: 8px;
+  border: 1px solid var(--gb-rule);
+  border-radius: 12px;
+}
+
+.composer__bar.is-now {
+  border-color: var(--gb-accent);
+  background: color-mix(in srgb, var(--gb-accent) 10%, transparent);
+}
+
+.composer__bar-num {
+  margin: 0 !important;
+  font-size: 0.78rem;
+  color: var(--gb-muted);
+}
+
+.composer__bar-tools {
+  display: flex;
+  gap: 4px;
+}
+
+.composer__bar-tools button {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border: 1px solid var(--gb-rule);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gb-muted);
+  cursor: pointer;
+}
+
+.composer__bar-tools button:hover:not(:disabled),
+.composer__bar-tools button:focus-visible:not(:disabled) {
+  border-color: var(--gb-accent);
+  color: var(--gb-accent);
+}
+
+.composer__bar-tools button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.composer__add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 140px;
+  border: 1.5px dashed var(--gb-rule);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--gb-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.composer__add:hover:not(:disabled),
+.composer__add:focus-visible:not(:disabled) {
+  border-color: var(--gb-accent);
+  color: var(--gb-accent);
+}
+
+.composer__add:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.composer__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.composer__round {
+  align-self: center;
+  font-size: 0.9rem;
+  color: var(--gb-accent);
+  font-variant-numeric: lining-nums;
 }
 
 .composer__bar :deep(.chord-diagram) {
