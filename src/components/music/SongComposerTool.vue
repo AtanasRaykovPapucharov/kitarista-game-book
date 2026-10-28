@@ -32,7 +32,7 @@ const scales = SCALES.filter((s) => USEFUL.includes(s.key)).sort(
   (a, b) => USEFUL.indexOf(a.key) - USEFUL.indexOf(b.key),
 )
 const TRIADS = ['', 'm', 'dim', 'aug']
-const PER_BAR = 4 // eighth notes in a bar
+const PER_BAR = 8 // sixteenth notes in a bar (4/4)
 const MIN_BARS = 1
 const MAX_BARS = 8
 const SAVE_KEY = 'kitarista-composer'
@@ -41,7 +41,18 @@ const root = ref(9) // A
 const scaleKey = ref('minorPentatonic')
 const bpm = ref(90)
 const prog = ref(['Am', 'F', 'C', 'G'])
-const melody = ref(Array(4 * PER_BAR).fill(null)) // index into the scale, or null for a rest
+/* One cell per sixteenth. A cell is null (nothing), or { d, len }:
+   d = step of the scale, len = how many sixteenths the note lasts.
+   The cells a note runs over stay null, so the grid shows its real length. */
+const melody = ref(Array(4 * PER_BAR).fill(null))
+const NOTE_LENGTHS = [
+  { key: 'sixteenth', len: 1 },
+  { key: 'eighth', len: 2 },
+  { key: 'quarter', len: 4 },
+  { key: 'half', len: 8 },
+  { key: 'whole', len: 16 },
+]
+const noteLen = ref(2) // eighth by default, as before
 const loop = ref(false)
 const clicks = ref(false)
 const round = ref(0)
@@ -144,24 +155,59 @@ function removeBar(i) {
   saved.value = false
 }
 
+/** Is this cell inside a longer note that started earlier? */
+const coveredAt = (i) => {
+  const n = noteAt(i)
+  return !!n && n.start !== i
+}
+
+/** The note sounding at step i, if a longer note started earlier and still covers it. */
+function noteAt(i) {
+  for (let k = i; k >= 0 && k > i - 16; k--) {
+    const c = melody.value[k]
+    if (c) return k + c.len > i ? { start: k, ...c } : null
+  }
+  return null
+}
+
 function setStep(i, degree) {
   snapshot()
-  melody.value = melody.value.map((v, k) => (k === i ? (v === degree ? null : degree) : v))
-  if (degree != null && melody.value[i] != null) playNote(midis.value[degree])
+  const here = melody.value[i]
+  const next = [...melody.value]
+  if (here && here.d === degree && here.len === noteLen.value) {
+    next[i] = null // clicking the same note again removes it
+  } else {
+    // clear whatever the new note covers, and shorten a note reaching into it
+    for (let k = Math.max(0, i - 15); k < i; k++) {
+      const c = next[k]
+      if (c && k + c.len > i) next[k] = { ...c, len: i - k }
+    }
+    for (let k = i; k < Math.min(next.length, i + noteLen.value); k++) next[k] = null
+    next[i] = { d: degree, len: Math.min(noteLen.value, next.length - i) }
+    playNote(midis.value[degree])
+  }
+  melody.value = next
   saved.value = false
 }
 
 function surprise() {
-  const n = midis.value.length
-  let d = Math.floor(Math.random() * 3)
   snapshot()
-  melody.value = Array.from({ length: stepCount.value }, (_, i) => {
-    if (i % 4 === 3 && Math.random() < 0.4) return null // breathe at the end of a bar
+  const n = midis.value.length
+  const lens = [2, 2, 2, 4, 1]
+  let d = Math.floor(Math.random() * 3)
+  const next = Array(stepCount.value).fill(null)
+  let i = 0
+  while (i < next.length) {
+    if (Math.random() < 0.18 && i > 0) {
+      i += 2 // a breath
+      continue
+    }
     d = Math.max(0, Math.min(n - 1, d + Math.floor(Math.random() * 5) - 2))
-    return d
-  })
-  melody.value[0] = 0
-  melody.value[stepCount.value - 1] = Math.random() < 0.6 ? 0 : melody.value[stepCount.value - 1]
+    const len = Math.min(lens[Math.floor(Math.random() * lens.length)], next.length - i)
+    next[i] = { d: i === 0 ? 0 : d, len }
+    i += len
+  }
+  melody.value = next
   saved.value = false
 }
 
@@ -183,16 +229,16 @@ function stop() {
 /** One pass of the song; schedules the next one when looping. */
 function pass() {
   const beat = 60 / bpm.value
-  const step = beat / 2
+  const step = beat / 4 // one grid cell = a sixteenth
   for (let i = 0; i < stepCount.value; i++) {
     timers.push(
       setTimeout(
         () => {
           at.value = i
           if (i % PER_BAR === 0) playChord(prog.value[i / PER_BAR], { delay: 0 })
-          if (clicks.value && i % 2 === 0) cues.tick(i / 2)
-          const d = melody.value[i]
-          if (d != null) playNote(midis.value[d])
+          if (clicks.value && i % 4 === 0) cues.tick(i / 4)
+          const cell = melody.value[i]
+          if (cell) playNote(midis.value[cell.d], { gain: 0.4 })
         },
         i * step * 1000,
       ),
@@ -222,7 +268,14 @@ function play() {
 
 onBeforeUnmount(stop)
 
-const written = computed(() => melody.value.filter((d) => d != null).length)
+/** Is this cell inside a note of this step that started earlier? */
+const heldAt = (i, d) => {
+  const n = noteAt(i)
+  return !!n && n.d === d && n.start !== i
+}
+const lenKey = (len) => NOTE_LENGTHS.find((l) => l.len === len)?.key ?? 'eighth'
+
+const written = computed(() => melody.value.filter(Boolean).length)
 
 /* The work is kept in this browser, so nothing is lost on the way to
    the Note sheet and back. */
@@ -257,7 +310,12 @@ onMounted(() => {
     if (scales.some((x) => x.key === raw.scale)) scaleKey.value = raw.scale
     bpm.value = Math.min(180, Math.max(50, Number(raw.bpm) || bpm.value))
     prog.value = raw.prog.slice(0, MAX_BARS)
-    melody.value = raw.melody.slice(0, prog.value.length * PER_BAR)
+    // kept before note values existed: a plain step number meant an eighth
+    melody.value = raw.melody
+      .slice(0, prog.value.length * PER_BAR)
+      .map((c) =>
+        typeof c === 'number' ? { d: c, len: 2 } : c && typeof c === 'object' ? c : null,
+      )
     while (melody.value.length < prog.value.length * PER_BAR) melody.value.push(null)
     loop.value = !!raw.loop
     clicks.value = !!raw.clicks
@@ -270,19 +328,50 @@ onMounted(() => {
    The note editors share a clipboard (notation.js). Writing to it means
    "Postavi" in the Note sheet and the Compás sheet pastes this melody. */
 const LETTER = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
-/** One grid step → an item the note editors understand (an eighth, or a rest). */
-function toItem(degree) {
-  if (degree == null) return { rest: true, note: [], octave: 1, type: 8 }
-  const midi = midis.value[degree]
+const TYPE_OF = { 1: 16, 2: 8, 3: 8, 4: 4, 6: 4, 8: 2, 12: 2, 16: 1 }
+/** One cell → an item the note editors understand (a note of its length, or a rest). */
+function toItem(cell) {
+  if (!cell) return { rest: true, note: [], octave: 1, type: 16 }
+  const midi = midis.value[cell.d]
   const name = LETTER[midi % 12]
   const sounding = Math.floor(midi / 12) - 1 // C4 = octave 4
   // the sheet writes octave 1 around C4, 2 above it, 'm' below
   const octave = sounding >= 5 ? 2 : sounding <= 3 ? 'm' : 1
-  return { note: [name.replace('#', '#')], octave, type: 8 }
+  return {
+    note: [name.replace('#', '#')],
+    octave,
+    type: TYPE_OF[cell.len] ?? 16,
+    dotted: cell.len === 3 || cell.len === 6 || cell.len === 12,
+  }
+}
+
+/** The melody as items for the note editors: notes with their value, rests merged. */
+function asItems() {
+  const out = []
+  let rest = 0
+  const flushRests = () => {
+    for (const len of [16, 8, 4, 2, 1]) {
+      while (rest >= len) {
+        out.push({ rest: true, note: [], octave: 1, type: TYPE_OF[len] })
+        rest -= len
+      }
+    }
+  }
+  for (let i = 0; i < melody.value.length; i++) {
+    const cell = melody.value[i]
+    if (cell) {
+      flushRests()
+      out.push(toItem(cell))
+    } else if (!coveredAt(i)) {
+      rest += 1
+    }
+  }
+  flushRests()
+  return out
 }
 
 function sendToSheet() {
-  if (!copyNotes(melody.value.map(toItem))) {
+  if (!copyNotes(asItems())) {
     saved.value = 'nothing'
     return
   }
@@ -295,9 +384,16 @@ function sendToSheet() {
 /** The melody as text, ready to paste into the Note sheet. */
 const asText = computed(() =>
   melody.value
-    .map((d) =>
-      d == null ? '–' : NOTE_NAMES[midis.value[d] % 12] + (Math.floor(midis.value[d] / 12) - 1),
-    )
+    .map((cell, i) => {
+      if (cell) {
+        const midi = midis.value[cell.d]
+        return (
+          LETTER[midi % 12] + (Math.floor(midi / 12) - 1) + (cell.len > 1 ? `·${cell.len}` : '')
+        )
+      }
+      return coveredAt(i) ? '' : '–'
+    })
+    .filter(Boolean)
     .join(' '),
 )
 
@@ -441,6 +537,20 @@ const positions = computed(() =>
 
     <h3 class="composer__step"><span>3</span> {{ t('composer.melody') }}</h3>
     <p class="composer__hint">{{ t('composer.melodyHint') }}</p>
+    <div class="composer__lengths" role="group" :aria-label="t('composer.noteLength')">
+      <span class="composer__lengths-label">{{ t('composer.noteLength') }}</span>
+      <button
+        v-for="l in NOTE_LENGTHS"
+        :key="l.key"
+        type="button"
+        class="composer__len"
+        :class="{ 'is-on': noteLen === l.len }"
+        :aria-pressed="noteLen === l.len"
+        @click="noteLen = l.len"
+      >
+        {{ t(`composer.lengths.${l.key}`) }}
+      </button>
+    </div>
     <div class="composer__grid" role="group" :aria-label="t('composer.melody')">
       <div class="composer__labels">
         <span v-for="(m, d) in midis.slice(0, scale.iv.length + 1)" :key="d">{{
@@ -459,9 +569,15 @@ const positions = computed(() =>
             :key="d"
             type="button"
             class="composer__cell"
-            :class="{ 'is-on': melody[i - 1] === d }"
-            :aria-label="t('composer.cell', { note: noteName(m % 12), step: i })"
-            :aria-pressed="melody[i - 1] === d"
+            :class="{ 'is-on': melody[i - 1]?.d === d, 'is-held': heldAt(i - 1, d) }"
+            :aria-label="
+              t('composer.cellLong', {
+                note: noteName(m % 12),
+                step: i,
+                len: t(`composer.lengths.${lenKey(noteLen)}`),
+              })
+            "
+            :aria-pressed="melody[i - 1]?.d === d"
             @click="setStep(i - 1, d)"
           />
         </div>
@@ -790,6 +906,45 @@ const positions = computed(() =>
 .composer__cell.is-on {
   border-color: var(--gb-accent);
   background: var(--gb-accent);
+}
+
+/* the cells a longer note runs over */
+.composer__cell.is-held {
+  border-color: color-mix(in srgb, var(--gb-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--gb-accent) 45%, transparent);
+}
+
+.composer__col.is-beat:not(.is-bar) {
+  border-left: 1px solid color-mix(in srgb, var(--gb-rule) 60%, transparent);
+}
+
+.composer__lengths {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.composer__lengths-label {
+  font-size: 0.88rem;
+  color: var(--gb-muted);
+}
+
+.composer__len {
+  padding: 4px 12px;
+  border: 1px solid var(--gb-rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gb-ink);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.composer__len.is-on {
+  border-color: var(--gb-accent);
+  background: color-mix(in srgb, var(--gb-accent) 18%, transparent);
+  font-weight: 700;
 }
 
 .composer__actions {

@@ -922,6 +922,15 @@ export default {
     },
   },
   composer: {
+    noteLength: 'Note value',
+    lengths: {
+      sixteenth: 'Sixteenth',
+      eighth: 'Eighth',
+      quarter: 'Quarter',
+      half: 'Half',
+      whole: 'Whole',
+    },
+    cellLong: '{note}, step {step}, {len}',
     bar: 'Bar {n}',
     addBar: 'Add a bar',
     copyBar: 'Duplicate the bar',
@@ -950,7 +959,7 @@ export default {
     chords: 'Chords – one per bar',
     melody: 'Melody',
     melodyHint:
-      'Each column is an eighth note. Click a square to place a note – click again to remove it. An empty column is a rest.',
+      'Each column is a sixteenth, and the thick lines are bars. Choose a note value, then click a square: the note fills as many columns as it lasts. Click it again to remove it.',
     cell: '{note}, step {step}',
     play: 'Hear the song',
     stop: 'Stop',
