@@ -66,7 +66,7 @@ const navItems = [
 const footerItems = [
   { to: '/creators', label: 'nav.creators', icon: 'groups' },
   { to: '/privacy', label: 'nav.privacy', icon: 'shield' },
-  { to: '/support', label: 'nav.support', icon: 'favorite' },
+  // { to: '/support', label: 'nav.support', icon: 'favorite' },
 ]
 
 const volumePercent = computed(() => Math.round(volume.value * 100))
