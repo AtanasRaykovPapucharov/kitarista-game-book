@@ -5,25 +5,25 @@ import {
   supportMethods,
   supporters,
   lessonsUrl,
-  feedbackUrl,
-  primaryMethod,
+  // feedbackUrl,
+  // primaryMethod,
 } from 'src/config/links'
 
 const { t } = useI18n()
 const $q = useQuasar()
 
-const FUNDS = [
-  { id: 'chapters', icon: 'auto_stories' },
-  { id: 'art', icon: 'palette' },
-  { id: 'coach', icon: 'mic' },
-  { id: 'hosting', icon: 'cloud' },
-]
-const TIERS = [
-  { id: 'string', icon: 'linear_scale' },
-  { id: 'pick', icon: 'change_history' },
-  { id: 'section', icon: 'menu_book' },
-  { id: 'picture', icon: 'image' },
-]
+// const FUNDS = [
+//   { id: 'chapters', icon: 'auto_stories' },
+//   { id: 'art', icon: 'palette' },
+//   { id: 'coach', icon: 'mic' },
+//   { id: 'hosting', icon: 'cloud' },
+// ]
+// const TIERS = [
+//   { id: 'string', icon: 'linear_scale' },
+//   { id: 'pick', icon: 'change_history' },
+//   { id: 'section', icon: 'menu_book' },
+//   { id: 'picture', icon: 'image' },
+// ]
 
 /* sharing the book is support too */
 async function share() {
@@ -40,10 +40,10 @@ async function share() {
   }
 }
 
-const teacherMail = () =>
-  `mailto:?subject=${encodeURIComponent(t('support.teacher.subject'))}&body=${encodeURIComponent(
-    t('support.teacher.body', { url: window.location.origin }),
-  )}`
+// const teacherMail = () =>
+//   `mailto:?subject=${encodeURIComponent(t('support.teacher.subject'))}&body=${encodeURIComponent(
+//     t('support.teacher.body', { url: window.location.origin }),
+//   )}`
 
 async function copy(value) {
   try {
@@ -61,16 +61,16 @@ async function copy(value) {
       <h1 class="gb-page-title">{{ t('support.title') }}</h1>
       <p class="gb-lead">{{ t('support.lead') }}</p>
 
-      <h2 class="gb-subtitle">{{ t('support.fundsTitle') }}</h2>
-      <ul class="gb-support__grid">
+      <!-- <h2 class="gb-subtitle">{{ t('support.fundsTitle') }}</h2> -->
+      <!-- <ul class="gb-support__grid">
         <li v-for="f in FUNDS" :key="f.id" class="gb-support__card">
           <q-icon :name="f.icon" size="26px" class="gb-support__icon" />
           <span class="gb-support__name">{{ t(`support.funds.${f.id}.title`) }}</span>
           <span class="gb-support__text">{{ t(`support.funds.${f.id}.text`) }}</span>
         </li>
-      </ul>
+      </ul> -->
 
-      <h2 class="gb-subtitle">{{ t('support.tiersTitle') }}</h2>
+      <!-- <h2 class="gb-subtitle">{{ t('support.tiersTitle') }}</h2>
       <ul class="gb-support__grid">
         <li v-for="tier in TIERS" :key="tier.id" class="gb-support__card gb-support__card--tier">
           <q-icon :name="tier.icon" size="24px" class="gb-support__icon" />
@@ -87,10 +87,10 @@ async function copy(value) {
             {{ t('support.tiersGo') }}
           </a>
         </li>
-      </ul>
-      <p class="gb-note">{{ t('support.tiersNote') }}</p>
+      </ul> -->
+      <!-- <p class="gb-note">{{ t('support.tiersNote') }}</p> -->
 
-      <h2 class="gb-subtitle">{{ t('support.methodsTitle') }}</h2>
+      <!-- <h2 class="gb-subtitle">{{ t('support.methodsTitle') }}</h2> -->
       <p v-if="!supportMethods.length" class="gb-note">{{ t('support.none') }}</p>
 
       <ul v-else class="gb-methods">
@@ -122,7 +122,6 @@ async function copy(value) {
           </div>
         </li>
       </ul>
-
       <section v-if="lessonsUrl" class="gb-support__lessons">
         <q-icon name="school" size="30px" class="gb-support__icon" />
 
@@ -142,7 +141,7 @@ async function copy(value) {
         </div>
       </section>
 
-      <h2 class="gb-subtitle">{{ t('support.freeTitle') }}</h2>
+      <!-- <h2 class="gb-subtitle">{{ t('support.freeTitle') }}</h2> -->
 
       <ul class="gb-support__free">
         <li>
@@ -153,7 +152,7 @@ async function copy(value) {
           <span>{{ t('support.share.hint') }}</span>
         </li>
 
-        <li>
+        <!-- <li>
           <a :href="teacherMail()" class="gb-btn gb-btn--small">
             <q-icon name="school" size="16px" class="q-mr-xs" />{{ t('support.teacher.button') }}
           </a>
@@ -174,8 +173,10 @@ async function copy(value) {
           </a>
 
           <span>{{ t('support.feedback.hint') }}</span>
-        </li>
+        </li> -->
       </ul>
+
+      <br />
 
       <section v-if="supporters.length" class="gb-support__wall">
         <h2 class="gb-subtitle">{{ t('support.wallTitle') }}</h2>
