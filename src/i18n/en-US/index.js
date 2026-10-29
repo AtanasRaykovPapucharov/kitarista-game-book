@@ -338,7 +338,7 @@ export default {
     feedback: { button: 'Write feedback', hint: 'Say what you liked and what could be better.' },
     wallTitle: 'Thank you to',
     methods: {
-      buymeacoffee: { name: 'Buy Me a Coffee', hint: 'Buy a coffee with a card.' },
+      buymeacoffee: { name: 'Buy Me a Coffee', hint: '' },
       revolut: { name: 'Revolut', hint: 'A quick transfer via revolut.me.' },
       paypal: { name: 'PayPal', hint: 'A transfer via paypal.me.' },
       lightning: {

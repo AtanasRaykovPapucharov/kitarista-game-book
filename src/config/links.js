@@ -20,12 +20,12 @@ export const creator = {
   kind 'address' – a wallet address to copy; `uri` opens a wallet app
 */
 const ALL_METHODS = [
-  {
-    id: 'buymeacoffee',
-    kind: 'link',
-    icon: 'local_cafe',
-    value: clean(import.meta.env.QCLI_SUPPORT_BUYMEACOFFEE),
-  },
+  // {
+  //   id: 'buymeacoffee',
+  //   kind: 'link',
+  //   icon: 'local_cafe',
+  //   value: clean(import.meta.env.QCLI_SUPPORT_BUYMEACOFFEE),
+  // },
   {
     id: 'revolut',
     kind: 'link',

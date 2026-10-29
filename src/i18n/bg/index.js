@@ -339,7 +339,7 @@ export default {
     feedback: { button: 'Напиши отзив', hint: 'Кажи какво ти хареса и какво да е по-добро.' },
     wallTitle: 'Благодарим на',
     methods: {
-      buymeacoffee: { name: 'Buy Me a Coffee', hint: 'Почерпи едно кафе с карта.' },
+      buymeacoffee: { name: 'Buy Me a Coffee', hint: '' },
       revolut: { name: 'Revolut', hint: 'Бърз превод през revolut.me.' },
       paypal: { name: 'PayPal', hint: 'Превод през paypal.me.' },
       lightning: {
