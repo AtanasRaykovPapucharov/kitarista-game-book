@@ -1,4 +1,5 @@
 <script setup>
+import { useGameStore } from 'src/stores/game-store'
 import { ref, watch } from 'vue'
 import { ANCIENT_SCALES, MAJOR_SCALES, MINOR_SCALES } from './constants'
 
@@ -29,22 +30,29 @@ const scaleMinor = ref({
   scale: 'A__B_C__D__E_F__G__A',
 })
 
+// the book can ask for a mode to be looked up here
+const game = useGameStore()
+const report = (label) => game.missionEvent({ type: 'scaleTool', label })
+
 watch(
   () => scaleAncient.value,
   (v) => {
     emit('scale', { scale: v.tones, label: `${v.scale} - ${v.label} scale` })
+    report(`${v.scale} - ${v.label} scale`)
   },
 )
 watch(
   () => scaleMajor.value,
   (v) => {
     emit('scale', { scale: v.tones, label: `${v.scale} - ${v.label} major scale` })
+    report(`${v.scale} - ${v.label} major scale`)
   },
 )
 watch(
   () => scaleMinor.value,
   (v) => {
     emit('scale', { scale: v.tones, label: `${v.scale + 'm'} - ${v.label} minor scale` })
+    report(`${v.scale + 'm'} - ${v.label} minor scale`)
   },
 )
 </script>

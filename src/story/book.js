@@ -242,6 +242,7 @@ export const SECTIONS = {
   voiceScares: { effects: [add('darkness', 2), flag('voice_scared')], next: 'lecture' },
 
   lecture: {
+    mission: 'tritone',
     choices: [
       { id: 'listen', to: 'lecture2' },
       { id: 'melody', to: 'melody', requires: { item: 'songbook' } },
@@ -569,6 +570,7 @@ export const SECTIONS = {
     ],
   },
   dayEnd: {
+    mission: 'mode_aeolian',
     effects: [count('day')],
     choices: [
       { id: 'next', to: 'practice', requires: { counterMax: { day: 3 } } },

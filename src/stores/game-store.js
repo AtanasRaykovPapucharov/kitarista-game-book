@@ -138,8 +138,8 @@ export const useGameStore = defineStore('game', {
     continueOn() {
       this.commit(engine.continueOn(this.save))
     },
-    rollTest() {
-      this.commit(engine.resolveTest(this.save))
+    rollTest(opts) {
+      this.commit(engine.resolveTest(this.save, opts))
     },
     rollTable() {
       this.commit(engine.resolveRoll(this.save))

@@ -260,14 +260,19 @@ export function visibleChoices(state) {
 }
 
 /* ---------- tests (2d6 against a stat) ---------- */
-export function resolveTest(state) {
+/**
+ * A test. `bonus` comes from a music move: what was learned in the practice
+ * room widens the target, so knowing your instrument makes a test easier.
+ */
+export function resolveTest(state, { bonus = 0 } = {}) {
   const section = SECTIONS[state.section]
   if (!section.test || state.resolved) return state
   const s = clone(state)
   const { stat } = section.test
   const dice = rollDice(2)
   const total = sum(dice)
-  const target = s.stats[stat]
+  const music = musicTopics(s).length ? Math.max(-1, Math.min(2, Math.round(bonus) || 0)) : 0
+  const target = s.stats[stat] + music
   const success = total <= target
   if (stat === 'luck') {
     s.stats.luck = Math.max(0, s.stats.luck - 1)
@@ -281,6 +286,7 @@ export function resolveTest(state) {
     dice,
     total,
     target,
+    music: music || null,
     success,
     to: outOfInspiration(s) ? SILENCE : outcome.to,
   }

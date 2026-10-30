@@ -140,6 +140,10 @@ export default {
     darkness: 'How much of you belongs to the voice. High Darkness makes the shadows stronger.',
   },
   play: {
+    testMusicHelp:
+      'Music move: a right answer makes the test easier (+2 to the target); a wrong one makes it harder (−1).',
+    testMusicHit: 'The music move helped: +2 to the target.',
+    testMusicMiss: 'The music move didn’t help: −1 from the target.',
     sectionLabel: 'Section {number}',
     continue: 'Continue',
     turnTo: 'Turn to {number}',
@@ -806,6 +810,7 @@ export default {
       chords: 'Open Chords',
       compas: 'Open the Compás sheet',
       notes: 'Open the Note sheet',
+      scales: 'Open Scales and modes',
     },
     topics: {
       chords: 'chords',
@@ -826,9 +831,19 @@ export default {
       chord_em: '+1 Skill',
       compas12: '+1 Luck (and maximum)',
       writeDown: '+1 Inspiration (and maximum)',
+      tritone: '+1 Skill',
+      mode_aeolian: '+1 Inspiration (and maximum)',
       compose: '+1 Inspiration (and maximum)',
     },
     list: {
+      tritone: {
+        title: 'The voice’s own distance',
+        task: 'The professor says the same interval keeps coming back in the noise between the stars – a tritone, six semitones. In Tones, mark two notes that far apart, C and F♯ for example.',
+      },
+      mode_aeolian: {
+        title: 'The mode of Grandpa’s songs',
+        task: 'Grandpa’s old songs walk in minor. Open Scales and modes and choose a minor scale (the Aeolian mode) – A minor, for example.',
+      },
       chord_em: {
         title: 'Grandpa’s chord',
         task: 'The dark chord the keepers’ song starts with is E minor. Open Chords, choose E and tick “minor”.',

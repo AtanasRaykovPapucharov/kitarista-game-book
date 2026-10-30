@@ -88,6 +88,22 @@ export const MISSIONS = {
     reward: [{ stat: 'inspiration', raise: 1 }],
     check: (e) => e.type === 'sheet' && e.notes >= 8,
   },
+  // "Scales and modes": the mode Grandpa's song walks in
+  mode_aeolian: {
+    topic: 'scales',
+    tool: '/scales',
+    icon: 'insights',
+    reward: [{ stat: 'inspiration', raise: 1 }],
+    check: (e) => e.type === 'scaleTool' && /aeolian|minor scale/i.test(e.label ?? ''),
+  },
+  // "Intervals": the distance the voice always sings
+  tritone: {
+    topic: 'intervals',
+    tool: '/tones',
+    icon: 'warning',
+    reward: [{ stat: 'skill', raise: 1 }],
+    check: (e) => e.type === 'interval' && e.semis === 6,
+  },
 }
 
 export const MISSION_IDS = Object.keys(MISSIONS)
