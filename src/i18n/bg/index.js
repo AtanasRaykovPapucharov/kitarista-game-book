@@ -339,7 +339,7 @@ export default {
     feedback: { button: 'Напиши отзив', hint: 'Кажи какво ти хареса и какво да е по-добро.' },
     wallTitle: 'Благодарим на',
     methods: {
-      buymeacoffee: { name: 'Buy Me a Coffee', hint: '' },
+      buymeacoffee: { name: 'Buy Me a Coffee', hint: 'Почерпи едно кафе с карта.' },
       revolut: { name: 'Revolut', hint: 'Бърз превод през revolut.me.' },
       paypal: { name: 'PayPal', hint: 'Превод през paypal.me.' },
       lightning: {
@@ -875,6 +875,16 @@ export default {
     tuning: 'Струната по-висока ли е, или по-ниска от еталона?',
   },
   coach: {
+    hearAll: 'Чуй упражнението',
+    stopDemo: 'Спри',
+    prev: 'Предишна нота',
+    next: 'Следваща нота',
+    inTune: 'Точно!',
+    flat: 'Малко ниско',
+    sharp: 'Малко високо',
+    tooHigh: 'Чувам {n} полутона по-високо',
+    tooLow: 'Чувам {n} полутона по-ниско',
+    summary: 'От първи път: {first} от {total} ноти, за {seconds} секунди.',
     title: 'Свири с мен',
     lead: 'Вземи истинската си китара. Аз ще ти казвам коя нота да изсвириш и къде е на грифа, ще слушам през микрофона и ще продължим, щом я чуя.',
     choose: 'Избери упражнение',

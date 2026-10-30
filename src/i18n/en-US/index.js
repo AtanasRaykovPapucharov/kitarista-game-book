@@ -338,7 +338,7 @@ export default {
     feedback: { button: 'Write feedback', hint: 'Say what you liked and what could be better.' },
     wallTitle: 'Thank you to',
     methods: {
-      buymeacoffee: { name: 'Buy Me a Coffee', hint: '' },
+      buymeacoffee: { name: 'Buy Me a Coffee', hint: 'Buy a coffee with a card.' },
       revolut: { name: 'Revolut', hint: 'A quick transfer via revolut.me.' },
       paypal: { name: 'PayPal', hint: 'A transfer via paypal.me.' },
       lightning: {
@@ -882,6 +882,16 @@ export default {
     tuning: 'Is the string higher or lower than the reference?',
   },
   coach: {
+    hearAll: 'Hear the exercise',
+    stopDemo: 'Stop',
+    prev: 'Previous note',
+    next: 'Next note',
+    inTune: 'Spot on!',
+    flat: 'A little flat',
+    sharp: 'A little sharp',
+    tooHigh: 'I hear {n} semitones higher',
+    tooLow: 'I hear {n} semitones lower',
+    summary: 'First try: {first} of {total} notes, in {seconds} seconds.',
     title: 'Play with me',
     lead: 'Pick up your real guitar. I’ll tell you which note to play and where it is on the neck, listen through the microphone, and move on as soon as I hear it.',
     choose: 'Choose an exercise',
